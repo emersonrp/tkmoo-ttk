@@ -1,0 +1,26 @@
+Installing tkMOO-light on UNIX
+==============================
+
+If you can read this file then you've successfully unpacked the
+distribution's .tar.gz archive.  Unpacking the .tar.gz archive
+produces the following files:
+
+  ./README              important information.
+  ./INSTALL.unix        this file.
+  ./LICENCE             the software licence, PLEASE READ THIS.
+  ./source.tcl          the client software.  'make' converts this 
+			script into a runnable form.
+  ./bugsmail.txt        email template for reporting bugs.
+  ./plugins/            a directory containing some plugin scripts
+                        for the client.
+  ./dot.tkmoolightrc    examples of Tk resource settings.  Rename to
+			'.tkmoolightrc' if you'd like to use these settings.
+
+If you're upgrading from an old (more than 3 months old) version
+of the client then you may need to locate and rename your existing
+'worlds.tkm' file to '.worlds.tkm'.
+
+On Unix:
+
+    'build.sh' will build the executable tkmoo and place it in the build directory.
+    You should move the executable into your path and build/.tkMOO-SE to your home.

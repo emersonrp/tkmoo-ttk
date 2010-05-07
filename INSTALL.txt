@@ -1,0 +1,20 @@
+Installing tkMOO-light on Windows
+=================================
+
+If you can read this file then you've successfully unpacked the
+distribution's .zip archive.  Unpacking the .zip archive produces
+the following files:
+
+  ./README		important information
+  ./INSTALL.txt		this file
+  ./LICENCE		the software licence, PLEASE READ THIS
+  ./tkMOO-SE.exe	the client software
+  ./plugins/		a directory containing some plugin scripts 
+			for the client.
+  			scripts.
+  ./tkmoo.res		examples of Tk resource settings
+
+
+STARTING THE CLIENT
+
+Just double-click on tkMOO-SE.exe to start the client.
