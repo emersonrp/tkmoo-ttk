@@ -474,7 +474,7 @@ proc toolbar.create {} {
         set action [worlds.get_generic {} {} {} TBbutton${button}Action]
         set align [worlds.get_generic {} {} {} TBbutton${button}Align]
         if { $name != "" } {
-            button .toolbar.button${button} \
+            ttk::button .toolbar.button${button} \
                 -font $tbfont -relief $tbstyle \
                 -background $buttonbg -foreground $buttonfg \
                 -activebackground $buttonabg -activeforeground $buttonafg \
@@ -508,9 +508,9 @@ proc toolbar.create_quickconnect {} {
         -background [colourdb.get pink] \
         -font [fonts.fixedwidth]
     label .quickconn.sep -padx 0 -pady 0 -width 1
-    button .quickconn.connect -relief $tbstyle -padx 2 -pady 0 -text "Connect" -command "toolbar.quickconnect"
-    button .quickconn.clear -relief $tbstyle -padx 2 -pady 0 -text "Clear" -command "toolbar.clear_quickconnect"
-    button .quickconn.close -relief $tbstyle -padx 2 -pady 0 -text "Hide" -command "toolbar.destroy_quickconnect"
+    ttk::button .quickconn.connect -text "Connect" -command "toolbar.quickconnect"
+    ttk::button .quickconn.clear -text "Clear" -command "toolbar.clear_quickconnect"
+    ttk::button .quickconn.close -text "Hide" -command "toolbar.destroy_quickconnect"
 
     bind .quickconn.host <Return> "toolbar.quickconnect"
     bind .quickconn.port <Return> "toolbar.quickconnect"
@@ -588,13 +588,10 @@ proc toolbar.create_rosette {} {
 
     foreach topdir {Northwest North Northeast In Up} {
         set wname [string tolower $topdir]
-        button $r.l.top.${wname} -text $topdir \
+        ttk::button $r.l.top.${wname} -text $topdir \
             -command "toolbar.invoke_rosette $wname" \
             -image [toolbar.rosette_image ${wname}] \
-            -background $buttonbg -foreground $buttonfg \
-            -activebackground $buttonabg -activeforeground $buttonafg \
-            -highlightthickness 0 -relief $tbstyle \
-            -padx 0 -pady 0 -width $rose_width -font $tbfont
+            -width $rose_width
     }
     label $r.l.top.sep1 -padx 0 -pady 0 -width $sep_width
     label $r.l.top.sep2 -padx 0 -pady 0 -width $sep_width
@@ -605,13 +602,10 @@ proc toolbar.create_rosette {} {
 
     foreach middir {West Home East Out Down} {
         set wname [string tolower $middir]
-        button $r.l.mid.${wname} -text $middir \
+        ttk::button $r.l.mid.${wname} -text $middir \
             -command "toolbar.invoke_rosette $wname" \
             -image [toolbar.rosette_image ${wname}] \
-            -background $buttonbg -foreground $buttonfg \
-            -activebackground $buttonabg -activeforeground $buttonafg \
-            -highlightthickness 0 -relief $tbstyle \
-            -padx 0 -pady 0 -width $rose_width -font $tbfont
+            -width $rose_width
     }
 
     label $r.l.mid.sep1 -padx 0 -pady 0 -width $sep_width
@@ -623,13 +617,10 @@ proc toolbar.create_rosette {} {
 
     foreach botdir {Southwest South Southeast} {
         set wname [string tolower $botdir]
-        button $r.l.bot.${wname} -text $botdir \
+        ttk::button $r.l.bot.${wname} -text $botdir \
             -command "toolbar.invoke_rosette $wname" \
             -image [toolbar.rosette_image ${wname}] \
-            -background $buttonbg -foreground $buttonfg \
-            -activebackground $buttonabg -activeforeground $buttonafg \
-            -highlightthickness 0 -relief $tbstyle \
-            -padx 0 -pady 0 -width $rose_width -font $tbfont
+            -width $rose_width
     }
 
     global dig_with_rosette dig_room_name
@@ -661,6 +652,7 @@ proc toolbar.create_rosette {} {
         window.add_toolbar $r
         window.repack
     }
+	wm resizable $r 0 0
 }
 
 proc toolbar.invoke_rosette dir {
@@ -719,8 +711,8 @@ proc toolbar.invoke_rosette dir {
         pack configure $rn.options3 -side top -in $rn -fill x
 
         frame $rn.buttons
-        button $rn.buttons.ok -text "OK" -command "toolbar.perform_dig $dir"
-        button $rn.buttons.cancel -text "Cancel" -command "destroy .dig_dialog"
+        ttk::button $rn.buttons.ok -text "OK" -command "toolbar.perform_dig $dir"
+        ttk::button $rn.buttons.cancel -text "Cancel" -command "destroy .dig_dialog"
 
         pack configure $rn.buttons.cancel -side right -in $rn.buttons
         pack configure $rn.buttons.ok -side left -in $rn.buttons
@@ -797,39 +789,39 @@ proc toolbar.create_client_toolbar {} {
     frame .clienttb -bd 1 -relief sunken -highlightthickness 2
     window.toolbar_look .clienttb
 
-    button .clienttb.open -relief $tbstyle -image i_open -command "window.open"
+    ttk::button .clienttb.open -image i_open -command "window.open"
     set_balloon .clienttb.open "Open a New Session"
-    button .clienttb.disc -relief $tbstyle -image i_disc -command "window.do_disconnect"
+    ttk::button .clienttb.disc -image i_disc -command "window.do_disconnect"
     set_balloon .clienttb.disc "Close Current Session"
     label .clienttb.sep1 -padx 0 -pady 0 -width 1
-    button .clienttb.worlds -relief $tbstyle -image i_worlds -command "window.open_list"
+    ttk::button .clienttb.worlds -image i_worlds -command "window.open_list"
     set_balloon .clienttb.worlds "Open Worlds Dialog"
-    button .clienttb.pref -relief $tbstyle -image i_pref -command "preferences.edit"
+    ttk::button .clienttb.pref -image i_pref -command "preferences.edit"
     set_balloon .clienttb.pref "Edit Preferences"
-    button .clienttb.triggers -relief $tbstyle -image i_triggers -command "edittriggers.edit"
+    ttk::button .clienttb.triggers -image i_triggers -command "edittriggers.edit"
     set_balloon .clienttb.triggers "Edit Triggers"
     label .clienttb.sep2 -padx 0 -pady 0 -width 1
-    button .clienttb.cut -relief $tbstyle -image i_cut -command "ui.delete_selection .input"
+    ttk::button .clienttb.cut -image i_cut -command "ui.delete_selection .input"
     set_balloon .clienttb.cut "Cut"
-    button .clienttb.copy -relief $tbstyle -image i_copy -command "ui.copy_selection .input"
+    ttk::button .clienttb.copy -image i_copy -command "ui.copy_selection .input"
     set_balloon .clienttb.copy "Copy"
-    button .clienttb.paste -relief $tbstyle -image i_paste -command "ui.paste_selection .input"
+    ttk::button .clienttb.paste -image i_paste -command "ui.paste_selection .input"
     set_balloon .clienttb.paste "Paste"
-    button .clienttb.editsel -relief $tbstyle -image i_editsel -command "paste.do_selection"
+    ttk::button .clienttb.editsel -image i_editsel -command "paste.do_selection"
     set_balloon .clienttb.editsel "Paste Selection"
     label .clienttb.sep3 -padx 0 -pady 0 -width 1
-    button .clienttb.editor -relief $tbstyle -image i_editor -command "edit.SCedit {} {} {} Editor Editor"
+    ttk::button .clienttb.editor -image i_editor -command "edit.SCedit {} {} {} Editor Editor"
     set_balloon .clienttb.editor "Open Editor"
-    button .clienttb.macmoose -relief $tbstyle -image i_macmoose -command "macmoose.create_browser"
+    ttk::button .clienttb.macmoose -image i_macmoose -command "macmoose.create_browser"
     set_balloon .clienttb.macmoose "Open MacMOOSE Browser"
-    button .clienttb.toolbartog -relief $tbstyle -image i_toolbar -command "toolbar.toolbar_toggle"
+    ttk::button .clienttb.toolbartog -image i_toolbar -command "toolbar.toolbar_toggle"
     set_balloon .clienttb.toolbartog "Toggle Custom Toolbar"
-    button .clienttb.rosettetog -relief $tbstyle -image i_rosette -command "toolbar.rosette_toggle"
+    ttk::button .clienttb.rosettetog -image i_rosette -command "toolbar.rosette_toggle"
     set_balloon .clienttb.rosettetog "Toggle Rosette"
     label .clienttb.sep4 -padx 0 -pady 0 -width 1
-    button .clienttb.log -relief $tbstyle -image i_log -command "logging.create_dialog"
+    ttk::button .clienttb.log -image i_log -command "logging.create_dialog"
     set_balloon .clienttb.log "Logging"
-    button .clienttb.exit -relief $tbstyle -image i_exit -command "client.exit"
+    ttk::button .clienttb.exit -image i_exit -command "client.exit"
     set_balloon .clienttb.exit "Close tkMOO"
 
     foreach cltbpack {open disc sep1 worlds pref triggers sep2 cut copy paste editsel sep3 editor macmoose toolbartog rosettetog sep4 log exit} {
@@ -858,26 +850,26 @@ proc toolbar.create_editorbar w {
     window.toolbar_look $w.edittb
     edit.repack $w
 
-    button $w.edittb.open -image i_open -command "edit.fs_open $w"
+    ttk::button $w.edittb.open -image i_open -command "edit.fs_open $w"
     set_balloon $w.edittb.open "Open"
-    button $w.edittb.save -image i_save -command "edit.fs_save $w"
+    ttk::button $w.edittb.save -image i_save -command "edit.fs_save $w"
     set_balloon $w.edittb.save "Save"
-    button $w.edittb.saveas -image i_saveas -command "edit.fs_save_as $w"
+    ttk::button $w.edittb.saveas -image i_saveas -command "edit.fs_save_as $w"
     set_balloon $w.edittb.saveas "Save As"
     label $w.edittb.sep1 -padx 0 -pady 0 -width 1
-    button $w.edittb.cut -image i_cut -command "edit.do_cut $w"
+    ttk::button $w.edittb.cut -image i_cut -command "edit.do_cut $w"
     set_balloon $w.edittb.cut "Cut"
-    button $w.edittb.copy -image i_copy -command "edit.do_copy $w"
+    ttk::button $w.edittb.copy -image i_copy -command "edit.do_copy $w"
     set_balloon $w.edittb.copy "Copy"
-    button $w.edittb.paste -image i_paste -command "edit.do_paste $w"
+    ttk::button $w.edittb.paste -image i_paste -command "edit.do_paste $w"
     set_balloon $w.edittb.paste "Paste"
     label $w.edittb.sep2 -padx 0 -pady 0 -width 1
-    button $w.edittb.find -image i_find -command "edit.find $w"
+    ttk::button $w.edittb.find -image i_find -command "edit.find $w"
     set_balloon $w.edittb.find "Find"
-    button $w.edittb.goto -image i_goto -command "edit.goto $w"
+    ttk::button $w.edittb.goto -image i_goto -command "edit.goto $w"
     set_balloon $w.edittb.goto "Goto"
     label $w.edittb.sep3 -padx 0 -pady 0 -width 1
-    button $w.edittb.exit -image i_exit -command "edit.destroy $w"
+    ttk::button $w.edittb.exit -image i_exit -command "edit.destroy $w"
     set_balloon $w.edittb.exit "Close Editor"
 
     foreach item {open save saveas sep1 cut copy paste sep2 find goto sep3 exit} {

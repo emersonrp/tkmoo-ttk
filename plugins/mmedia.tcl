@@ -3,7 +3,7 @@ client.register media client_disconnected
 package require Img
 package require http
 package require snack
-package require snackogg
+# package require snackogg
 
 proc media.start {} {
 	mcp21.register dns-com-vmoo-mmedia 2.0 \
