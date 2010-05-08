@@ -8,19 +8,19 @@ window.menu_preferences_state "Edit Preferences..." disabled
 proc preferences.set_world world {
 	global preferences_current preferences_category
 
-	preferences.copy_middle_to_world
-	preferences.remove_middle
-	preferences.fill_middle $world $preferences_category
+	# preferences.copy_middle_to_world
+	# preferences.remove_middle
+	# preferences.fill_middle $world $preferences_category
 
 	set preferences_current $world
 }
 
 proc preferences.set_category category {
 	global preferences_current preferences_category 
-	preferences.copy_middle_to_world
-	.preferences.nottop.m configure -text "$category"
-	preferences.remove_middle
-	preferences.fill_middle $preferences_current $category
+	# preferences.copy_middle_to_world
+	# .preferences.notebook.m configure -text "$category"
+	# preferences.remove_middle
+	# preferences.fill_middle $preferences_current $category
 	set preferences_category $category
 }
 
@@ -51,24 +51,24 @@ proc preferences.copy_middle_to_world {} {
 
 		foreach {world directive} [split $key ","] {break}
 
-	set type ""
-	catch { set type $dtype($directive) }
+		set type ""
+		catch { set type $dtype($directive) }
 
-	if { $type == "" } {
-		puts "preferences: c2m can't find a type for $directive!"
-	}
-
-	set v $preferences_v($key)
-
-	if { $type == "boolean" } {
-		if { $v == 1 } { 
-		set v On
-			} {
-			set v Off
+		if { $type == "" } {
+			puts "preferences: c2m can't find a type for $directive!"
 		}
-	}
 
-	worlds.set $world $directive $v
+		set v $preferences_v($key)
+
+		if { $type == "boolean" } {
+			if { $v == 1 } { 
+				set v On
+			} {
+				set v Off
+			}
+		}
+
+		worlds.set $world $directive $v
 	}
 }
 
@@ -118,17 +118,14 @@ proc preferences.create_edit_window {} {
 
 	preferences.set_title "tkMOO-SE v$tkmooVersion: Preferences"
 
-	set nottop $pw.nottop
+	set notebook $pw.notebook
 
-	ttk::frame $nottop
-	pack [ttk::notebook $nottop.nb]
-	ttk::notebook::enableTraversal $nottop.nb
-	pack $nottop -side top -fill both -expand 1
-
-	ttk::frame $pw.top_gutter -height 4 -relief sunken
+	pack [ttk::notebook $notebook] -side top -fill both -expand 1
+	ttk::notebook::enableTraversal $notebook
 
 	set bottom $pw.bottom
-	ttk::frame $bottom
+	pack [ttk::frame $bottom] -side bottom
+
 	ttk::button $bottom.save -text "Save" -command preferences.save
 	ttk::button $bottom.reset -text "Reset" \
 		-command {preferences.remove_middle; preferences.fill_middle $preferences_current $preferences_category}
@@ -137,24 +134,6 @@ proc preferences.create_edit_window {} {
 
 
 	pack $bottom.save $bottom.reset $bottom.cancel -side left -padx 5 -pady 5
-	pack $bottom -side bottom
-
-
-	set middle $pw.middle
-	set relief sunken
-	text $middle -bd 1 -relief $relief -highlightthickness 0 -width 60 \
-			-state disabled -cursor {} -yscrollcommand "$pw.middle_scrollbar set" \
-			-height 26
-	ttk::scrollbar $pw.middle_scrollbar -command "$pw.middle yview"
-	window.set_scrollbar_look $pw.middle_scrollbar
-	pack $pw.middle_scrollbar -side right -fill y
-	foreach binding {
-		1 B1-Motion Double-1 Triple-1 Shift-1 Double-Shift-1 Triple-Shift-1
-	} {
-		bind $pw.middle <$binding> {break}
-	}
-	pack $middle -fill both -expand on
-	$middle configure -background [$pw cget -background]
 
 	window.focus $pw
 }
@@ -205,22 +184,25 @@ proc preferences.edit { {world ""} } {
 	}
 
 
-	set which $preferences_current
-	set nottop $pw.nottop
+	set notebook $pw.notebook
 	set cat [lindex [preferences.cp] 0]
-
+	pack $notebook
 
 	foreach c [preferences.reverse $cat] {
 		incr c_counter
-		ttk::frame $nottop.nb.$c_counter
-		$nottop.nb add $nottop.nb.$c_counter -text $c
+		set page $notebook.$c_counter
+		ttk::frame $page
+		$notebook add $page -text $c
+		preferences.populate_frame $preferences_current $c $page
+		ttk::scrollbar $page.middle_scrollbar -command "$page yview"
+		pack $page.middle_scrollbar -side right -fill y
 	}
-	set preferences_category {General Settings}
+	# set preferences_category {General Settings}
 
-	preferences.remove_middle
-	preferences.fill_middle $preferences_current $preferences_category
+	# preferences.remove_middle
+	# preferences.fill_middle $preferences_current $preferences_category
 
-	preferences.set_title "Preferences: [worlds.get $which Name]"
+	preferences.set_title "Preferences: [worlds.get $preferences_current Name]"
 
 	wm deiconify $pw 
 	after idle raise $pw
@@ -268,7 +250,7 @@ proc preferences.verify_updown_integer {str default low hi} {
 	return $value
 }
 
-proc preferences.fill_middle {world category} {
+proc preferences.populate_frame {world category page} {
 	global preferences_data preferences_v \
 	preferences_middle_windows
 
@@ -280,10 +262,9 @@ proc preferences.fill_middle {world category} {
 	set categories [lindex $cp 0]
 	set providors [lindex $cp 1]
 
-	set middle .preferences.middle
-	set preferences_middle_windows {}
+	# set preferences_middle_windows {}
 
-	set CR ""
+	# set CR ""
 
 	foreach providor $providors {
 
@@ -295,15 +276,15 @@ proc preferences.fill_middle {world category} {
 
 		foreach preference $info {
 
-			set f $middle.[util.unique_id pf]
-			ttk::frame $f
-			lappend preferences_middle_windows $f
+			set f $page.[util.unique_id pf]
+			pack [ ttk::frame $f ]
+			# lappend preferences_middle_windows $f
 
-			$middle configure -state normal
-			$middle insert end $CR
-			$middle window create end -window $f
-			set CR "\n"
-			$middle configure -state disabled
+			# $middle configure -state normal
+			# $middle insert end $CR
+			# $middle window create end -window $f
+			# set CR "\n"
+			# $middle configure -state disabled
 
 			foreach {_ directive} [util.assoc $preference directive] {_ type} [util.assoc $preference type] {break}
 
@@ -371,9 +352,9 @@ proc preferences.fill_middle {world category} {
 					bind $f.e <Leave> [bind $f.e <Return>]
 					bind $f.e <Tab> [bind $f.e <Return>]
 	
-					ttk::frame $f.gap -width 2 -relief flat 
+					ttk::frame $f.gap -width 2
 	
-					ttk::button $f.bdown -text "-" -image down -bd 1 \
+					ttk::button $f.bdown -text "-" -image down \
 							-width 10 \
 							-command "
 						set a \[preferences.verify_updown_integer \[$f.e get\] $default $low $high\]
@@ -383,7 +364,7 @@ proc preferences.fill_middle {world category} {
 						$f.e insert insert \$a
 						set preferences_v($world,$directive) \$a
 					"
-					ttk::button $f.bup -text "+" -image up -bd 1 \
+					ttk::button $f.bup -text "+" -image up \
 							-width 10 \
 							-command "
 						set a \[preferences.verify_updown_integer \[$f.e get\] $default $low $high\]
@@ -445,7 +426,7 @@ proc preferences.fill_middle {world category} {
 	
 				font {
 					ttk::entry $f.e -font [fonts.get fixedwidth] 
-					ttk::frame $f.gap -width 2 -relief flat
+					ttk::frame $f.gap -width 2
 					set v $default
 					catch { set v [worlds.get $world $directive] }
 					set preferences_v($world,$directive) $v
@@ -464,7 +445,7 @@ proc preferences.fill_middle {world category} {
 	
 				file {
 					ttk::entry $f.e -font [fonts.get fixedwidth]
-					ttk::frame $f.gap -width 2 -relief flat
+					ttk::frame $f.gap -width 2
 					set v $default
 					catch { set v [worlds.get $world $directive] }
 					set preferences_v($world,$directive) $v
@@ -510,10 +491,9 @@ proc preferences.fill_middle {world category} {
 	
 				colour {
 					ttk::entry $f.c -font [fonts.get fixedwidth] \
-							-relief raised \
 							-cursor {} \
 					-state disabled
-					ttk::frame $f.gap -width 2 -relief flat
+					ttk::frame $f.gap -width 2
 					ttk::button $f.b -text "Choose" \
 								-command "colourchooser.create \
 												\"preferences.set_colour $f $world $directive\" \

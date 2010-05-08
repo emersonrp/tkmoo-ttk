@@ -19,51 +19,46 @@ proc window.open_list {} {
     wm title $o "tkMOO-SE v$tkmooVersion: Worlds"
 
     listbox $o.lb \
-	-height 15 -width 35 \
-	-highlightthickness 0 \
-	-setgrid 1 \
-	-background #ffffff \
-	-yscroll "$o.sb set"
+		-height 15 -width 35 \
+		-setgrid 1 \
+		-background #ffffff \
+		-yscroll "$o.sb set"
 
 	bind $o.lb        <Button1-ButtonRelease> "open.do_select"
 	bind $o.lb <Double-Button1-ButtonRelease> "open.do_open"
 	bind $o.lb <Triple-Button1-ButtonRelease> ""
 
     bind $o <MouseWheel> {
-	.open_list.lb yview scroll [expr - (%D / 120) * 4] units
+		.open_list.lb yview scroll [expr - (%D / 120) * 4] units
     }
 
-    scrollbar $o.sb \
-	-highlightthickness 0 \
-	-command "$o.lb yview"
+    ttk::scrollbar $o.sb -command "$o.lb yview"
 
-    window.set_scrollbar_look $o.sb
+    ttk::frame $o.f1
+    ttk::frame $o.f2
 
-    frame $o.f1 -bd 0
-    frame $o.f2 -bd 0
+    set bw 6
+    ttk::button $o.f1.up   -width $bw -text "Up"   -command "open.do_up"
+    ttk::button $o.f1.open -width $bw -text "Open" -command "open.do_open"
+    ttk::button $o.f1.edit -width $bw -text "Edit" -command "open.do_edit"
+    ttk::button $o.f1.new  -width $bw -text "New"  -command "open.do_new"
 
-    set bw 4
-    button $o.f1.up -width $bw -text "Up" -command open.do_up
-    button $o.f1.open -width $bw -text "Open" -command "open.do_open"
-    button $o.f1.edit -width $bw -text "Edit" -command "open.do_edit"
-    button $o.f1.new -width $bw -text "New" -command "open.do_new"
-
-    button $o.f2.down -width $bw -text "Down" -command open.do_down
-    button $o.f2.copy -width $bw -text "Copy" -command "open.do_copy"
-    button $o.f2.delete -width $bw -text "Delete" -command "open.do_delete"
-    button $o.f2.close -width $bw -text "Close" -command "destroy $o"
+    ttk::button $o.f2.down   -width $bw -text "Down"   -command "open.do_down"
+    ttk::button $o.f2.copy   -width $bw -text "Copy"   -command "open.do_copy"
+    ttk::button $o.f2.delete -width $bw -text "Delete" -command "open.do_delete"
+    ttk::button $o.f2.close  -width $bw -text "Close"  -command "destroy $o"
 
     pack $o.f1.up $o.f1.open $o.f1.edit $o.f1.new \
-	-side left \
-	-padx 5 -pady 5
+		-side left \
+		-padx 5 -pady 5
     pack $o.f2.down $o.f2.copy $o.f2.delete $o.f2.close \
-	-side left \
-	-padx 5 -pady 5
+		-side left \
+		-padx 5 -pady 5
 
     pack $o.f2 -side bottom
     pack $o.f1 -side bottom
 
-    pack $o.sb -fill y -side right -fill y
+    pack $o.sb -side right -fill y
     pack $o.lb -side left -expand 1 -fill both
 
 if { 0 } {

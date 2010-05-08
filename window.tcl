@@ -29,13 +29,13 @@ proc window.place_absolute {win x y} {
 }
 proc window.place_nice {this {that ""}} {
     if { $that != "" } {
-	set x [winfo rootx $that]
-	set y [winfo rooty $that]
-	incr x 50
-	incr y 50
-	window.place_absolute $this $x $y
+		set x [winfo rootx $that]
+		set y [winfo rooty $that]
+		incr x 50
+		incr y 50
+		window.place_absolute $this $x $y
     } {
-	window.place_absolute $this 50 50
+		window.place_absolute $this 50 50
     }
 }
 
@@ -56,17 +56,17 @@ proc window.bind_escape_to_destroy win {
 proc window.configure_for_macintosh win {
     global tcl_platform
     if { $tcl_platform(platform) != "macintosh" } {
-	return;
+		return;
     }
-    set mac _macintosh
-    if { $win != "." } {
-	set mac "._macintosh"
+    	set mac _macintosh
+    	if { $win != "." } {
+		set mac "._macintosh"
     }
 
     set topline "_topline"
     set cell "_cell"
     if { [winfo exists $win$mac$topline] } {
-	return;
+		return;
     }
 
     frame $win$mac$topline \
@@ -85,11 +85,11 @@ proc window.configure_for_macintosh win {
 proc window.pack_for_macintosh win {
     global tcl_platform
     if { $tcl_platform(platform) != "macintosh" } {
-	return;
+		return;
     }
     set mac _macintosh
     if { $win != "." } {
-	set mac "._macintosh"
+		set mac "._macintosh"
     }
     set topline "_topline"
     set cell "_cell"
@@ -107,22 +107,22 @@ proc window.toolbar_look frame {
     global tcl_platform
 
     if { $tcl_platform(platform) == "windows" } {
-	set sep $frame.__separator
-	frame $sep -highlightthickness 0 -bd 2 -relief sunken -height 2
-	pack $sep -side top -fill x
+		set sep $frame.__separator
+		frame $sep -highlightthickness 0 -bd 2 -relief sunken -height 2
+		pack $sep -side top -fill x
         $frame configure -relief flat -bd 0 -highlightthickness 0
-	return
+		return
     }
     if { 0 && $tcl_platform(platform) == "macintosh" } {
-	set sep $frame.__separator
-	frame $sep -highlightthickness 0 -bd 2 -relief sunken -height 2
-	pack $sep -side bottom -fill x
+		set sep $frame.__separator
+		frame $sep -highlightthickness 0 -bd 2 -relief sunken -height 2
+		pack $sep -side bottom -fill x
         $frame configure -relief flat -bd 0 -highlightthickness 0
-	return
+		return
     }
     if { $tcl_platform(platform) == "macintosh" } {
         $frame configure -relief raised -bd 1 -highlightthickness 0
-	return
+		return
     }
     if { $tcl_platform(platform) == "unix" } {
         $frame configure -relief raised -bd 1 -highlightthickness 0
@@ -170,10 +170,10 @@ set window_close_state disabled
 proc window.hidemargin menu {
     global tcl_platform
     if { $tcl_platform(platform) == "windows" } {
-	return
+		return
     }
     if { $tcl_platform(platform) == "macintosh" } {
-	return
+		return
     }
     if { ([util.eight] == 1) && ([$menu type end] != "separator") } {
         $menu entryconfigure end -hidemargin 1
@@ -187,7 +187,7 @@ proc window.save_layout {} {
     set worlds_geometry [worlds.get_generic "=50x24" {} {} WindowGeometry]
     set actual_geometry [wm geometry .]
     if { $worlds_geometry != $actual_geometry } {
-	worlds.set $world WindowGeometry $actual_geometry
+		worlds.set $world WindowGeometry $actual_geometry
     }
 }
 
@@ -470,10 +470,10 @@ proc window.set_status {text {type decay}} {
     set window_statusbar_message $text
     window.statusbar_messages_repaint
     catch { 
-    after cancel $window_statusbar_current_task_id 
+    	after cancel $window_statusbar_current_task_id 
     }
     if { $type == "decay" } {
-	set window_statusbar_current_task_id [after 20000 window.statusbar_decay]
+		set window_statusbar_current_task_id [after 20000 window.statusbar_decay]
     }
 }
 
@@ -690,13 +690,13 @@ proc window.open {} {
 
     frame .open.buttons
 
-    button .open.buttons.connect -text "Connect" \
+    ttk::button .open.buttons.connect -text "Connect" \
 	-command { window.do_open }
 
     bind .open <Return> { window.do_open };
     window.bind_escape_to_destroy .open
 
-    button .open.buttons.cancel -text "Cancel" -command "destroy .open"
+    ttk::button .open.buttons.cancel -text "Cancel" -command "destroy .open"
 
     pack .open.entries
     pack .open.buttons
@@ -708,7 +708,7 @@ proc window.open {} {
 
 proc window.menuise_worlds {} {
     catch {
-	.menu.connections.menu delete 5 end
+		.menu.connections.menu delete 5 end
     }
     .menu.connections.menu add separator
     set hints [split 0123456789abdfghijklmnprstuvwxyz {}]
@@ -717,7 +717,7 @@ proc window.menuise_worlds {} {
 	set hints [lrange $hints 1 end]
         .menu.connections.menu add command \
         -label   "$hint. [worlds.get $world Name]"\
-	-underline 0 \
+		-underline 0 \
         -command "client.connect_world \"$world\""
     }
 }
@@ -745,25 +745,25 @@ proc window.post_connect {} {
     $menu delete 0 end
 
     $menu add command \
-	-label "Worlds..." \
-	-underline 0 \
-	-command "window.open_list"
-    window.menu_macintosh_accelerator $menu "Worlds..." "Cmd+W"
-    window.hidemargin $menu
+		-label "Worlds..." \
+		-underline 0 \
+		-command "window.open_list"
+    	window.menu_macintosh_accelerator $menu "Worlds..." "Cmd+W"
+    	window.hidemargin $menu
 
     $menu add command \
-	-label "Open..." \
-	-underline 0 \
-	-command "window.open"
-    window.menu_macintosh_accelerator $menu "Open..." "Cmd+O"
-    window.hidemargin $menu
+		-label "Open..." \
+		-underline 0 \
+		-command "window.open"
+    	window.menu_macintosh_accelerator $menu "Open..." "Cmd+O"
+    	window.hidemargin $menu
 
     $menu add command \
-	-label "Close" \
-	-underline 0 \
-	-command "window.do_disconnect"
-    window.menu_macintosh_accelerator $menu Close "Cmd+K"
-    window.hidemargin $menu
+		-label "Close" \
+		-underline 0 \
+		-command "window.do_disconnect"
+    	window.menu_macintosh_accelerator $menu Close "Cmd+K"
+    	window.hidemargin $menu
 
     $menu entryconfigure "Close" -state $window_close_state
 
@@ -793,7 +793,7 @@ proc window.post_connect {} {
                     -label $label \
 	            -underline 0 \
                     -command "client.connect_world $world"
-		window.menu_macintosh_accelerator $menu end "Cmd+$hint"
+				window.menu_macintosh_accelerator $menu end "Cmd+$hint"
                 window.hidemargin $menu
 	    }
 	}
@@ -819,7 +819,7 @@ proc window.load_connections_menu {} {
 
 proc window.configure_help_menu {} {
     if { [util.use_native_menus] } {
-	set menu .menu.help
+		set menu .menu.help
     } {
 	set menu .menu.help.menu
     }
@@ -839,12 +839,12 @@ proc window.configure_help_menu {} {
 
 proc window.menu_help_add { text {command ""} } {
     if { [util.use_native_menus] } {
-	set menu .menu.help
+		set menu .menu.help
     } {
-	set menu .menu.help.menu
+		set menu .menu.help.menu
     }
     if { $text == "SEPARATOR" } {
-	$menu add separator
+		$menu add separator
     } {
         $menu add command \
             -label   "$text" \
@@ -872,9 +872,9 @@ proc window.menu_tools_macintosh_accelerator { text accelerator } {
 
 proc window.menu_tools_add { text {command ""} } {
     if { [util.use_native_menus] } {
-	set menu .menu.tools
+		set menu .menu.tools
     } {
-	set menu .menu.tools.menu
+		set menu .menu.tools.menu
     }
     if { $text == "SEPARATOR" } {
 	$menu add separator
@@ -888,15 +888,15 @@ proc window.menu_tools_add { text {command ""} } {
 
 proc window.menu_tools_add_cascade { text cascade } {
     if { [util.use_native_menus] } {
-	set menu .menu.tools
+		set menu .menu.tools
     } {
-	set menu .menu.tools.menu
+		set menu .menu.tools.menu
     }
-        $menu add cascade \
-            -label   "$text" \
-            -menu $cascade
-        window.hidemargin $menu
-    }
+	$menu add cascade \
+		-label   "$text" \
+		-menu $cascade
+	window.hidemargin $menu
+}
 
 proc window.menu_tools_state { text state } {
     if { [util.use_native_menus] } {
@@ -932,10 +932,10 @@ proc window.menu_preferences_add { text {command ""} } {
     if { $text == "SEPARATOR" } {
 	$menu add separator
     } {
-        $menu add command \
-            -label   "$text" \
-            -command $command
-        window.hidemargin $menu
+	$menu add command \
+		-label   "$text" \
+		-command $command
+	window.hidemargin $menu
     }
 }
 
@@ -943,12 +943,12 @@ proc window.reconfigure_fonts {} {
     global window_fonts
     switch $window_fonts {
 	fixedwidth {
-	    .output configure -font [fonts.fixedwidth]
-	    .input configure -font [fonts.fixedwidth]
+		.output configure -font [fonts.fixedwidth]
+		.input configure -font [fonts.fixedwidth]
 	}
 	proportional {
-           .output configure -font [fonts.plain]
-           .input configure -font [fonts.plain]
+		.output configure -font [fonts.plain]
+		.input configure -font [fonts.plain]
 	}
     }
 }
@@ -957,7 +957,7 @@ proc window.resize_event {} {
     global window_resize_event_task
     catch { after cancel $window_resize_event_task }
     set window_resize_event_task [after idle {
-	window.save_layout
+		window.save_layout
     }]
 }
 
@@ -1154,11 +1154,11 @@ proc window.buildWindow {} {
         .menu add cascade -label "Help" -underline 0 -menu .menu.help
         menu .menu.help -tearoff 0 -bd 1
 
-	window.configure_help_menu
+		window.configure_help_menu
 
         global tcl_platform
         if { $tcl_platform(platform) == "windows" } {
-	    frame .canyon -bd 2 -height 2 -relief sunken
+	    	frame .canyon -bd 2 -height 2 -relief sunken
         }
 
         text .output \
@@ -1224,16 +1224,18 @@ proc window.buildWindow {} {
 proc window.accel str {
     global tcl_platform
     if { $str == "Ctrl" && $tcl_platform(platform) == "macintosh" } {
-	return "Cmd"
+		return "Cmd"
     }
     return $str
 }
 
 proc window.focus win {
     global tcl_platform
-    if { $tcl_platform(platform) == "windows" ||
-	 $tcl_platform(platform) == "macintosh" } {
-	after idle raise [winfo toplevel $win]
+    if {
+			$tcl_platform(platform) == "windows" ||
+			$tcl_platform(platform) == "macintosh"
+	} {
+		after idle raise [winfo toplevel $win]
     }
     focus $win
 }
@@ -1300,7 +1302,7 @@ proc window.old.buildWindow {} {
 
 	frame .menu -bd 0
 
-	menubutton .menu.connections \
+	ttk::menubutton .menu.connections \
 		-text "Connect" \
 		-underline 0 \
 		-menu .menu.connections.menu
@@ -1308,7 +1310,7 @@ proc window.old.buildWindow {} {
 	    menu .menu.connections.menu \
 		-tearoff 0
 
-        menubutton .menu.edit \
+        ttk::menubutton .menu.edit \
             -text "Edit" \
             -underline 0 \
             -menu .menu.edit.m
@@ -1342,14 +1344,14 @@ proc window.old.buildWindow {} {
 		-command "ui.clear_screen .output"
             window.hidemargin .menu.edit.m
 
-	menubutton .menu.tools \
+	ttk::menubutton .menu.tools \
 	    -text "Tools" \
 	    -underline 0 \
 	    -menu .menu.tools.menu
 
 	menu .menu.tools.menu -tearoff 0
 
-	menubutton .menu.prefs \
+	ttk::menubutton .menu.prefs \
 	    -text "Preferences" \
 	    -underline 0 \
 	    -menu .menu.prefs.menu
@@ -1436,7 +1438,7 @@ proc window.old.buildWindow {} {
 	frame .menu.flash -bd 1 -height 10 -width 6 -relief sunken
         set window_activity_flash_colour [.menu.flash cget -background]
 
-        menubutton .menu.help \
+        ttk::menubutton .menu.help \
             -text "Help" \
             -underline 0 \
             -menu .menu.help.menu
@@ -1478,7 +1480,7 @@ proc window.old.buildWindow {} {
 
         history.init .input 1
 
-	scrollbar .scrollbar \
+	ttk::scrollbar .scrollbar \
 	    -command ".output yview" \
 	    -highlightthickness 0
 
@@ -1496,8 +1498,8 @@ proc window.old.buildWindow {} {
 
         window.focus .input
 
-	.output tag configure window_margin -lmargin1 0m -lmargin2 3m
-	.output tag configure window_highlight -foreground [colourdb.get red]
+		.output tag configure window_margin -lmargin1 0m -lmargin2 3m
+		.output tag configure window_highlight -foreground [colourdb.get red]
 
         wm protocol . WM_DELETE_WINDOW client.exit
 
@@ -1623,6 +1625,7 @@ proc window.really_repack {} {
 
     after idle .output yview moveto [lindex $window_current_position 1]
 }
+
 proc window.old.repack {} {
     global window_toolbars window_statusbars window_sidebars
     foreach slave [pack slaves .] {
@@ -1726,9 +1729,9 @@ proc window.dabbrev args {
 
 
     if { $new_partial == "" } { 
-	window.set_dabbrev_target ""
-	window.set_dabbrev_matches ""
-	window.set_dabbrev_current ""
+		window.set_dabbrev_target ""
+		window.set_dabbrev_matches ""
+		window.set_dabbrev_current ""
         return
     }
 
@@ -1736,35 +1739,35 @@ proc window.dabbrev args {
 	 [string match -nocase "[window.get_dabbrev_target]*" $new_partial] } {
 
 
-	 set l [window.get_dabbrev_matches]
+	 	set l [window.get_dabbrev_matches]
 
-         if { [lsearch -exact $args backward] != -1 } {
-	     set last [lrange $l end end]
-	     set l [lreplace $l end end]
-	     set l [concat $last $l]
-	 } else {
-	     set first [lindex $l 0]
-	     set l [lreplace $l 0 0]
-	     lappend l $first
-	 }
-	 window.set_dabbrev_matches $l
-	 window.set_dabbrev_current [lindex $l 0]
+		if { [lsearch -exact $args backward] != -1 } {
+			set last [lrange $l end end]
+			set l [lreplace $l end end]
+			set l [concat $last $l]
+	 	} else {
+			set first [lindex $l 0]
+			set l [lreplace $l 0 0]
+			lappend l $first
+		}
+		window.set_dabbrev_matches $l
+		window.set_dabbrev_current [lindex $l 0]
     } {
 
         set words [window.dabbrev_search .output $new_partial]
 
         if { [llength $words] == 0 } {
-	    return
+	    	return
         }
         set words [lsort $words]
         if { [lindex $words 0] == [string tolower $new_partial] } {
-	    set foo [lindex $words 0]
-	    lappend words $foo
-	    set words [lreplace $words 0 0]
+	    	set foo [lindex $words 0]
+	    	lappend words $foo
+	    	set words [lreplace $words 0 0]
         }
-	window.set_dabbrev_target $new_partial
-	window.set_dabbrev_matches $words
-	window.set_dabbrev_current [lindex $words 0]
+		window.set_dabbrev_target $new_partial
+		window.set_dabbrev_matches $words
+		window.set_dabbrev_current [lindex $words 0]
     }
 
     set remainder [string range [window.get_dabbrev_current] [string length [window.get_dabbrev_target]] end]
@@ -1840,7 +1843,7 @@ proc window.clear_screen win {
 proc window._last_char_is_visible {} {
     set last_char [.output index {end - 1 char}]
     if { [.output bbox $last_char] != {} } {
-	return 1
+		return 1
     }
     return 0
 }
@@ -1850,9 +1853,9 @@ proc window.contribute_tags tags {
     global window_contributed_tags
     set wct_list $window_contributed_tags
     foreach tag $tags {
-	if { [lsearch -exact $wct_list $tag] == -1 } {
-	    append window_contributed_tags " $tag"
-	}
+		if { [lsearch -exact $wct_list $tag] == -1 } {
+	    	append window_contributed_tags " $tag"
+		}
     }
     set window_contributed_tags [string trimleft $window_contributed_tags]
 }
@@ -1862,9 +1865,9 @@ proc window.remove_matching_tags match {
     set tmp ""
     set wct_list $window_contributed_tags
     foreach tag $wct_list {
-	if { [string match $match $tag] == 0 } {
-	    append tmp " $tag"
-	}
+		if { [string match $match $tag] == 0 } {
+	    	append tmp " $tag"
+		}
     }
     set window_contributed_tags [string trimleft $tmp]
 }
@@ -1872,31 +1875,31 @@ proc window.remove_matching_tags match {
 proc window.display_tagged { line {tags {}} } {
     global window_db
     if { $window_db(".output,window_CR") } {
-	window._display "\n"
+		window._display "\n"
     } 
     set window_db(".output,window_CR") 1
     window._display $line
 
     foreach tag $tags {
-	set names [lindex $tag 0]
-	set range [lindex $tag 1]
-	set from "end - 1 lines linestart + [lindex $range 0] chars"
-	set to   "end - 1 lines linestart + [lindex $range 1] chars + 1 chars"
-	foreach t $names {
-            .output tag add $t $from $to
-	}
+		set names [lindex $tag 0]
+		set range [lindex $tag 1]
+		set from "end - 1 lines linestart + [lindex $range 0] chars"
+		set to   "end - 1 lines linestart + [lindex $range 1] chars + 1 chars"
+		foreach t $names {
+            	.output tag add $t $from $to
+		}
     }
 }
 
 proc window._clip {} {
     global window_clip_output_buffer window_clip_output_buffer_size
     if { $window_clip_output_buffer } {
-	set int_last_line [lindex [split [.output index end] "."] 0]
-	set diff $int_last_line
-	incr diff -$window_clip_output_buffer_size
-	if { $diff > 0 } {
-	    .output delete 1.0 $diff.0
-	}
+		set int_last_line [lindex [split [.output index end] "."] 0]
+		set diff $int_last_line
+		incr diff -$window_clip_output_buffer_size
+		if { $diff > 0 } {
+	    	.output delete 1.0 $diff.0
+		}
     }
 }
 
@@ -1912,9 +1915,9 @@ proc window._display { line { tag ""} {win .output} } {
 
         if { $scroll } {
             .output yview -pickplace end
-	    window.activity_stop_flashing
+	    	window.activity_stop_flashing
         } {
-	    window.activity_begin_flashing
+	    	window.activity_begin_flashing
         }
     } {
         $win configure -state normal
@@ -1997,7 +2000,7 @@ proc window.hyperlink.link {win tag cmd} {
     set hyperlink_foreground [worlds.get_generic $colour_unselected {} {} HyperlinkForeground]
 
     if { $underline_hyperlink == "always" } {
-	$win tag configure $tag -underline 1
+		$win tag configure $tag -underline 1
     }
 
     $win tag configure $tag -foreground $hyperlink_foreground
@@ -2006,16 +2009,16 @@ proc window.hyperlink.link {win tag cmd} {
 
     $win tag bind $tag <Enter> "
         $win configure -cursor hand2
-	if { [lsearch -exact {hover always} $underline_hyperlink] != -1 } {
-	    $win tag configure $tag -underline 1
-	}
+		if { [lsearch -exact {hover always} $underline_hyperlink] != -1 } {
+	    	$win tag configure $tag -underline 1
+		}
         window.hyperlink.set_command \"$cmd\"
     "
     $win tag bind $tag <Leave> "
         $win configure -cursor {}
-	if { [lsearch -exact {hover never} $underline_hyperlink] != -1 } {
-	    $win tag configure $tag -underline 0
-	}
+		if { [lsearch -exact {hover never} $underline_hyperlink] != -1 } {
+	    	$win tag configure $tag -underline 0
+		}
         window.hyperlink.set_command \"\"
     "
     $win tag bind $tag <1> "
