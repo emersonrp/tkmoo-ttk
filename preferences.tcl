@@ -1,23 +1,6 @@
 
 
 
-proc preferences.font_form {} {
-	global tk_version
-	if { $tk_version >= 8.0 } {
-		return "font"
-	} {
-		return "string"
-	}
-}
-proc preferences.file_form {} { 
-	global tk_version   
-	if { $tk_version >= 8.0 } {
-		return "file"		 
-	} {			 
-		return "string"
-	}			 
-}				 
-
 window.menu_preferences_add "Edit Preferences..." preferences.edit
 window.menu_preferences_state "Edit Preferences..." disabled
 
@@ -323,13 +306,6 @@ proc preferences.fill_middle {world category} {
 			$middle configure -state disabled
 
 			foreach {_ directive} [util.assoc $preference directive] {_ type} [util.assoc $preference type] {break}
-
-			if { $type == "font" } {
-				set type [preferences.font_form]
-			}
-			if { $type == "file" } {
-				set type [preferences.file_form]
-			}
 
 			foreach default [worlds.get_default $directive] {break}
 			foreach {_ display} [util.assoc $preference display] {break}
