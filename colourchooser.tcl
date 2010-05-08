@@ -20,18 +20,12 @@ proc colourchooser.create { {callback ""} hexcolour } {
 
     $c configure -bd 0 -highlightthickness 0
 
-    frame $c.colour \
-        -relief raised \
-        -bd 1 -highlightthickness 0 \
-        -height 40 
+    frame $c.colour -height 40 
     pack $c.colour -side top -fill x -expand 1
 
-    frame $c.r \
-        -bd 0 -highlightthickness 0
-    scale $c.r.s -from 0 -to 255 -sliderlength 20 -bd 1 -orient horizontal \
-        -showvalue 0 \
-        -highlightthickness 0 \
-        -width 10 -length 255 \
+		# "R" slider
+    ttk::frame $c.r
+    scale $c.r.s -from 0 -to 255 -orient horizontal \
         -variable colour_r -command colourchooser.update_colour
 
     label $c.r.ll -text "R: " -width 3 -justify left -anchor w \
@@ -50,12 +44,9 @@ proc colourchooser.create { {callback ""} hexcolour } {
     pack $c.r.lc -side right
     pack $c.r.ll -side right
 
-    frame $c.g \
-        -bd 0 -highlightthickness 0
-    scale $c.g.s -from 0 -to 255 -sliderlength 20 -bd 1 -orient horizontal \
-        -showvalue 0 \
-        -highlightthickness 0 \
-        -width 10 -length 255 \
+		# "G" slider
+    ttk::frame $c.g
+    scale $c.g.s -from 0 -to 255 -orient horizontal \
         -variable colour_g -command colourchooser.update_colour
 
     label $c.g.ll -text "G: " -width 3 -justify left -anchor w \
@@ -73,12 +64,9 @@ proc colourchooser.create { {callback ""} hexcolour } {
     pack $c.g.lc -side right
     pack $c.g.ll -side right
 
-    frame $c.b \
-        -bd 0 -highlightthickness 0
-    scale $c.b.s -from 0 -to 255 -sliderlength 20 -bd 1 -orient horizontal \
-        -showvalue 0 \
-        -highlightthickness 0 \
-        -width 10 -length 255 \
+		# "B" slider
+    ttk::frame $c.b
+    scale $c.b.s -from 0 -to 255 -orient horizontal \
         -variable colour_b -command colourchooser.update_colour
 
     label $c.b.ll -text "B: " -width 3 -justify left -anchor w \
@@ -96,15 +84,11 @@ proc colourchooser.create { {callback ""} hexcolour } {
     pack $c.b.lc -side right
     pack $c.b.ll -side right
 
-    frame $c.buttons \
-        -bd 0 -highlightthickness 0
-    button $c.buttons.close -text "Close" -command "destroy $c" \
-        -bd 1 -highlightthickness 0
-    button $c.buttons.accept -text " Ok  " -command "eval $callback \$colour_r \$colour_g \$colour_b; destroy $c" \
-        -bd 1 -highlightthickness 0
+    ttk::frame $c.buttons
+    ttk::button $c.buttons.close -text "Close" -command "destroy $c"
+    ttk::button $c.buttons.accept -text " Ok  " -command "eval $callback \$colour_r \$colour_g \$colour_b; destroy $c"
 
-    pack $c.buttons.accept $c.buttons.close -side left \
-	-padx 5 -pady 5
+    pack $c.buttons.accept $c.buttons.close -side left -padx 5 -pady 5
     
     pack $c.r -side top
     pack $c.g -side top
