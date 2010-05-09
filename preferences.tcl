@@ -1,9 +1,6 @@
 
-
-
 window.menu_preferences_add "Edit Preferences..." preferences.edit
 window.menu_preferences_state "Edit Preferences..." disabled
-
 
 proc preferences.set_world world {
 	global preferences_current preferences_category
@@ -98,7 +95,6 @@ proc preferences.set_title title {
 	wm title $pw $title
 }
 
-
 proc preferences.create_edit_window {} {
 	global tkmooVersion
 	set pw .preferences
@@ -186,16 +182,15 @@ proc preferences.edit { {world ""} } {
 
 	set notebook $pw.notebook
 	set cat [lindex [preferences.cp] 0]
-	pack $notebook
 
 	foreach c [preferences.reverse $cat] {
 		incr c_counter
 		set page $notebook.$c_counter
 		ttk::frame $page
 		$notebook add $page -text $c
+		ttk::scrollbar $page.scrollbar -command "$page yview"
+		pack $page.scrollbar -side right -fill y
 		preferences.populate_frame $preferences_current $c $page
-		ttk::scrollbar $page.middle_scrollbar -command "$page yview"
-		pack $page.middle_scrollbar -side right -fill y
 	}
 	# set preferences_category {General Settings}
 
@@ -241,21 +236,16 @@ proc preferences.verify_updown_integer {str default low hi} {
 			set value $num
 		}
 	}
-	if { $value < $low } {
-		set value $low
-	}
-	if { $value > $hi } {
-		set value $hi
-	}
+	if { $value < $low } { set value $low }
+	if { $value > $hi }  { set value $hi }
 	return $value
 }
 
 proc preferences.populate_frame {world category page} {
-	global preferences_data preferences_v \
-	preferences_middle_windows
+	global preferences_data preferences_v preferences_middle_windows
 
 	global image_data
-	image create bitmap up -data $image_data(right.xbm)
+	image create bitmap up   -data $image_data(right.xbm)
 	image create bitmap down -data $image_data(left.xbm)
 
 	set cp [preferences.cp]
@@ -277,7 +267,7 @@ proc preferences.populate_frame {world category page} {
 		foreach preference $info {
 
 			set f $page.[util.unique_id pf]
-			pack [ ttk::frame $f ]
+			pack [ ttk::frame $f ] -anchor w
 			# lappend preferences_middle_windows $f
 
 			# $middle configure -state normal
@@ -293,7 +283,7 @@ proc preferences.populate_frame {world category page} {
 
 
 			label $f.l -text $display -anchor w -width 20 -justify left
-			pack $f.l -fill both -side left
+			pack $f.l -side left
 
 			switch -- $type {
 				boolean {
