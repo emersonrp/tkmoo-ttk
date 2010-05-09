@@ -31,6 +31,94 @@ client.register toolbar client_disconnected
 proc toolbar.start {} {
 
     preferences.register toolbar {Toolbar Settings} {
+        { {directive ShowClientToolbar}
+            {type boolean}
+            {default On}
+            {display "Display main toolbar"} }
+        { {directive ToolBarFont}
+            {type font}
+            {default "helvetica 12 bold roman"}
+            {default_if_empty}
+            {display "Toolbar font"} }
+        { {directive ToolBarRosetteFont}
+            {type font}
+            {default "helvetica 10 bold roman"}
+            {default_if_empty}
+            {display "Rosette font"} }
+        { {directive UseToolBarRosette}
+            {type boolean}
+            {default Off}
+            {display "Display rosette"} }
+        { {directive UseGraphicalRose}
+            {type boolean}
+            {default Off}
+            {display "Use graphical rosette"} }
+        { {directive UseDialogRose}
+            {type boolean}
+            {default On}
+            {display "Use rosette window"} }
+        { {directive DigByDefault}
+            {type boolean}
+            {default Off}
+            {display "Dig by default"} }
+        { {directive DigReturnByDefault}
+            {type boolean}
+            {default On}
+            {display "Dig return exit"} }
+        { {directive DigCloseOnCompletion}
+            {type boolean}
+            {default On}
+            {display "Close on completion"} }
+        { {directive DigFollowNewExit}
+            {type boolean}
+            {default On}
+            {display "Follow new exit"} }
+        { {directive RosetteDigCmd}
+            {type string}
+            {default "@dig"}
+            {default_if_empty}
+            {display "Dig command"} }
+        { {directive UseEditToolBar}
+            {type boolean}
+            {default Off}
+            {display "Display editor toolbar"} }
+        { {directive ToolBarStyle}
+            {type choice-menu}
+            {default raised}
+            {choices {raised sunken flat solid}}
+            {display "Button style"} }
+        { {directive UseCustomToolbarColors}
+            {type boolean}
+            {default Off}
+            {display "Use custom colors"} }
+        { {directive TBButtonBG}
+            {type colour}
+            {default grey85}
+            {display "Normal background"} }
+        { {directive TBButtonFG}
+            {type colour}
+            {default black}
+            {display "Normal foreground"} }
+        { {directive TBButtonABG}
+            {type colour}
+            {default grey95}
+            {display "Active background"} }
+        { {directive TBButtonAFG}
+            {type colour}
+            {default black}
+            {display "Active foreground"} }
+        { {directive TBPadY}
+            {type updown-integer}
+            {default 0}
+            {display "Vertical padding"}
+            {low 0}
+            {high 10} }
+        { {directive TBPadX}
+            {type updown-integer}
+            {default 0}
+            {display "Horizontal padding"}
+            {low 0}
+            {high 10} }
         { {directive UseToolBar}
             {type boolean}
             {default Off}
@@ -193,97 +281,6 @@ proc toolbar.start {} {
             {display "Button 12 (Alignment)"} }
     }
 
-    preferences.register toolbar {Advanced Toolbar Settings} {
-        { {directive ShowClientToolbar}
-            {type boolean}
-            {default On}
-            {display "Display main toolbar"} }
-        { {directive ToolBarFont}
-            {type font}
-            {default "helvetica 12 bold roman"}
-            {default_if_empty}
-            {display "Toolbar font"} }
-        { {directive ToolBarRosetteFont}
-            {type font}
-            {default "helvetica 10 bold roman"}
-            {default_if_empty}
-            {display "Rosette font"} }
-        { {directive UseToolBarRosette}
-            {type boolean}
-            {default Off}
-            {display "Display rosette"} }
-        { {directive UseGraphicalRose}
-            {type boolean}
-            {default Off}
-            {display "Use graphical rosette"} }
-        { {directive UseDialogRose}
-            {type boolean}
-            {default On}
-            {display "Use rosette window"} }
-        { {directive DigByDefault}
-            {type boolean}
-            {default Off}
-            {display "Dig by default"} }
-        { {directive DigReturnByDefault}
-            {type boolean}
-            {default On}
-            {display "Dig return exit"} }
-        { {directive DigCloseOnCompletion}
-            {type boolean}
-            {default On}
-            {display "Close on completion"} }
-        { {directive DigFollowNewExit}
-            {type boolean}
-            {default On}
-            {display "Follow new exit"} }
-        { {directive RosetteDigCmd}
-            {type string}
-            {default "@dig"}
-            {default_if_empty}
-            {display "Dig command"} }
-        { {directive UseEditToolBar}
-            {type boolean}
-            {default Off}
-            {display "Display editor toolbar"} }
-        { {directive ToolBarStyle}
-            {type choice-menu}
-            {default raised}
-            {choices {raised sunken flat solid}}
-            {display "Button style"} }
-        { {directive UseCustomToolbarColors}
-            {type boolean}
-            {default Off}
-            {display "Use custom colors"} }
-        { {directive TBButtonBG}
-            {type colour}
-            {default grey85}
-            {display "Normal background"} }
-        { {directive TBButtonFG}
-            {type colour}
-            {default black}
-            {display "Normal foreground"} }
-        { {directive TBButtonABG}
-            {type colour}
-            {default grey95}
-            {display "Active background"} }
-        { {directive TBButtonAFG}
-            {type colour}
-            {default black}
-            {display "Active foreground"} }
-        { {directive TBPadY}
-            {type updown-integer}
-            {default 0}
-            {display "Vertical padding"}
-            {low 0}
-            {high 10} }
-        { {directive TBPadX}
-            {type updown-integer}
-            {default 0}
-            {display "Horizontal padding"}
-            {low 0}
-            {high 10} }
-    }
-
 
     set d_north { R0lGODlhFQAVAPEAAAAAAIAAAP8AAL29vSH5BAEAAAMALAAAAAAVABUAAAI3nI+pe8FvgnBQ
 STErujhr3nkPGIpWiVIJiWJqFMRyJ9cQ9360tu185PvhfkAXcTAk1nLHppNYAAA7 }
@@ -317,19 +314,19 @@ FbaVbNkkFqOxlo7XwCp1vdv0NcLlUKTSmXJpT97wuBySAAA7 }
 AANVeLrc/jDKCKq9ExASugdZUWxeAEqAKHLdSanj1whNqrJmM9CLvcqCoGCw64kMBhxoSGzy
 fLHWQcjkHaBKnfUKyzK23JsMtcLlUKTSmXJpT97wuBySAAA7 }
 
-    image create photo i_north	-format GIF87 -data $d_north
-    image create photo i_northwest	-format GIF87 -data $d_northwest
-    image create photo i_northeast	-format GIF87 -data $d_northeast
-    image create photo i_west	-format GIF87 -data $d_west
-    image create photo i_home	-format GIF87 -data $d_home
-    image create photo i_east	-format GIF87 -data $d_east
-    image create photo i_south	-format GIF87 -data $d_south
-    image create photo i_southwest	-format GIF87 -data $d_southwest
-    image create photo i_southeast	-format GIF87 -data $d_southeast
-    image create photo i_up	-format GIF87 -data $d_up
-    image create photo i_down	-format GIF87 -data $d_down
-    image create photo i_in	-format GIF87 -data $d_in
-    image create photo i_out	-format GIF87 -data $d_out
+    image create photo i_north     -format GIF87 -data $d_north
+    image create photo i_northwest -format GIF87 -data $d_northwest
+    image create photo i_northeast -format GIF87 -data $d_northeast
+    image create photo i_west      -format GIF87 -data $d_west
+    image create photo i_home      -format GIF87 -data $d_home
+    image create photo i_east      -format GIF87 -data $d_east
+    image create photo i_south     -format GIF87 -data $d_south
+    image create photo i_southwest -format GIF87 -data $d_southwest
+    image create photo i_southeast -format GIF87 -data $d_southeast
+    image create photo i_up        -format GIF87 -data $d_up
+    image create photo i_down      -format GIF87 -data $d_down
+    image create photo i_in	       -format GIF87 -data $d_in
+    image create photo i_out       -format GIF87 -data $d_out
 
     set d_open { R0lGODlhEAAQAPIAAAAAAICAAICAgMPDw729vQAAAAAAAAAAACH5BAEAAAQALAAAAAAQABAA
 AAM/SLrcCwRA16SakUosB9bAMATBVoUj2XEoWbZc+oouJoQl7ZbLPeI7Sy8EfAkEDB9OcqTc
@@ -388,25 +385,25 @@ ADs= }
     set d_goto { R0lGODlhEAAQAPEAAAAAAP8AAICAgL29vSH5BAEAAAMALAAAAAAQABAAAAIwnI+pyw2egGDg
 HUmDHdjUDwSaN3nieT4dB4batAqyHHZrtN7IrR/l9WuQhIkg0VAAADs= }
 
-    image create photo i_open	-format GIF87 -data $d_open
-    image create photo i_save	-format GIF87 -data $d_save
-    image create photo i_saveas	-format GIF87 -data $d_saveas
-    image create photo i_pref	-format GIF87 -data $d_pref
-    image create photo i_worlds	-format GIF87 -data $d_worlds
-    image create photo i_exit	-format GIF87 -data $d_exit
-    image create photo i_disc	-format GIF87 -data $d_disc
-    image create photo i_editor	-format GIF87 -data $d_editor
-    image create photo i_log	-format GIF87 -data $d_log
-    image create photo i_triggers	-format GIF87 -data $d_triggers
-    image create photo i_rosette	-format GIF87 -data $d_rosette
-    image create photo i_toolbar	-format GIF87 -data $d_toolbar
-    image create photo i_cut	-format GIF87 -data $d_cut
-    image create photo i_copy	-format GIF87 -data $d_copy
-    image create photo i_paste	-format GIF87 -data $d_paste
-    image create photo i_macmoose	-format GIF87 -data $d_macmoose
-    image create photo i_editsel	-format GIF87 -data $d_editsel
-    image create photo i_find	-format GIF87 -data $d_find
-    image create photo i_goto	-format GIF87 -data $d_goto
+    image create photo i_open     -format GIF87 -data $d_open
+    image create photo i_save     -format GIF87 -data $d_save
+    image create photo i_saveas   -format GIF87 -data $d_saveas
+    image create photo i_pref     -format GIF87 -data $d_pref
+    image create photo i_worlds   -format GIF87 -data $d_worlds
+    image create photo i_exit     -format GIF87 -data $d_exit
+    image create photo i_disc     -format GIF87 -data $d_disc
+    image create photo i_editor   -format GIF87 -data $d_editor
+    image create photo i_log      -format GIF87 -data $d_log
+    image create photo i_triggers -format GIF87 -data $d_triggers
+    image create photo i_rosette  -format GIF87 -data $d_rosette
+    image create photo i_toolbar  -format GIF87 -data $d_toolbar
+    image create photo i_cut      -format GIF87 -data $d_cut
+    image create photo i_copy     -format GIF87 -data $d_copy
+    image create photo i_paste    -format GIF87 -data $d_paste
+    image create photo i_macmoose -format GIF87 -data $d_macmoose
+    image create photo i_editsel  -format GIF87 -data $d_editsel
+    image create photo i_find     -format GIF87 -data $d_find
+    image create photo i_goto     -format GIF87 -data $d_goto
 
     window.menu_tools_add "Main toolbar on/off" toolbar.client_toolbar_toggle
     window.menu_tools_add "Custom toolbar on/off" toolbar.toolbar_toggle
@@ -454,7 +451,7 @@ proc toolbar.destroy {} {
 proc toolbar.create {} {
     if { [winfo exists .toolbar] == 1 } { return }
 
-    frame .toolbar -bd 1 -relief sunken -highlightthickness 2
+    ttk::frame .toolbar
     window.toolbar_look .toolbar
 
     set tbfont [worlds.get_generic {} {} {} ToolBarFont]
@@ -495,7 +492,7 @@ proc toolbar.toolbar_toggle {} {
 proc toolbar.create_quickconnect {} {
     if { [winfo exists .quickconn] == 1 } { return }
 
-    frame .quickconn -bd 1 -relief sunken -highlightthickness 2
+    ttk::frame .quickconn
     window.toolbar_look .quickconn
 
     set tbstyle [worlds.get_generic {} {} {} ToolBarStyle]
@@ -582,9 +579,9 @@ proc toolbar.create_rosette {} {
         window.toolbar_look $r
     }
 
-    frame $r.l
+    ttk::frame $r.l
 
-    frame $r.l.top
+    ttk::frame $r.l.top
 
     foreach topdir {Northwest North Northeast In Up} {
         set wname [string tolower $topdir]
@@ -598,7 +595,7 @@ proc toolbar.create_rosette {} {
     foreach toppack {northwest north northeast sep1 up sep2 in} {
         pack configure $r.l.top.${toppack} -side left -in $r.l.top }
 
-    frame $r.l.mid
+    ttk::frame $r.l.mid
 
     foreach middir {West Home East Out Down} {
         set wname [string tolower $middir]
@@ -631,7 +628,7 @@ proc toolbar.create_rosette {} {
     set dig_room_name ""
 
     label $r.l.bot.diglabel -text " Dig: " -padx 0 -pady 0
-    checkbutton $r.l.bot.dig -variable dig_with_rosette -padx 0
+    ttk::checkbutton $r.l.bot.dig -variable dig_with_rosette -padx 0
 
     foreach botpack {southwest south southeast} {
         pack configure $r.l.bot.${botpack} -side left -in $r.l.bot }
@@ -645,7 +642,7 @@ proc toolbar.create_rosette {} {
 
     pack configure $r.l -side left -in $r
 
-    frame $r.r
+    ttk::frame $r.r
     pack configure $r.r -side left -in $r
 
     if { [string tolower $rosedialog] == "off" } {
@@ -663,7 +660,7 @@ proc toolbar.invoke_rosette dir {
         toplevel $rn
         wm title $rn "Dig $dir to ..."
 
-        frame $rn.input
+        ttk::frame $rn.input
         label $rn.input.textstuff -text "Enter room name or obj#:" -padx 0 -pady 5
         entry $rn.input.room -width 35 \
             -background [colourdb.get pink] \
@@ -686,31 +683,31 @@ proc toolbar.invoke_rosette dir {
         set defaultfollownew [worlds.get_generic On {} {} DigFollowNewExit]
         if { [string tolower $defaultfollownew] == "on" } { set follow_new_exit 1 } else { set follow_new_exit 0 }
 
-        frame $rn.options1
+        ttk::frame $rn.options1
 
         label $rn.options1.closelabel -text "Close on completion:" -padx 0 -pady 0 -width 20 -justify left -anchor w
-        checkbutton $rn.options1.closeoncomplete -variable close_on_completion -padx 0
+        ttk::checkbutton $rn.options1.closeoncomplete -variable close_on_completion -padx 0
         pack configure $rn.options1.closelabel -side left -in $rn.options1
         pack configure $rn.options1.closeoncomplete -side left -in $rn.options1
         pack configure $rn.options1 -side top -in $rn -fill x
 
-        frame $rn.options2
+        ttk::frame $rn.options2
 
         label $rn.options2.followlabel -text "Follow new exit:" -padx 0 -pady 0 -width 20 -justify left -anchor w
-        checkbutton $rn.options2.follownewexit -variable follow_new_exit -padx 0
+        ttk::checkbutton $rn.options2.follownewexit -variable follow_new_exit -padx 0
         pack configure $rn.options2.followlabel -side left -in $rn.options2
         pack configure $rn.options2.follownewexit -side left -in $rn.options2
         pack configure $rn.options2 -side top -in $rn -fill x
 
-        frame $rn.options3
+        ttk::frame $rn.options3
 
         label $rn.options3.returnlabel -text "Dig return exit:" -padx 0 -pady 0 -width 20 -justify left -anchor w
-        checkbutton $rn.options3.digreturnexit -variable dig_return_exit -padx 0
+        ttk::checkbutton $rn.options3.digreturnexit -variable dig_return_exit -padx 0
         pack configure $rn.options3.returnlabel -side left -in $rn.options3
         pack configure $rn.options3.digreturnexit -side left -in $rn.options3
         pack configure $rn.options3 -side top -in $rn -fill x
 
-        frame $rn.buttons
+        ttk::frame $rn.buttons
         ttk::button $rn.buttons.ok -text "OK" -command "toolbar.perform_dig $dir"
         ttk::button $rn.buttons.cancel -text "Cancel" -command "destroy .dig_dialog"
 
@@ -846,7 +843,7 @@ proc toolbar.load_editorbar {w args} {
 proc toolbar.create_editorbar w {
     if { [winfo exists $w.edittb] == 1 } { return }
     edit.add_toolbar $w edittb
-    frame $w.edittb
+    ttk::frame $w.edittb
     window.toolbar_look $w.edittb
     edit.repack $w
 
