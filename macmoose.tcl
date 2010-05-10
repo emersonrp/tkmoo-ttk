@@ -138,9 +138,6 @@ proc macmoose.do_list_code data {
 }
 
 proc macmoose.invoke_verb_editor {} {
-    if { ![util.use_native_menus] } {
-        return [macmoose.old.invoke_verb_editor]
-    }
     global macmoose_editordb macmoose_keyvals macmoose_lines macmoose_fake_args
     set e [edit.create "Verb Editor" "Verb Editor"]
     edit.set_type $e moo-code
@@ -192,67 +189,8 @@ proc macmoose.invoke_verb_editor {} {
     edit.repack $e
 }
 
-proc macmoose.old.invoke_verb_editor {} {
-    global macmoose_editordb macmoose_keyvals macmoose_lines macmoose_fake_args
-
-    set e [edit.create "Verb Editor" "Verb Editor"]
-    edit.set_type $e moo-code
-    edit.SCedit "" $macmoose_lines "" "Verb Editor" "Verb Editor" $e
-    edit.configure_send  $e Send  "macmoose.editor_verb_send $e" 1
-    edit.configure_send_and_close  $e "Send and Close"  "macmoose.editor_verb_send_and_close $e" 10
-    edit.configure_close $e Close "macmoose.editor_close $e" 0
-
-
-    foreach key [array names macmoose_keyvals] {
-	set macmoose_editordb($e:$key) $macmoose_keyvals($key)
-    }
-    foreach key [array names macmoose_fake_args] {
-	set macmoose_editordb($e:$key) $macmoose_fake_args($key)
-    }
-
-    edit.add_toolbar $e info
-
-    frame $e.info -bd 0 -highlightthickness 0
-
-    window.toolbar_look $e.info
-
-	set msg ""
-	set msg "$msg$macmoose_editordb($e:OBJ_)"
-	set msg "$msg:"
-	set msg "$msg$macmoose_editordb($e:CODE_NAME_)"
-
-        label $e.info.l1 -text "$msg"
-
-	label $e.info.la -text " args:"
-	entry $e.info.args -width 15 \
-	    -background [colourdb.get pink] \
-	    -font [fonts.fixedwidth]
-	    $e.info.args insert 0 "$macmoose_editordb($e:VERB_DOBJ_) $macmoose_editordb($e:VERB_PREP_) $macmoose_editordb($e:VERB_IOBJ_)"
-	label $e.info.lp -text " perms:"
-	entry $e.info.perms -width 4 \
-	    -background [colourdb.get pink] \
-	    -font [fonts.fixedwidth]
-	    $e.info.perms insert 0 $macmoose_editordb($e:VERB_PERMS_)
-
-	label $e.info.lo -text " owner: $macmoose_editordb($e:VERB_OWNER_)"
-
-	pack $e.info.l1 -side left
-	pack $e.info.la -side left
-	pack $e.info.args -side left
-	pack $e.info.lp -side left
-	pack $e.info.perms -side left
-	pack $e.info.lo -side left
-
-    edit.repack $e
-}
-
-
 proc macmoose.do_prop_info data {
 
-    if { ![util.use_native_menus] } {
-        return [macmoose.old.do_prop_info $data]
-    }
-
     macmoose.populate_array info $data
 
     set error ""
@@ -300,62 +238,6 @@ proc macmoose.do_prop_info data {
 	pack $e.info.lo -side left
 
     edit.repack $e
-
-    return [modules.module_ok]
-}
-
-proc macmoose.old.do_prop_info data {
-
-    macmoose.populate_array info $data
-
-    set error ""
-    catch { set error $info(ERROR_) }
-    if { $error != "" } {
-        window.displayCR "$info(OBJ_NAME_) ($info(OBJ_)).$info(PROP_NAME_) $error" macmoose_error
-	return [modules.module_ok]
-    }
-
-    global macmoose_editordb 
-
-    set e [edit.SCedit "" "" "" "Property Editor" "Property Editor"]
-
-    $e.t insert insert "$info(PROP_VALUE_)"
-    edit.configure_send  $e Send  "macmoose.editor_property_send $e" 1
-    edit.configure_send_and_close  $e "Send and Close"  "macmoose.editor_property_send_and_close $e" 10
-    edit.configure_close $e Close "macmoose.editor_close $e" 0
-    foreach key [array names info] {
-	set macmoose_editordb($e:$key) $info($key)
-    }
-
-    frame $e.info -bd 0 -highlightthickness 0
-
-    window.toolbar_look $e.info
-
-	set msg ""
-	set msg "$msg$macmoose_editordb($e:OBJ_)"
-	set msg "$msg."
-	set msg "$msg$macmoose_editordb($e:PROP_NAME_)"
-        label $e.info.l -text "$msg"
-
-        label $e.info.lp -text " perms:"
-        entry $e.info.perms -width 4 \
-	    -background [colourdb.get pink] \
-	    -font [fonts.fixedwidth]
-	$e.info.perms insert 0 "$macmoose_editordb($e:PROP_PERMS_)"
-
-        label $e.info.lo -text " owner: $macmoose_editordb($e:PROP_OWNER_)"
-
-	pack $e.info.l -side left
-	pack $e.info.lp -side left
-	pack $e.info.perms -side left
-	pack $e.info.lo -side left
-
-    set slaves [pack slaves $e]
-    pack forget $slaves 
-    pack $e.controls -side top -fill x
-    pack $e.info -side top -fill x
-    pack $e.scrollbar -side right -fill y
-    pack $e.t -side left
 
     return [modules.module_ok]
 }
@@ -564,18 +446,6 @@ proc macmoose.object_parents { browser object } {
     set special "_BROWSER_=$browser"
     set line "$line PREFIX_: _&_MacMOOSE_object_parents($special)"
     io.outgoing $line
-}
-
-proc macmoose.old.post_object_menu browser {
-    $browser.controls.top.o.m delete 0 end
-    set object_menu [db.get $browser object_menu]
-    foreach object_name $object_menu {
-	set object [lindex $object_name 0]
-	set name [lindex $object_name 1]
-        $browser.controls.top.o.m add command \
-	    -label "$name ($object)" \
-	    -command "macmoose.object_info $browser $object"
-    }
 }
 
 proc macmoose.list_code { browser code_name } {
@@ -805,10 +675,6 @@ proc macmoose.toplevel w {
 }
 
 proc macmoose.post_object_menu browser {
-    if { ![util.use_native_menus] } {
-	macmoose.old.post_object_menu $browser
-	return
-    }
     $browser.cmenu.object delete 0 end
     set object_menu [db.get $browser object_menu]
     if { $object_menu != {} } {
@@ -840,9 +706,6 @@ proc macmoose.destroy_browser browser {
 }
 
 proc macmoose.create_browser {} {
-    if { ![util.use_native_menus] } {
-        return [macmoose.old.create_browser]
-    }
 
     set browser .[util.unique_id "macmoose_browser"]
 
@@ -977,140 +840,6 @@ proc macmoose.create_browser {} {
     return $browser
 }
 
-
-proc macmoose.old.create_browser {} {
-    set browser .[util.unique_id "macmoose_browser"]
-
-    catch { destroy $browser; db.drop $browser }
-    toplevel $browser
-    window.configure_for_macintosh $browser
-
-    window.place_nice $browser
-
-    $browser configure -bd 0
-
-    wm iconname $browser "Macmoose"
-    wm title $browser "Macmoose"
-
-    db.set $browser current_object ""
-    db.set $browser object_menu {}
-
-    frame $browser.controls -bd 0 -highlightthickness 0
-	frame $browser.controls.top -bd 0 -highlightthickness 0
-	label $browser.controls.top.l -text "Object:" -width 7 -anchor e
-	menubutton $browser.controls.top.o -text "some object (#???)" \
-	    -menu $browser.controls.top.o.m -relief raised -indicatoron 1
-
-	    menu $browser.controls.top.o.m \
-                -tearoff 0
-
-	menubutton $browser.controls.top.b -text "Tools" \
-	    -relief raised \
-	    -menu $browser.controls.top.b.m
-	menu $browser.controls.top.b.m -tearoff 0
-	    $browser.controls.top.b.m add command -label "Add Script/Property" \
-		-command "macmoose.add_script_or_property $browser"
-	    $browser.controls.top.b.m add command -label "New Browser" \
-		-command macmoose.create_browser
-
-	frame $browser.controls.bottom -bd 0 -highlightthickness 0
-	label $browser.controls.bottom.l2 -text "Browse:" -width 7 -anchor e
-	entry $browser.controls.bottom.e \
-	    -font [fonts.fixedwidth] \
-	    -background [colourdb.get pink]
-	bind $browser.controls.bottom.e <Return> {
-	    set object [%W get]
-	    if { $object != "" } {
-                macmoose.object_parents [macmoose.toplevel %W] $object
-	    }
-	    %W delete 0 end
-	}
-	pack $browser.controls.top.l -side left
-	pack $browser.controls.top.o -side left
-	pack $browser.controls.top.b -side right
-
-	pack $browser.controls.bottom.l2 -side left
-	pack $browser.controls.bottom.e -side left
-
-        pack $browser.controls.top -side top \
-	    -expand 1 -fill x
-        pack $browser.controls.bottom -side top \
-	    -expand 1 -fill x
-
-    frame $browser.lists -bd 0 -highlightthickness 0
-
-    frame $browser.lists.v -bd 0 -highlightthickness 0
-	label $browser.lists.v.l -text "Scripts / Verbs"
-
-        frame $browser.lists.v.verbs -bd 0 -highlightthickness 0
-	    listbox $browser.lists.v.verbs.l \
-		-highlightthickness 0 \
-		-background #ffffff \
-		-yscrollcommand "$browser.lists.v.verbs.s set"
-
-		bind $browser.lists.v.verbs.l <Double-ButtonRelease-1> {
-		    macmoose.list_code [macmoose.toplevel %W] [%W get @%x,%y]
-		}
-
-		bind $browser.lists.v.verbs.l <Triple-ButtonRelease-1> {
-		}
-
-	    scrollbar $browser.lists.v.verbs.s \
-		-highlightthickness 0 \
-		-command "$browser.lists.v.verbs.l yview"
-
-	    global tcl_platform
-	    if { $tcl_platform(platform) != "macintosh" } {
-            window.set_scrollbar_look $browser.lists.v.verbs.s
-	    }
-
-	    pack $browser.lists.v.verbs.l -side left -fill both -expand 1
-	    pack $browser.lists.v.verbs.s -side right -fill y
-
-	pack $browser.lists.v.l -side top
-	pack $browser.lists.v.verbs -side bottom -fill both -expand 1
-
-
-    frame $browser.lists.p -bd 0 -highlightthickness 0
-	label $browser.lists.p.l -text "Properties"
-
-        frame $browser.lists.p.props -bd 0 -highlightthickness 0
-	    listbox $browser.lists.p.props.l \
-		-highlightthickness 0 \
-		-background #ffffff \
-		-yscrollcommand "$browser.lists.p.props.s set"
-		bind $browser.lists.p.props.l <Double-ButtonRelease-1> {
-		    macmoose.prop_info [macmoose.toplevel %W] [%W get @%x,%y]
-		}
-
-		bind $browser.lists.p.props.l <Triple-ButtonRelease-1> {
-		}
-	    scrollbar $browser.lists.p.props.s \
-		-highlightthickness 0 \
-		-command "$browser.lists.p.props.l yview"
-
-	    global tcl_platform
-	    if { $tcl_platform(platform) != "macintosh" } {
-            window.set_scrollbar_look $browser.lists.p.props.s
-	    }
-
-	    pack $browser.lists.p.props.l -side left -fill both -expand 1
-	    pack $browser.lists.p.props.s -side right -fill y
-
-	pack $browser.lists.p.l -side top
-	pack $browser.lists.p.props -side bottom -fill both -expand 1
-
-    pack $browser.lists.v -side left -fill both -expand 1
-    pack $browser.lists.p -side right -fill both -expand 1
-
-    pack $browser.controls -side top -fill x
-    pack $browser.lists -side bottom -fill both -expand 1
-
-    macmoose.post_object_menu $browser
-
-    window.focus $browser.controls.bottom.e
-    return $browser
-}
 
 proc macmoose.populate_array {array string} {
     upvar $array a
