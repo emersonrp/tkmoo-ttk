@@ -119,167 +119,169 @@ proc toolbar.start {} {
             {display "Horizontal padding"}
             {low 0}
             {high 10} }
-        { {directive UseToolBar}
-            {type boolean}
-            {default Off}
-            {display "Display custom toolbar"} }
-        { {directive TBbutton1Name}
-            {type string}
-            {default ""}
-            {display "Button 1 (Name)"} }
-        { {directive TBbutton1Action}
-            {type string}
-            {default ""}
-            {display "Button 1 (Action)"} }
-        { {directive TBbutton1Align}
-            {type choice-menu}
-            {default left}
-            {choices {left right}}
-            {display "Button 1 (Alignment)"} }
-        { {directive TBbutton2Name}
-            {type string}
-            {default ""}
-            {display "Button 2 (Name)"} }
-        { {directive TBbutton2Action}
-            {type string}
-            {default ""}
-            {display "Button 2 (Action)"} }
-        { {directive TBbutton2Align}
-            {type choice-menu}
-            {default left}
-            {choices {left right}}
-            {display "Button 2 (Alignment)"} }
-        { {directive TBbutton3Name}
-            {type string}
-            {default ""}
-            {display "Button 3 (Name)"} }
-        { {directive TBbutton3Action}
-            {type string}
-            {default ""}
-            {display "Button 3 (Action)"} }
-        { {directive TBbutton3Align}
-            {type choice-menu}
-            {default left}
-            {choices {left right}}
-            {display "Button 3 (Alignment)"} }
-        { {directive TBbutton4Name}
-            {type string}
-            {default ""}
-            {display "Button 4 (Name)"} }
-        { {directive TBbutton4Action}
-            {type string}
-            {default ""}
-            {display "Button 4 (Action)"} }
-        { {directive TBbutton4Align}
-            {type choice-menu}
-            {default left}
-            {choices {left right}}
-            {display "Button 4 (Alignment)"} }
-        { {directive TBbutton5Name}
-            {type string}
-            {default ""}
-            {display "Button 5 (Name)"} }
-        { {directive TBbutton5Action}
-            {type string}
-            {default ""}
-            {display "Button 5 (Action)"} }
-        { {directive TBbutton5Align}
-            {type choice-menu}
-            {default left}
-            {choices {left right}}
-            {display "Button 5 (Alignment)"} }
-        { {directive TBbutton6Name}
-            {type string}
-            {default ""}
-            {display "Button 6 (Name)"} }
-        { {directive TBbutton6Action}
-            {type string}
-            {default ""}
-            {display "Button 6 (Action)"} }
-        { {directive TBbutton6Align}
-            {type choice-menu}
-            {default left}
-            {choices {left right}}
-            {display "Button 6 (Alignment)"} }
-        { {directive TBbutton7Name}
-            {type string}
-            {default ""}
-            {display "Button 7 (Name)"} }
-        { {directive TBbutton7Action}
-            {type string}
-            {default ""}
-            {display "Button 7 (Action)"} }
-        { {directive TBbutton7Align}
-            {type choice-menu}
-            {default left}
-            {choices {left right}}
-            {display "Button 7 (Alignment)"} }
-        { {directive TBbutton8Name}
-            {type string}
-            {default ""}
-            {display "Button 8 (Name)"} }
-        { {directive TBbutton8Action}
-            {type string}
-            {default ""}
-            {display "Button 8 (Action)"} }
-        { {directive TBbutton8Align}
-            {type choice-menu}
-            {default left}
-            {choices {left right}}
-            {display "Button 8 (Alignment)"} }
-        { {directive TBbutton9Name}
-            {type string}
-            {default ""}
-            {display "Button 9 (Name)"} }
-        { {directive TBbutton9Action}
-            {type string}
-            {default ""}
-            {display "Button 9 (Action)"} }
-        { {directive TBbutton9Align}
-            {type choice-menu}
-            {default left}
-            {choices {left right}}
-            {display "Button 9 (Alignment)"} }
-        { {directive TBbutton10Name}
-            {type string}
-            {default ""}
-            {display "Button 10 (Name)"} }
-        { {directive TBbutton10Action}
-            {type string}
-            {default ""}
-            {display "Button 10 (Action)"} }
-        { {directive TBbutton10Align}
-            {type choice-menu}
-            {default left}
-            {choices {left right}}
-            {display "Button 10 (Alignment)"} }
-        { {directive TBbutton11Name}
-            {type string}
-            {default ""}
-            {display "Button 11 (Name)"} }
-        { {directive TBbutton11Action}
-            {type string}
-            {default ""}
-            {display "Button 11 (Action)"} }
-        { {directive TBbutton11Align}
-            {type choice-menu}
-            {default left}
-            {choices {left right}}
-            {display "Button 11 (Alignment)"} }
-        { {directive TBbutton12Name}
-            {type string}
-            {default ""}
-            {display "Button 12 (Name)"} }
-        { {directive TBbutton12Action}
-            {type string}
-            {default ""}
-            {display "Button 12 (Action)"} }
-        { {directive TBbutton12Align}
-            {type choice-menu}
-            {default left}
-            {choices {left right}}
-            {display "Button 12 (Alignment)"} }
-    }
+}
+#{ 
+#          { {directive UseToolBar}
+#              {type boolean}
+#              {default Off}
+#              {display "Display custom toolbar"} }
+#          { {directive TBbutton1Name}
+#              {type string}
+#              {default ""}
+#              {display "Button 1 (Name)"} }
+#          { {directive TBbutton1Action}
+#              {type string}
+#              {default ""}
+#              {display "Button 1 (Action)"} }
+#          { {directive TBbutton1Align}
+#              {type choice-menu}
+#              {default left}
+#              {choices {left right}}
+#              {display "Button 1 (Alignment)"} }
+#          { {directive TBbutton2Name}
+#              {type string}
+#              {default ""}
+#              {display "Button 2 (Name)"} }
+#          { {directive TBbutton2Action}
+#              {type string}
+#              {default ""}
+#              {display "Button 2 (Action)"} }
+#          { {directive TBbutton2Align}
+#              {type choice-menu}
+#              {default left}
+#              {choices {left right}}
+#              {display "Button 2 (Alignment)"} }
+#          { {directive TBbutton3Name}
+#              {type string}
+#              {default ""}
+#              {display "Button 3 (Name)"} }
+#          { {directive TBbutton3Action}
+#              {type string}
+#              {default ""}
+#              {display "Button 3 (Action)"} }
+#          { {directive TBbutton3Align}
+#              {type choice-menu}
+#              {default left}
+#              {choices {left right}}
+#              {display "Button 3 (Alignment)"} }
+#          { {directive TBbutton4Name}
+#              {type string}
+#              {default ""}
+#              {display "Button 4 (Name)"} }
+#          { {directive TBbutton4Action}
+#              {type string}
+#              {default ""}
+#              {display "Button 4 (Action)"} }
+#          { {directive TBbutton4Align}
+#              {type choice-menu}
+#              {default left}
+#              {choices {left right}}
+#              {display "Button 4 (Alignment)"} }
+#          { {directive TBbutton5Name}
+#              {type string}
+#              {default ""}
+#              {display "Button 5 (Name)"} }
+#          { {directive TBbutton5Action}
+#              {type string}
+#              {default ""}
+#              {display "Button 5 (Action)"} }
+#          { {directive TBbutton5Align}
+#              {type choice-menu}
+#              {default left}
+#              {choices {left right}}
+#              {display "Button 5 (Alignment)"} }
+#          { {directive TBbutton6Name}
+#              {type string}
+#              {default ""}
+#              {display "Button 6 (Name)"} }
+#          { {directive TBbutton6Action}
+#              {type string}
+#              {default ""}
+#              {display "Button 6 (Action)"} }
+#          { {directive TBbutton6Align}
+#              {type choice-menu}
+#              {default left}
+#              {choices {left right}}
+#              {display "Button 6 (Alignment)"} }
+#          { {directive TBbutton7Name}
+#              {type string}
+#              {default ""}
+#              {display "Button 7 (Name)"} }
+#          { {directive TBbutton7Action}
+#              {type string}
+#              {default ""}
+#              {display "Button 7 (Action)"} }
+#          { {directive TBbutton7Align}
+#              {type choice-menu}
+#              {default left}
+#              {choices {left right}}
+#              {display "Button 7 (Alignment)"} }
+#          { {directive TBbutton8Name}
+#              {type string}
+#              {default ""}
+#              {display "Button 8 (Name)"} }
+#          { {directive TBbutton8Action}
+#              {type string}
+#              {default ""}
+#              {display "Button 8 (Action)"} }
+#          { {directive TBbutton8Align}
+#              {type choice-menu}
+#              {default left}
+#              {choices {left right}}
+#              {display "Button 8 (Alignment)"} }
+#          { {directive TBbutton9Name}
+#              {type string}
+#              {default ""}
+#              {display "Button 9 (Name)"} }
+#          { {directive TBbutton9Action}
+#              {type string}
+#              {default ""}
+#              {display "Button 9 (Action)"} }
+#          { {directive TBbutton9Align}
+#              {type choice-menu}
+#              {default left}
+#              {choices {left right}}
+#              {display "Button 9 (Alignment)"} }
+#          { {directive TBbutton10Name}
+#              {type string}
+#              {default ""}
+#              {display "Button 10 (Name)"} }
+#          { {directive TBbutton10Action}
+#              {type string}
+#              {default ""}
+#              {display "Button 10 (Action)"} }
+#          { {directive TBbutton10Align}
+#              {type choice-menu}
+#              {default left}
+#              {choices {left right}}
+#              {display "Button 10 (Alignment)"} }
+#          { {directive TBbutton11Name}
+#              {type string}
+#              {default ""}
+#              {display "Button 11 (Name)"} }
+#          { {directive TBbutton11Action}
+#              {type string}
+#              {default ""}
+#              {display "Button 11 (Action)"} }
+#          { {directive TBbutton11Align}
+#              {type choice-menu}
+#              {default left}
+#              {choices {left right}}
+#              {display "Button 11 (Alignment)"} }
+#          { {directive TBbutton12Name}
+#              {type string}
+#              {default ""}
+#              {display "Button 12 (Name)"} }
+#          { {directive TBbutton12Action}
+#              {type string}
+#              {default ""}
+#              {display "Button 12 (Action)"} }
+#          { {directive TBbutton12Align}
+#              {type choice-menu}
+#              {default left}
+#              {choices {left right}}
+#              {display "Button 12 (Alignment)"} }
+#     }
 
 
     set d_north { R0lGODlhFQAVAPEAAAAAAIAAAP8AAL29vSH5BAEAAAMALAAAAAAVABUAAAI3nI+pe8FvgnBQ
