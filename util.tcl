@@ -1,13 +1,5 @@
 
 
-proc util.use_native_menus {} {
-    global tk_version
-    if { $tk_version < 8.0 } {
-        return 0
-    }
-    return 1
-}
-
 set util_unique_id 0
 
 proc util.unique_id token {

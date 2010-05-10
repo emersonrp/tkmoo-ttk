@@ -16,10 +16,6 @@ proc xmcp11.do_callback_xmcp-who* {} {
 
 proc who.create {} {
 
-    if { ![util.use_native_menus] } {
-        return [who.old.create]
-    }       
-
     global who_view who_lines
     set w .xmcp11_who
     if { [winfo exists $w] == 0 } {
@@ -84,86 +80,16 @@ proc who.create {} {
     return $w
 }
 
-proc who.old.create {} {
-    global who_view who_lines
-    set w .xmcp11_who
-    if { [winfo exists $w] == 0 } {
-
-        set who_view user
-        set who_lines {}
-
-        toplevel $w
-        $w configure -bd 0
-
-	wm title $w "@xwho"
-
-	frame $w.c -bd 0
-	   menubutton $w.c.v -text "View" -underline 0 -menu $w.c.v.m \
-	       -underline 0
-	   menu $w.c.v.m -tearoff 0
-	   pack configure $w.c.v -side left
-	   $w.c.v.m add command -label "by User" -underline 3 \
-	       -command "who.view_by $w user"
-	   window.hidemargin $w.c.v.m
-	   $w.c.v.m add command -label "by Location" -underline 3 \
-	       -command "who.view_by $w location"
-	   window.hidemargin $w.c.v.m
-
-	   label $w.c.l -text ""
-	   pack configure $w.c.l -side right
-
-	frame $w.canyon -bd 2 -relief sunken -height 2
-
-	text $w.t -highlightthickness 0 \
-	    -setgrid 1 \
-            -bd 0 \
-	    -background "#dbdbdb" \
-	    -cursor {} \
-	    -relief flat \
-	    -height 10 -width 20 \
-	    -font [fonts.fixedwidth] \
-	    -yscrollcommand "$w.s set"
-
-	scrollbar $w.s -highlightthickness 0 \
-	    -command "$w.t yview"
-        window.set_scrollbar_look $w.s
-
-	who.repack $w
-
-	$w.t tag configure idle_30 -foreground [colourdb.get darkblue]
-	$w.t tag configure idle_60 -foreground "#3333cc"
-	$w.t tag configure idle_90 -foreground DodgerBlue3
-	$w.t tag configure idle_120 -foreground SteelBlue3
-	$w.t tag configure idle_300 -foreground SteelBlue2
-	$w.t tag configure idle_600 -foreground SteelBlue1
-	$w.t tag configure new_user -foreground red
-    }
-    return $w
-}
-
 
 proc who.repack w {
-    if { ![util.use_native_menus] } {
-        return [who.old.repack]
-    }       
     catch {
-	pack forget [pack slaves $w]
+		pack forget [pack slaves $w]
     }
     pack configure $w.c -side top -fill x
     pack configure $w.s -side right -fill y
     pack configure $w.t -side left -expand 1 -fill both
 }
 
-
-proc who.old.repack w {
-    catch {
-	pack forget [pack slaves $w]
-    }
-    pack configure $w.c -side top -fill x
-    pack configure $w.canyon -side top -fill x
-    pack configure $w.s -side right -fill y
-    pack configure $w.t -side left -expand 1 -fill both
-}
 
 proc who.view_by { w view } {
     global who_view who_lines
