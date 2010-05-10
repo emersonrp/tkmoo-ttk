@@ -266,7 +266,6 @@ proc window.start {} {
               {low 0}
 	      {high 10}}
     }
-    if { [util.use_native_menus] } {
     preferences.register window {Statusbar Settings} {
         { {directive ShowStatusbars}
               {type boolean}
@@ -276,15 +275,12 @@ proc window.start {} {
               {type boolean}
               {default On}
               {display "Activity flash light"} }
-    }
-    preferences.register window {Statusbar Settings} {
         { {directive KioskTimeout}
               {type updown-integer}
               {default 0}
               {low 0}
               {high 30}
               {display "Kiosk after seconds"} }
-    }
     }
 }
 
@@ -293,10 +289,6 @@ set window_activity_flash 0
 set window_activity_toggle 0
 
 proc window.activity_flash {} {
-    if { ![util.use_native_menus] } {
-         window.old.activity_flash
-         return
-    }
     global window_activity_flash window_activity_toggle \
        window_activity_flash_colour window_flash
     if { [winfo exists $window_flash] == 0 } { return }
@@ -318,29 +310,6 @@ proc window.activity_flash {} {
         set window_activity_toggle 1
     }
     after 500 window.activity_flash
-}
-
-proc window.old.activity_flash {} {
-   global window_activity_flash window_activity_toggle \
-      window_activity_flash_colour
-   if { $window_activity_flash == 0 } { 
-       .menu.flash configure -background $window_activity_flash_colour
-       return 
-   }
-   if { [window._last_char_is_visible] == 1 } {
-       .menu.flash configure -background $window_activity_flash_colour
-       set window_activity_flash 0
-       set window_activity_toggle 0
-       return
-   }
-   if { $window_activity_toggle == 1 } {
-       .menu.flash configure -background red
-       set window_activity_toggle 0
-   } {
-       .menu.flash configure -background $window_activity_flash_colour
-       set window_activity_toggle 1
-   }
-   after 500 window.activity_flash
 }
 
 proc window.activity_begin_flashing {} {
@@ -499,13 +468,7 @@ proc window.client_connected {} {
     global window_close_state window_fonts tkmooVersion
     set window_close_state normal
 
-    if { [util.use_native_menus] } {
-        .menu.connections entryconfigure "Close" -state normal
-    } {
-        .menu.connections.menu entryconfigure "Close" -state normal
-    }
-
-
+	.menu.connections entryconfigure "Close" -state normal
 
     set size [worlds.get_generic 1 {} {} InputSize]
 
@@ -587,15 +550,12 @@ proc window.client_connected {} {
 
     window.statusbar_destroy
 
-    if { [util.use_native_menus] } {
-        set use_flash [worlds.get_generic On {} {} UseActivityFlash]
-        if { [string tolower $use_flash] == "on" } {
-            window.make_flash
-        } {
-            window.destroy_flash
-        }
-    }
-
+	set use_flash [worlds.get_generic On {} {} UseActivityFlash]
+	if { [string tolower $use_flash] == "on" } {
+		window.make_flash
+	} {
+		window.destroy_flash
+	}
 
 
     set resize [worlds.get_generic 0 {} {} WindowResize]
@@ -649,12 +609,7 @@ proc window.client_disconnected {} {
     wm iconname . "tkMOO-SE v$tkmooVersion"
     window.clear_status_if_present
     window.menu_preferences_state "Edit Preferences..." disabled
-
-    if { [util.use_native_menus] } {
-        .menu.connections entryconfigure "Close" -state disabled
-    } {
-        .menu.connections.menu entryconfigure "Close" -state disabled
-    }
+	.menu.connections entryconfigure "Close" -state disabled
 }
 
 proc window.do_open {} {
@@ -734,11 +689,7 @@ proc window.do_disconnect {} {
 
 proc window.post_connect {} {
     global tcl_platform
-    if { [util.use_native_menus] } {
 	set menu .menu.connections
-    } {
-	set menu .menu.connections.menu
-    }
 
     global window_close_state
 
@@ -818,11 +769,7 @@ proc window.load_connections_menu {} {
 }
 
 proc window.configure_help_menu {} {
-    if { [util.use_native_menus] } {
-		set menu .menu.help
-    } {
-	set menu .menu.help.menu
-    }
+	set menu .menu.help
     $menu delete 0 end
     foreach subject [help.subjects] {
         if { $subject == "SEPARATOR" } {
@@ -838,11 +785,7 @@ proc window.configure_help_menu {} {
 
 
 proc window.menu_help_add { text {command ""} } {
-    if { [util.use_native_menus] } {
-		set menu .menu.help
-    } {
-		set menu .menu.help.menu
-    }
+	set menu .menu.help
     if { $text == "SEPARATOR" } {
 		$menu add separator
     } {
@@ -854,28 +797,16 @@ proc window.menu_help_add { text {command ""} } {
 }
 
 proc window.menu_help_state { text state } {
-    if { [util.use_native_menus] } {
-        .menu.help entryconfigure $text -state $state
-    } {
-        .menu.help.menu entryconfigure $text -state $state
-    }
+	.menu.help entryconfigure $text -state $state
 }
 
 proc window.menu_tools_macintosh_accelerator { text accelerator } {
-    if { [util.use_native_menus] } {
-        set menu .menu.tools
-    } {
-        set menu .menu.tools.menu
-    }
+	set menu .menu.tools
     window.menu_macintosh_accelerator $menu $text $accelerator
 }
 
 proc window.menu_tools_add { text {command ""} } {
-    if { [util.use_native_menus] } {
-		set menu .menu.tools
-    } {
-		set menu .menu.tools.menu
-    }
+	set menu .menu.tools
     if { $text == "SEPARATOR" } {
 	$menu add separator
     } {
@@ -887,11 +818,7 @@ proc window.menu_tools_add { text {command ""} } {
 }
 
 proc window.menu_tools_add_cascade { text cascade } {
-    if { [util.use_native_menus] } {
-		set menu .menu.tools
-    } {
-		set menu .menu.tools.menu
-    }
+	set menu .menu.tools
 	$menu add cascade \
 		-label   "$text" \
 		-menu $cascade
@@ -899,36 +826,20 @@ proc window.menu_tools_add_cascade { text cascade } {
 }
 
 proc window.menu_tools_state { text state } {
-    if { [util.use_native_menus] } {
-        .menu.tools entryconfigure $text -state $state
-    } {
-        .menu.tools.menu entryconfigure $text -state $state
-    }
+	.menu.tools entryconfigure $text -state $state
 }
 
 proc window.menu_preferences_macintosh_accelerator { text accelerator } {
-    if { [util.use_native_menus] } {
-        set menu .menu.prefs
-    } {
-        set menu .menu.prefs.menu
-    }
+	set menu .menu.prefs
     window.menu_macintosh_accelerator $menu $text $accelerator
 }
 
 proc window.menu_preferences_state { text state } {
-    if { [util.use_native_menus] } {
-        .menu.prefs entryconfigure $text -state $state
-    } {
-        .menu.prefs.menu entryconfigure $text -state $state
-    }
+	.menu.prefs entryconfigure $text -state $state
 }
 
 proc window.menu_preferences_add { text {command ""} } {
-    if { [util.use_native_menus] } {
 	set menu .menu.prefs
-    } {
-	set menu .menu.prefs.menu
-    }
     if { $text == "SEPARATOR" } {
 	$menu add separator
     } {
@@ -1028,10 +939,6 @@ proc window.toggle_statusbar_from_menu {} {
 
 proc window.buildWindow {} {
     window.set_statusbar_flag 1
-    if { ![util.use_native_menus] } {
-       window.old.buildWindow
-         return
-    }
     global tkmooVersion client_mode client_echo \
         window_activity_flash_colour window_flash
 
@@ -1292,223 +1199,6 @@ proc window.repack_lite {} {
 
 #
 
-proc window.old.buildWindow {} {
-	global tkmooVersion client_mode client_echo \
-	    window_activity_flash_colour
-
-	wm title    . "tkMOO-SE v$tkmooVersion"
-	wm iconname . "tkMOO-SE v$tkmooVersion"
-        . configure -bd 0
-
-	frame .menu -bd 0
-
-	ttk::menubutton .menu.connections \
-		-text "Connect" \
-		-underline 0 \
-		-menu .menu.connections.menu
-
-	    menu .menu.connections.menu \
-		-tearoff 0
-
-        ttk::menubutton .menu.edit \
-            -text "Edit" \
-            -underline 0 \
-            -menu .menu.edit.m
-
-
-            menu .menu.edit.m -tearoff 0
-
-            .menu.edit.m add command \
-                -label "Cut" \
-                -command "ui.delete_selection .input" \
-		-accelerator "[window.accel Ctrl]+X"
-            window.hidemargin .menu.edit.m
-
-            .menu.edit.m add command \
-                -label "Copy" \
-                -command "ui.copy_selection .input" \
-		-accelerator "[window.accel Ctrl]+C"
-            window.hidemargin .menu.edit.m
-
-            .menu.edit.m add command \
-                -label "Paste" \
-                -command "ui.paste_selection .input" \
-		-accelerator "[window.accel Ctrl]+V"
-            window.hidemargin .menu.edit.m
-
-	    .menu.edit.m add separator
-
-	    .menu.edit.m add command \
-		-label "Clear" \
-		-underline 1 \
-		-command "ui.clear_screen .output"
-            window.hidemargin .menu.edit.m
-
-	ttk::menubutton .menu.tools \
-	    -text "Tools" \
-	    -underline 0 \
-	    -menu .menu.tools.menu
-
-	menu .menu.tools.menu -tearoff 0
-
-	ttk::menubutton .menu.prefs \
-	    -text "Preferences" \
-	    -underline 0 \
-	    -menu .menu.prefs.menu
-	menu .menu.prefs.menu -tearoff 0
-
-            .menu.prefs.menu add cascade -label "Key Bindings" \
-		-menu .menu.prefs.menu.bindings
-            window.hidemargin .menu.prefs.menu
-	    menu .menu.prefs.menu.bindings -tearoff 0
-
-            foreach binding [bindings.bindings] {
-    	        .menu.prefs.menu.bindings add radio \
-		    -variable window_binding \
-		    -value $binding \
-		    -label "$binding" \
-		    -command "window.set_key_bindings_from_menu"
-	    }
-
-            .menu.prefs.menu add cascade \
-	        -label "Default Font" -menu .menu.prefs.menu.fonts
-            window.hidemargin .menu.prefs.menu
-
-                menu .menu.prefs.menu.fonts -tearoff 0
-
-                .menu.prefs.menu.fonts add radio \
-		        -variable window_fonts \
-		        -value fixedwidth \
-		        -label   "fixedwidth" \
-		        -command window.set_default_font_from_menu
-
-	        .menu.prefs.menu.fonts add radio \
-		        -variable window_fonts \
-		        -value proportional \
-		        -label   "proportional" \
-		        -command window.set_default_font_from_menu
-
-            .menu.prefs.menu add cascade -label "Mode" \
-                -menu .menu.prefs.menu.mode
-            window.hidemargin .menu.prefs.menu
-            menu .menu.prefs.menu.mode -tearoff 0
-            
-            foreach mode "line character" {
-                .menu.prefs.menu.mode add radio \
-                    -variable client_mode \
-                    -value $mode \
-                    -label "$mode"
-                    -command "window.set_client_mode_from_menu"
-            }
-
-	    .menu.prefs.menu add cascade -label "Local Echo" \
-		-menu .menu.prefs.menu.local
-            window.hidemargin .menu.prefs.menu
-	    menu .menu.prefs.menu.local -tearoff 0
-	    .menu.prefs.menu.local add radio \
-		-variable client_echo \
-                -command "window.set_local_echo_from_menu" \
-		-value 1 \
-		-label "on"
-	    .menu.prefs.menu.local add radio \
-		-variable client_echo \
-                -command "window.set_local_echo_from_menu" \
-		-value 0 \
-		-label "off"
-
-	    .menu.prefs.menu add cascade \
-		-label "Input Size" -menu .menu.prefs.menu.size
-            window.hidemargin .menu.prefs.menu
-
-		menu .menu.prefs.menu.size -tearoff 0
-		for {set i 1} {$i < 6} {incr i} {
-                    .menu.prefs.menu.size add radio \
-                        -variable window_input_size_display \
-                        -value $i \
-                        -label   "$i" \
-                        -command window.set_input_size_from_menu
-		}
-
-
-	label .menu.label \
-	    -text "tkMOO-SE v$tkmooVersion" \
-	    -anchor center \
-	    -foreground [colourdb.get red]
-
-	frame .menu.flash -bd 1 -height 10 -width 6 -relief sunken
-        set window_activity_flash_colour [.menu.flash cget -background]
-
-        ttk::menubutton .menu.help \
-            -text "Help" \
-            -underline 0 \
-            -menu .menu.help.menu
-        
-        menu .menu.help.menu -tearoff 0
-
-	window.configure_help_menu
-
-        pack .menu.connections -side left
-        pack .menu.edit -side left
-        pack .menu.tools -side left
-        pack .menu.prefs -side left
-        pack .menu.help -side right
-        pack .menu.flash -side right
-
-        pack .menu.label -side left -fill x -expand true
-
-	frame .canyon -bd 2 -height 2 -relief sunken
-        
-	text .output \
-	    -cursor {} \
-	    -font [fonts.fixedwidth] \
-	    -width 80 \
-	    -height 24 \
-	    -setgrid 1 \
-	    -relief flat \
-	    -bd 0 \
-	    -yscrollcommand ".scrollbar set" \
-	    -highlightthickness 0 \
-	    -wrap word 
-
-        text .input \
-	    -wrap word \
-	    -relief sunken \
-            -height 1 \
-            -highlightthickness 0 \
-            -font [fonts.fixedwidth] \
-            -background [colourdb.get pink]
-
-        history.init .input 1
-
-	ttk::scrollbar .scrollbar \
-	    -command ".output yview" \
-	    -highlightthickness 0
-
-        window.set_scrollbar_look .scrollbar
-
-        window.repack
-
-
-	bind .output <ButtonRelease-2> {
-	    if {!$tkPriv(mouseMoved)} { window.selection_to_input }
-	}
-	bindtags .output {Text .output . all}
-
-        .output configure -state disabled
-
-        window.focus .input
-
-		.output tag configure window_margin -lmargin1 0m -lmargin2 3m
-		.output tag configure window_highlight -foreground [colourdb.get red]
-
-        wm protocol . WM_DELETE_WINDOW client.exit
-
-    global window_clip_output_buffer
-    set window_clip_output_buffer 0
-    window.hyperlink.init
-    window.initialise_text_widget .output
-}
-
 set window_unsent_cmd [list 0 ""]
 
 proc window.ui_input_return {} {
@@ -1580,10 +1270,6 @@ proc window.repack {} {
 }
 
 proc window.really_repack {} {
-    if { ![util.use_native_menus] } {
-        window.old.repack
-        return
-    }
 
     global window_toolbars window_statusbars window_sidebars
 
@@ -1624,30 +1310,6 @@ proc window.really_repack {} {
     pack .output -side bottom -fill both -expand on -in .
 
     after idle .output yview moveto [lindex $window_current_position 1]
-}
-
-proc window.old.repack {} {
-    global window_toolbars window_statusbars window_sidebars
-    foreach slave [pack slaves .] {
-	pack forget $slave
-    }
-
-    if { [window.get_statusbar_flag] == 1 } {
-
-        foreach statusbar $window_statusbars {
-            pack $statusbar -side bottom -fill x -in .
-        }
-
-    }
-
-    pack .input -side bottom -fill x -in .
-    pack .menu -side top -fill x -in .
-    foreach toolbar $window_toolbars {
-        pack $toolbar -side top -fill x -in .
-    }
-    pack .canyon -side top -fill x -in .
-    pack .scrollbar -side right -fill y -in .
-    pack .output -side bottom -fill both -expand on -in .
 }
 
 proc window.input_size {} {
