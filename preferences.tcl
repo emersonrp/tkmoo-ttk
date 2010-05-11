@@ -110,26 +110,28 @@ proc preferences.create_edit_window {} {
 
 	window.place_nice $pw
 
-	$pw configure -bd 0
-
 	preferences.set_title "tkMOO-SE v$tkmooVersion: Preferences"
 
 	set notebook $pw.notebook
-
-	pack [ttk::notebook $notebook] -side top -fill both -expand 1
+	grid [ttk::notebook $notebook] -row 0 -sticky nsew
 	ttk::notebook::enableTraversal $notebook
 
 	set bottom $pw.bottom
-	pack [ttk::frame $bottom] -side bottom
+	grid [ttk::frame $bottom] -row 1
 
 	ttk::button $bottom.save -text "Save" -command preferences.save
 	ttk::button $bottom.reset -text "Reset" \
-		-command {preferences.remove_middle; preferences.fill_middle $preferences_current $preferences_category}
+		-command {
+					preferences.remove_middle;
+					preferences.fill_middle $preferences_current $preferences_category
+		}
 	ttk::button $bottom.cancel -text "Cancel" \
 		-command {preferences.clean_up; destroy .preferences}
 
-
 	pack $bottom.save $bottom.reset $bottom.cancel -side left -padx 5 -pady 5
+
+	grid rowconfigure $pw 0 -weight 1
+	grid rowconfigure $pw 1 -minsize [ winfo height $bottom ]
 
 	window.focus $pw
 }
@@ -184,13 +186,23 @@ proc preferences.edit { {world ""} } {
 	set cat [lindex [preferences.cp] 0]
 
 	foreach c [preferences.reverse $cat] {
-		incr c_counter
-		set page $notebook.$c_counter
-		ttk::frame $page
-		$notebook add $page -text $c
-		ttk::scrollbar $page.scrollbar -command "$page yview"
-		pack $page.scrollbar -side right -fill y
+		set tabpage $notebook.[util.unique_id pf]
+		ttk::frame $tabpage
+
+		set page $tabpage.page
+		set sbar $tabpage.scrollbar
+
+		canvas $page -yscrollcommand "$sbar set"
+		ttk::scrollbar $sbar -command "$page yview"
+
+		grid $page -row 0 -column 0 -sticky nsew
+		grid $sbar -row 0 -column 1 -sticky nsew
+
+		grid columnconfigure $tabpage 0 -weight 1
+		grid columnconfigure $tabpage 1 -minsize [ winfo width $sbar ]
 		preferences.populate_frame $preferences_current $c $page
+
+		$notebook add $tabpage -text $c -sticky nwe
 	}
 	# set preferences_category {General Settings}
 
@@ -275,7 +287,6 @@ proc preferences.populate_frame {world category page} {
 			# $middle window create end -window $f
 			# set CR "\n"
 			# $middle configure -state disabled
-
 			foreach {_ directive} [util.assoc $preference directive] {_ type} [util.assoc $preference type] {break}
 
 			foreach default [worlds.get_default $directive] {break}
@@ -330,7 +341,7 @@ proc preferences.populate_frame {world category page} {
 					}
 	
 	
-					ttk::entry $f.e -font [fonts.get fixedwidth] -width 5
+					entry $f.e -font [fonts.get fixedwidth] -width 5
 					pack $f.e -side left
 					bind $f.e <Return> "
 						set x \[$f.e get\]
@@ -398,7 +409,7 @@ proc preferences.populate_frame {world category page} {
 				}
 	
 				string {
-					ttk::entry $f.e -font [fonts.get fixedwidth] -width 30
+					entry $f.e -font [fonts.get fixedwidth] -width 30
 					bind $f.e <KeyRelease> "set preferences_v($world,$directive) \[$f.e get\]"
 					bind $f.e <Leave> "set preferences_v($world,$directive) \[$f.e get\]"
 					set v $default
@@ -415,8 +426,7 @@ proc preferences.populate_frame {world category page} {
 				}
 	
 				font {
-					ttk::entry $f.e -font [fonts.get fixedwidth] 
-					ttk::frame $f.gap -width 2
+					entry $f.e -font [fonts.get fixedwidth] 
 					set v $default
 					catch { set v [worlds.get $world $directive] }
 					set preferences_v($world,$directive) $v
@@ -429,13 +439,11 @@ proc preferences.populate_frame {world category page} {
 					bind $f.e <Leave> "set preferences_v($world,$directive) \[$f.e get\]"
 					$f.e insert insert $v
 					pack $f.e -side left -fill x -expand 1
-					pack $f.gap -side left -fill y
-					pack $f.b -side right -fill y 
+					pack $f.b -side right -fill y -padx 3
 				}
 	
 				file {
-					ttk::entry $f.e -font [fonts.get fixedwidth]
-					ttk::frame $f.gap -width 2
+					entry $f.e -font [fonts.get fixedwidth]
 					set v $default
 					catch { set v [worlds.get $world $directive] }
 					set preferences_v($world,$directive) $v
@@ -475,33 +483,32 @@ proc preferences.populate_frame {world category page} {
 					bind $f.e <Leave> "set preferences_v($world,$directive) \[$f.e get\]"   
 					$f.e insert insert $v
 					pack $f.e -side left -fill x -expand 1
-					pack $f.gap -side left -fill y 
-					pack $f.b -side right -fill y
+					pack $f.b -side right -fill y -padx 3
 				}
 	
 				colour {
-					ttk::entry $f.c -font [fonts.get fixedwidth] \
-							-cursor {} \
-					-state disabled
-					ttk::frame $f.gap -width 2
-					ttk::button $f.b -text "Choose" \
-								-command "colourchooser.create \
-												\"preferences.set_colour $f $world $directive\" \
-												\$preferences_v($world,$directive)"
-	
 					set v $default
 					catch { set v [worlds.get $world $directive] }
 					catch { set v $preferences_v($world,$directive) }
 					set preferences_v($world,$directive) $v
-					$f.c configure -background $v
-					bind $f.c <1> "colourchooser.create \"preferences.set_colour $f $world $directive\" \$preferences_v($world,$directive)"
+
+					entry $f.c -font [fonts.get fixedwidth] \
+							-cursor {} \
+							-state disabled \
+							-background $v
+					ttk::button $f.b -text "Choose" \
+								-command "preferences.set_colour $f $world $directive \
+											\[ tk_chooseColor -initialcolor \$preferences_v($world,$directive) \]"
+	
+					$f.c configure -bg $v
+					bind $f.c <1> "preferences.set_colour $f $world $directive \
+											\[ tk_chooseColor -initialcolor \$preferences_v($world,$directive) \]; window.displayCR \"$f.c\""
 					pack $f.c -side left
-					pack $f.gap -side left -fill y
-					pack $f.b -side right -fill y 
+					pack $f.b -side right -fill y -padx 3
 				}
 	
 				password {
-					ttk::entry $f.e \
+					entry $f.e \
 						-show "*" \
 						-font [fonts.get fixedwidth] -width 30
 					bind $f.e <KeyRelease> "set preferences_v($world,$directive) \[$f.e get\]"
@@ -567,11 +574,10 @@ proc preferences.set_font {args} {
 }
 
 
-proc preferences.set_colour { f world directive r g b } {
+proc preferences.set_colour { f world directive hex } {
 	global preferences_v
 	catch {
-		set hex #[to_hex $r][to_hex $g][to_hex $b]
-		$f.c configure -background $hex
+		$f.c configure -bg $hex
 		set preferences_v($world,$directive) $hex
 	}
 }
@@ -792,4 +798,4 @@ proc preferences.x_reconfigure_fonts font {
 }
 #
 #
-
+proc showargs {args} { puts $args; eval $args }
