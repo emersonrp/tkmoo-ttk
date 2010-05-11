@@ -1,5 +1,8 @@
 package require fileutil
 
+set replace 0
+
+
 client.register external_editor start
 
 global external_editor
@@ -86,6 +89,7 @@ proc external_editor.configure_send_and_close { editor command callback num } {
 }
 
 
+if $replace {
 # replace the existing edit subs.
 rename edit.SCedit edit.SCedit.old
 rename external_editor.SCedit edit.SCedit
@@ -108,4 +112,4 @@ rename external_editor.configure_send_and_close edit.configure_send_and_close
 
 rename edit.configure_close edit.configure_close.old
 rename external_editor.configure_close edit.configure_close
-
+}
