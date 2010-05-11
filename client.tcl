@@ -206,7 +206,7 @@ proc client.stop {} {
     modules.stop
     set session ""
     catch {
-	set session [db.get current session]
+		set session [db.get current session]
     }
     io.stop_session $session
 }
@@ -249,24 +249,22 @@ proc client.login_dialog { uid pwd } {
     set name [worlds.get [worlds.get_current] Name]
     wm title $l "Login to $name"
     wm iconname $l "Login to $name"
-    frame $l.u
-	label $l.u.l -text "User:"
-	entry $l.u.e -background [colourdb.get pink]
+    ttk::frame $l.u
+	ttk::label $l.u.l -text "User:"
+	ttk::entry $l.u.e
 	$l.u.e insert 0 $uid
 	pack $l.u.l -side left
 	pack $l.u.e -side right
-    frame $l.p
-	label $l.p.l -text "Password:"
-	entry $l.p.e -show "*" -background [colourdb.get pink]
+    ttk::frame $l.p
+	ttk::label $l.p.l -text "Password:"
+	ttk::entry $l.p.e -show "*"
 	$l.p.e insert 0 $pwd
 	pack $l.p.l -side left
 	pack $l.p.e -side right
-    frame $l.c
-	button $l.c.l -text "Login" \
-	    -command "client.do_login_from_dialog"
-	button $l.c.c -text "Cancel" -command "destroy $l"
-	pack $l.c.l $l.c.c -side left \
-	    -padx 5 -pady 5
+    ttk::frame $l.c
+	ttk::button $l.c.l -text "Login" -command "client.do_login_from_dialog"
+	ttk::button $l.c.c -text "Cancel" -command "destroy $l"
+	pack $l.c.l $l.c.c -side left -padx 5 -pady 5
 
     bind $l <Return> { client.do_login_from_dialog };
 
@@ -329,9 +327,6 @@ proc client.connect_world world {
     client.set_mode $mode
 
     set kludge_world [worlds.get_current]
-
-
-
 
     worlds.set_current $world
 

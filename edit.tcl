@@ -416,12 +416,10 @@ proc edit.create { title icon_title } {
 	-highlightthickness 0 \
 		-setgrid true
 
-	scrollbar $w.scrollbar -command "$w.t yview" \
-		-highlightthickness 0
+	ttk::scrollbar $w.scrollbar -command "$w.t yview"
 	window.set_scrollbar_look $w.scrollbar
 
-	label $w.position -bd 2 -relief groove \
-		-text "position: 1.0" -anchor e
+	ttk::label $w.position -text "position: 1.0" -anchor e
 
 	bind $w.t <KeyPress> 	"after idle edit.show_line_number $w"
 	bind $w.t <KeyRelease> 	"after idle edit.show_line_number $w"
@@ -525,26 +523,24 @@ proc edit.find w {
 
 		wm title $f "Find and Replace"
 		wm iconname $f "Find and Replace"
-		frame $f.t -bd 0 -highlightthickness 0
-		label $f.t.l -text "Find:" -width 8 -anchor w
-		entry $f.t.e -width 40 \
-			-font [fonts.fixedwidth]
+		ttk::frame $f.t
+		ttk::label $f.t.l -text "Find:" -width 8 -anchor w
+		ttk::entry $f.t.e -width 40
 		pack $f.t.l -side left
 		pack $f.t.e -side right
 
-		frame $f.m -bd 0 -highlightthickness 0
-		label $f.m.l -text "Replace:" -width 8 -anchor w
-		entry $f.m.e -width 40 \
-			-font [fonts.fixedwidth]
+		ttk::frame $f.m
+		ttk::label $f.m.l -text "Replace:" -width 8 -anchor w
+		ttk::entry $f.m.e -width 40
 		pack $f.m.l -side left
 		pack $f.m.e -side right
 	
-		frame $f.b -bd 0 -highlightthickness 0
-		button $f.b.ffind -text "Find >" -command "edit.do_find $w forwards"
-		button $f.b.bfind -text "< Find" -command "edit.do_find $w backwards"
-		button $f.b.replace -text "Replace" -command "edit.do_replace $w"
-		button $f.b.replacea -text "Replace all" -command "edit.do_replace_all $w"
-		button $f.b.close -text "Close" -command "destroy $f"
+		ttk::frame $f.b
+		ttk::button $f.b.ffind -text "Find >" -command "edit.do_find $w forwards"
+		ttk::button $f.b.bfind -text "< Find" -command "edit.do_find $w backwards"
+		ttk::button $f.b.replace -text "Replace" -command "edit.do_replace $w"
+		ttk::button $f.b.replacea -text "Replace all" -command "edit.do_replace_all $w"
+		ttk::button $f.b.close -text "Close" -command "destroy $f"
 
 		pack $f.b.ffind $f.b.bfind $f.b.replace $f.b.replacea $f.b.close \
 			-side left -padx 5 -pady 5
@@ -641,15 +637,15 @@ proc edit.goto w {
 
 		wm title $f "Goto Line Number"
 		wm iconname $f "Goto Line"
-		frame $f.t -bd 0 -highlightthickness 0
-		label $f.t.l -text "Line Number:"
-		entry $f.t.e -font [fonts.fixedwidth]
+		ttk::frame $f.t
+		ttk::label $f.t.l -text "Line Number:"
+		ttk::entry $f.t.e
 		pack $f.t.l -side left
 		pack $f.t.e -side right
 
-		frame $f.b -bd 0 -highlightthickness 0
-		button $f.b.goto -text "Goto" -command "edit.do_goto $w"
-		button $f.b.close -text "Close" -command "destroy $f"
+		ttk::frame $f.b
+		ttk::button $f.b.goto -text "Goto" -command "edit.do_goto $w"
+		ttk::button $f.b.close -text "Close" -command "destroy $f"
 
 		pack $f.b.goto $f.b.close -side left \
 			-padx 5 -pady 5
