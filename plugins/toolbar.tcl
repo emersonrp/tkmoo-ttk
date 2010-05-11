@@ -454,7 +454,6 @@ proc toolbar.create {} {
     if { [winfo exists .toolbar] == 1 } { return }
 
     ttk::frame .toolbar
-    window.toolbar_look .toolbar
 
     set tbfont [worlds.get_generic {} {} {} ToolBarFont]
 
@@ -495,7 +494,6 @@ proc toolbar.create_quickconnect {} {
     if { [winfo exists .quickconn] == 1 } { return }
 
     ttk::frame .quickconn
-    window.toolbar_look .quickconn
 
     set tbstyle [worlds.get_generic {} {} {} ToolBarStyle]
 
@@ -578,7 +576,6 @@ proc toolbar.create_rosette {} {
 #        wm resizable $r 0 0
     } else {
         frame $r -bd 2 -relief groove
-        window.toolbar_look $r
     }
 
     ttk::frame $r.l
@@ -786,7 +783,6 @@ proc toolbar.create_client_toolbar {} {
     set tbstyle [worlds.get_generic {} {} {} ToolBarStyle]
 
     frame .clienttb -bd 1 -relief sunken -highlightthickness 2
-    window.toolbar_look .clienttb
 
     ttk::button .clienttb.open -image i_open -command "window.open"
     set_balloon .clienttb.open "Open a New Session"
@@ -846,7 +842,6 @@ proc toolbar.create_editorbar w {
     if { [winfo exists $w.edittb] == 1 } { return }
     edit.add_toolbar $w edittb
     ttk::frame $w.edittb
-    window.toolbar_look $w.edittb
     edit.repack $w
 
     ttk::button $w.edittb.open -image i_open -command "edit.fs_open $w"

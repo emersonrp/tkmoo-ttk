@@ -337,7 +337,6 @@ proc rose2.set_text text {
 proc rose2.create {} {
     set r .rose2
     frame $r
-    window.toolbar_look $r
     canvas $r.c -height 50 -width 200 -bg lightgreen -highlightthickness 0 -bd 0
     pack $r.c -side left
 

@@ -81,7 +81,6 @@ proc fontchooser.create { {callback ""} font } {
 		}
 
 		ttk::scrollbar $fc.f.s -command "$fc.f.l yview"
-		window.set_scrollbar_look $fc.f.s
 		pack $fc.f.s -side right -fill y 
 
 		ttk::frame $fc.r

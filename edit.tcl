@@ -417,7 +417,6 @@ proc edit.create { title icon_title } {
 		-setgrid true
 
 	ttk::scrollbar $w.scrollbar -command "$w.t yview"
-	window.set_scrollbar_look $w.scrollbar
 
 	ttk::label $w.position -text "position: 1.0" -anchor e
 

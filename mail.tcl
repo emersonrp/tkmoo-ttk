@@ -15,7 +15,6 @@ proc mail.create {} {
 		-font [fonts.fixedwidth] \
 				-highlightthickness 0
 	ttk::scrollbar .mail.folders.s -command ".mail.folders.l yview"
-	window.set_scrollbar_look .mail.folders.s
 	pack configure .mail.folders.l -side left -fill x \
 					-expand 1
 	pack configure .mail.folders.s -side right -fill y
@@ -27,7 +26,6 @@ proc mail.create {} {
 		-font [fonts.fixedwidth] \
 		-highlightthickness 0
 	ttk::scrollbar .mail.messages.s -command ".mail.messages.l yview"
-	window.set_scrollbar_look .mail.messages.s
 	pack configure .mail.messages.l -side left -fill x \
 		-expand 1
 	pack configure .mail.messages.s -side right -fill y
@@ -40,7 +38,6 @@ proc mail.create {} {
 		-cursor {} \
 		-highlightthickness 0
 	ttk::scrollbar .mail.message.s -command ".mail.message.t yview"
-	window.set_scrollbar_look .mail.message.s
 	pack configure .mail.message.s -side right -fill y
 	pack configure .mail.message.t -side left -fill both -expand 1
 

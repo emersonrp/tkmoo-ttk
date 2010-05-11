@@ -53,8 +53,6 @@ proc help.show subject {
 		bind $h <Next> "ui.page_down $h.t"
 
 		ttk::scrollbar $h.s -command "$h.t yview"
-		window.set_scrollbar_look $h.s
-
 		ttk::frame $h.controls
 		ttk::button $h.controls.close -text "Close" -command "destroy $h"
 

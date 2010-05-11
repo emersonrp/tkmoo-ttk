@@ -137,8 +137,6 @@ proc mcptrace.create {} {
   pack .mcptrace.scrollbar -side right -fill y -in .mcptrace
   pack .mcptrace.output -side bottom -fill both -expand on -in .mcptrace
 
-  window.set_scrollbar_look .mcptrace.scrollbar
-
   .mcptrace.output tag configure CtoS -foreground [colourdb.get red]
   .mcptrace.output tag configure StoC -foreground [colourdb.get blue]
 }

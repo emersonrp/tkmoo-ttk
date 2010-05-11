@@ -93,7 +93,6 @@ proc desktop.create { title object type } {
 
     scrollbar $dt.frame.vscroll -command "$canvas yview" \
 	-highlightthickness 0
-    window.set_scrollbar_look $dt.frame.vscroll
 
     frame $dt.frame.bottom \
 	-bd 0 -highlightthickness 0
@@ -103,7 +102,6 @@ proc desktop.create { title object type } {
     scrollbar $dt.frame.bottom.hscroll -command "$canvas xview" \
 	-highlightthickness 0 \
 	-orient horizontal
-    window.set_scrollbar_look $dt.frame.bottom.hscroll
 
 	pack $dt.frame.bottom.padding -side right
 	pack $dt.frame.bottom.hscroll -side left -fill x -expand 1

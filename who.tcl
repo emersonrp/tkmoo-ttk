@@ -48,7 +48,6 @@ proc who.create {} {
 
 
 		ttk::frame $w.c -bd 0
-		window.toolbar_look $w.c
 		ttk::label $w.c.l -text ""
 		pack configure $w.c.l -side right
 
@@ -64,7 +63,6 @@ proc who.create {} {
 			-yscrollcommand "$w.s set"
 
 		ttk::scrollbar $w.s -command "$w.t yview"
-		window.set_scrollbar_look $w.s
 
 		who.repack $w
 

@@ -105,7 +105,6 @@ proc chanwin.display {name label {text ""}} {
 	pack $win.e -side bottom -fill x
 	pack $win.s -side right -fill y
 	pack $win.t -fill both -expand 1
-	window.set_scrollbar_look $win.s
 	window.place_nice $win
 	set CR ""
     }

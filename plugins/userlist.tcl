@@ -79,7 +79,6 @@ userlist.userupdate [lindex $data 1] [lindex $data 0] [lindex $data 2]
 proc userlist.build {} {
 if { [winfo exists .listbox] } { return }
     frame .listbox -background white
-    window.toolbar_look .listbox
    listbox .listbox.listbox2 -exportselection 1 -bg white -relief flat -height 200
    pack .listbox -fill both
    pack .listbox.listbox2 -fill both

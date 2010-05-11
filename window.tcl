@@ -103,46 +103,6 @@ proc window.pack_for_macintosh win {
 	-in $win
 }
 
-proc window.toolbar_look frame {
-    global tcl_platform
-
-    if { $tcl_platform(platform) == "windows" } {
-		set sep $frame.__separator
-		frame $sep -highlightthickness 0 -bd 2 -relief sunken -height 2
-		pack $sep -side top -fill x
-        $frame configure -relief flat -bd 0 -highlightthickness 0
-		return
-    }
-    if { 0 && $tcl_platform(platform) == "macintosh" } {
-		set sep $frame.__separator
-		frame $sep -highlightthickness 0 -bd 2 -relief sunken -height 2
-		pack $sep -side bottom -fill x
-        $frame configure -relief flat -bd 0 -highlightthickness 0
-		return
-    }
-    if { $tcl_platform(platform) == "macintosh" } {
-        $frame configure -relief raised -bd 1 -highlightthickness 0
-		return
-    }
-    if { $tcl_platform(platform) == "unix" } {
-        $frame configure -relief raised -bd 1 -highlightthickness 0
-    }
-}
-
-
-
-proc window.set_scrollbar_look scrollbar {
-    global tcl_platform
-    if { $tcl_platform(platform) == "unix" } {
-        $scrollbar configure -width 10
-	return
-    }
-    if { $tcl_platform(platform) == "macintosh" } {
-        $scrollbar configure -bd 0
-	return
-    }
-}
-
 proc window.iconify {} {
     if { [winfo viewable .] } {
         wm iconify .
@@ -1093,8 +1053,6 @@ proc window.buildWindow {} {
         scrollbar .scrollbar \
             -command ".output yview" \
             -highlightthickness 0
-
-        window.set_scrollbar_look .scrollbar
 
         window.repack
 
