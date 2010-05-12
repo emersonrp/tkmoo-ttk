@@ -154,8 +154,7 @@ proc whiteboard.SCgallery { object lines } {
 	wm title $loader "Gallery"
 
 	frame $loader.f
-	scrollbar $loader.f.s -command "$loader.f.l yview" \
-		-highlightthickness 0
+	scrollbar $loader.f.s -command "$loader.f.l yview"
 	window.set_scrollbar_look $loader.f.s
 
 	listbox $loader.f.l -yscroll "$loader.f.s set" \
@@ -294,7 +293,7 @@ proc whiteboard.create title {
 	bind $wb <Destroy> "whiteboard.destroy $wb %W"
 
 	###
-	frame $wb.draw -bd 0 -highlightthickness 0
+	frame $wb.draw
 
 	canvas $wb.draw.canvas \
 		-scrollregion { 0 0 1000 800 } \
@@ -305,20 +304,16 @@ proc whiteboard.create title {
 		-highlightthickness 0 \
 		-bg [colourdb.get lightblue]
 
-	scrollbar $wb.draw.vscroll -command "$wb.draw.canvas yview" \
-		-highlightthickness 0
-		window.set_scrollbar_look $wb.draw.vscroll
+	scrollbar $wb.draw.vscroll -command "$wb.draw.canvas yview"
+	window.set_scrollbar_look $wb.draw.vscroll
 
-	frame $wb.draw.bottom \
-		-bd 0 -highlightthickness 0
+	frame $wb.draw.bottom
 
-	frame $wb.draw.bottom.padding -height 8 -width 12 \
-		-bd 0 -highlightthickness 0
+	frame $wb.draw.bottom.padding -height 8 -width 12
 
 	scrollbar $wb.draw.bottom.hscroll -command "$wb.draw.canvas xview" \
-		-highlightthickness 0 \
-			-orient horizontal
-		window.set_scrollbar_look $wb.draw.bottom.hscroll
+		-orient horizontal
+	window.set_scrollbar_look $wb.draw.bottom.hscroll
 
 	pack $wb.draw.bottom.padding \
 		-side right
@@ -428,7 +423,6 @@ proc whiteboard.create title {
 
 	whiteboard.set_colour $wb black
 	whiteboard.set_pen $wb line
-
 
 
 	###
@@ -661,10 +655,9 @@ proc whiteboard.get_text { object colour pen x1 y1 } {
 
 	###
 
-	button $win.connect -text "Ok" \
-		-command { 
-	whiteboard.set_text 
-	whiteboard.destroy_text
+	button $win.connect -text "Ok" -command { 
+		whiteboard.set_text 
+		whiteboard.destroy_text
 	}
 
 	button $win.cancel -text "Cancel" -command "whiteboard.destroy_text"
