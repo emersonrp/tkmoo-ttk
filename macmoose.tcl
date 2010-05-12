@@ -576,7 +576,6 @@ proc macmoose.add_script_or_property browser {
 
 	ttk::frame $w.s
 	ttk::radiobutton $w.s.r -text "script" \
-		-anchor w \
 		-variable macmoose_add -value script \
 		-width 10
 	ttk::label $w.s.lname -text "name:"
@@ -611,7 +610,6 @@ proc macmoose.add_script_or_property browser {
 
 	ttk::frame $w.p
 	ttk::radiobutton $w.p.r -text "property" \
-		-anchor w \
 		-variable macmoose_add -value property \
 		-width 10
 	ttk::label $w.p.lname -text "name:"
