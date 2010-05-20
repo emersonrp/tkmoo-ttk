@@ -584,25 +584,20 @@ proc window.open {} {
 
 	window.place_nice .open
 
-	.open configure -bd 0
-
 	wm title .open "Open Connection"
 	ttk::frame .open.entries
 	ttk::label .open.entries.h -text "Host:"
 	ttk::entry .open.entries.host -font [fonts.fixedwidth]
 	ttk::label .open.entries.p -text "Port:"
-	ttk::entry .open.entries.port \
-		-width 4 \
-		-font [fonts.fixedwidth]
-	pack .open.entries.h -side left
-	pack .open.entries.host -side left
-	pack .open.entries.p -side left
-	pack .open.entries.port -side left
+	ttk::entry .open.entries.port -font [fonts.fixedwidth] -width 4
+
+	pack .open.entries.h .open.entries.host .open.entries.p .open.entries.port \
+		-side left \
+		-padx 5 -pady 5
 
 	ttk::frame .open.buttons
 
-	ttk::button .open.buttons.connect -text "Connect" \
-		-command { window.do_open }
+	ttk::button .open.buttons.connect -text "Connect" -command { window.do_open }
 
 	bind .open <Return> { window.do_open };
 	window.bind_escape_to_destroy .open
@@ -614,22 +609,6 @@ proc window.open {} {
 
 	pack .open.buttons.connect .open.buttons.cancel -side left -padx 5 -pady 5
 	window.focus .open.entries.host
-}
-
-proc window.menuise_worlds {} {
-	catch {
-		.menu.connections.menu delete 5 end
-	}
-	.menu.connections.menu add separator
-	set hints [split 0123456789abdfghijklmnprstuvwxyz {}]
-	foreach world [worlds.worlds] { 
-	set hint [lindex $hints 0]
-	set hints [lrange $hints 1 end]
-		.menu.connections.menu add command \
-		-label   "$hint. [worlds.get $world Name]"\
-		-underline 0 \
-		-command "client.connect_world \"$world\""
-	}
 }
 
 proc window.do_disconnect {} {
@@ -712,13 +691,6 @@ proc window.post_connect {} {
 		-command "client.exit"
 
 	window.hidemargin $menu
-}
-
-proc window.load_connections_menu {} {
-	if { [worlds.load] == 1 } {
-		set worlds [worlds.worlds]
-		window.menuise_worlds
-	}
 }
 
 proc window.configure_help_menu {} {

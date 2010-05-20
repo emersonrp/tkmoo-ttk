@@ -407,6 +407,10 @@ proc preferences.populate_frame {world category page} {
 					set preferences_v($world,$directive) $v
 					$f.mb configure -text $v
 				}
+
+				boolean-menu {
+
+				}
 	
 				string {
 					entry $f.e -font [fonts.get fixedwidth] -width 30

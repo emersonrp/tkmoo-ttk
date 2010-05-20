@@ -212,7 +212,7 @@ proc macmoose.do_prop_info data {
 
 	edit.add_toolbar $e info
 
-	ttk::frame $e.info -bd 0 -highlightthickness 0
+	ttk::frame $e.info
 
 	set msg ""
 	set msg "$msg$macmoose_editordb($e:OBJ_)"
@@ -565,8 +565,6 @@ proc macmoose.add_script_or_property browser {
 
 	window.place_nice $w
 
-	$w configure -bd 0
-
 	wm iconname $w "Add script or property"
 	wm title $w "Add script or property"
 
@@ -700,7 +698,7 @@ proc macmoose.create_browser {} {
 
 	menu $browser.cmenu
 
-	$browser configure -bd 0 -menu $browser.cmenu
+	$browser configure -menu $browser.cmenu
 
 	wm iconname $browser "Macmoose"
 	wm title $browser "Macmoose"

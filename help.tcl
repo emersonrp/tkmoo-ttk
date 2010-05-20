@@ -38,11 +38,8 @@ proc help.show subject {
 
 		window.place_nice $h
 
-		$h configure -bd 0
-
 		text $h.t -font [fonts.plain] -wrap word \
 			-width 70 \
-			-bd 0 -highlightthickness 0 \
 			-setgrid 1 \
 			-relief flat \
 			-bg #fff9e1 \
