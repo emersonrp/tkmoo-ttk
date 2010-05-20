@@ -33,11 +33,11 @@ proc ui.copy_selection win {
 }
 
 proc ui.page_down win { 
-    ::tk::TextScrollPages $win [::tk::TextScrollPages $win 1]
+    ::tk::TextScrollPages $win 1
 }
 
 proc ui.page_up win { 
-    ::tk::TextScrollPages $win [::tk::TextScrollPages $win -1]
+    ::tk::TextScrollPages $win -1
 }
 
 proc ui.clear_screen win { 
