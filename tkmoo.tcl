@@ -1,3 +1,5 @@
+package require Tcl 8.5
+
 #!
 set tkmooLibrary build/.tkMOO-lite
 # tkMOO-SE is Copyright (c) Stephen Alderman 2003-2006.
