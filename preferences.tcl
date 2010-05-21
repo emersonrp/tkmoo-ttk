@@ -187,22 +187,18 @@ proc preferences.edit { {world ""} } {
 
 	foreach c [preferences.reverse $cat] {
 		set tabpage $notebook.[util.unique_id pf]
-		ttk::frame $tabpage
+		ttk::scrodget $tabpage -autohide true
 
 		set page $tabpage.page
-		set sbar $tabpage.scrollbar
+		canvas $page
+		$tabpage associate $page
+		$page configure -scrollregion [ $page bbox all ]
 
-		canvas $page -yscrollcommand "$sbar set"
-		ttk::scrollbar $sbar -command "$page yview"
+		$tabpage configure -scrollsides se
 
-		grid $page -row 0 -column 0 -sticky nsew
-		grid $sbar -row 0 -column 1 -sticky nsew
-
-		grid columnconfigure $tabpage 0 -weight 1
-		grid columnconfigure $tabpage 1 -minsize [ winfo width $sbar ]
 		preferences.populate_frame $preferences_current $c $page
 
-		$notebook add $tabpage -text $c -sticky nwe
+		$notebook add $tabpage -text $c -sticky nsew
 	}
 	# set preferences_category {General Settings}
 
@@ -293,7 +289,7 @@ proc preferences.populate_frame {world category page} {
 			foreach {_ display} [util.assoc $preference display] {break}
 
 
-			label $f.l -text $display -anchor w -width 20 -justify left
+			ttk::label $f.l -text $display -anchor w -width 20 -justify left
 			pack $f.l -side left
 
 			switch -- $type {
@@ -329,65 +325,32 @@ proc preferences.populate_frame {world category page} {
 					catch { set v [worlds.get $world $directive] }
 					set preferences_v($world,$directive) $v
 				}
-	
+
 				updown-integer {
-	
+
 					set low [lindex [util.assoc $preference low] 1]
 					set high [lindex [util.assoc $preference high] 1]
-	
+
 					set delta 1
 					if { [set ldelta [util.assoc $preference delta]] != {} } {
 						set delta [lindex $ldelta 1]
 					}
-	
-	
-					entry $f.e -font [fonts.get fixedwidth] -width 5
+
+					spinbox $f.e -from $low -to $high -increment $delta
 					pack $f.e -side left
 					bind $f.e <Return> "
-						set x \[$f.e get\]
-						set a \[preferences.verify_updown_integer \$x $default $low $high\]
-						$f.e delete 0 end
-						$f.e insert insert \$a
-						set preferences_v($world,$directive) \$a
+						set preferences_v($world,$directive) \[$f.e get\]
 					"
 					bind $f.e <Leave> [bind $f.e <Return>]
 					bind $f.e <Tab> [bind $f.e <Return>]
-	
-					ttk::frame $f.gap -width 2
-	
-					ttk::button $f.bdown -text "-" -image down \
-							-width 10 \
-							-command "
-						set a \[preferences.verify_updown_integer \[$f.e get\] $default $low $high\]
-						incr a -$delta
-						set a \[preferences.verify_updown_integer \$a $default $low $high\]
-						$f.e delete 0 end
-						$f.e insert insert \$a
-						set preferences_v($world,$directive) \$a
-					"
-					ttk::button $f.bup -text "+" -image up \
-							-width 10 \
-							-command "
-						set a \[preferences.verify_updown_integer \[$f.e get\] $default $low $high\]
-						incr a $delta
-						set a \[preferences.verify_updown_integer \$a $default $low $high\]
-						$f.e delete 0 end
-						$f.e insert insert \$a
-						set preferences_v($world,$directive) \$a
-					"
-	
-					pack $f.gap -side left -fill y
-					pack $f.bdown -side left -fill y
-					pack $f.bup -side left -fill y
-	
+
 					set v $default
 					catch { set v [worlds.get $world $directive] }
 					set preferences_v($world,$directive) $v
-					$f.e delete 0 end
-					$f.e insert insert $v
-	
+					$f.e set $v
+
 				}
-	
+
 				choice-menu {
 					ttk::menubutton $f.mb -menu $f.mb.m
 					pack $f.mb -side left
@@ -411,9 +374,9 @@ proc preferences.populate_frame {world category page} {
 				boolean-menu {
 
 				}
-	
+
 				string {
-					entry $f.e -font [fonts.get fixedwidth] -width 30
+					ttk::entry $f.e -width 30
 					bind $f.e <KeyRelease> "set preferences_v($world,$directive) \[$f.e get\]"
 					bind $f.e <Leave> "set preferences_v($world,$directive) \[$f.e get\]"
 					set v $default
@@ -421,16 +384,16 @@ proc preferences.populate_frame {world category page} {
 					set preferences_v($world,$directive) $v
 					$f.e insert insert $v
 					pack $f.e -side left
-	
+
 					if { $world == [worlds.default_world] && ($directive == "Name") } {
 						$f.e delete 0 end 
 						$f.e insert insert "DEFAULT WORLD"
 						$f.e configure -state disabled -cursor {}
 					}
 				}
-	
+
 				font {
-					entry $f.e -font [fonts.get fixedwidth] 
+					ttk::entry $f.e
 					set v $default
 					catch { set v [worlds.get $world $directive] }
 					set preferences_v($world,$directive) $v
@@ -445,9 +408,9 @@ proc preferences.populate_frame {world category page} {
 					pack $f.e -side left -fill x -expand 1
 					pack $f.b -side right -fill y -padx 3
 				}
-	
+
 				file {
-					entry $f.e -font [fonts.get fixedwidth]
+					ttk::entry $f.e
 					set v $default
 					catch { set v [worlds.get $world $directive] }
 					set preferences_v($world,$directive) $v
@@ -489,30 +452,30 @@ proc preferences.populate_frame {world category page} {
 					pack $f.e -side left -fill x -expand 1
 					pack $f.b -side right -fill y -padx 3
 				}
-	
+
 				colour {
 					set v $default
 					catch { set v [worlds.get $world $directive] }
 					catch { set v $preferences_v($world,$directive) }
 					set preferences_v($world,$directive) $v
 
-					entry $f.c -font [fonts.get fixedwidth] \
+					entry $f.c \
 							-cursor {} \
 							-state disabled \
 							-background $v
 					ttk::button $f.b -text "Choose" \
 								-command "preferences.set_colour $f $world $directive \
 											\[ tk_chooseColor -initialcolor \$preferences_v($world,$directive) \]"
-	
+
 					$f.c configure -bg $v
 					bind $f.c <1> "preferences.set_colour $f $world $directive \
 											\[ tk_chooseColor -initialcolor \$preferences_v($world,$directive) \]; window.displayCR \"$f.c\""
 					pack $f.c -side left
 					pack $f.b -side right -fill y -padx 3
 				}
-	
+
 				password {
-					entry $f.e \
+					ttk::entry $f.e \
 						-show "*" \
 						-font [fonts.get fixedwidth] -width 30
 					bind $f.e <KeyRelease> "set preferences_v($world,$directive) \[$f.e get\]"
@@ -523,7 +486,7 @@ proc preferences.populate_frame {world category page} {
 					$f.e insert insert $v
 					pack $f.e -side left
 				}
-	
+
 				text {
 					$f.l configure -anchor nw
 					text $f.t -font [fonts.get fixedwidth] \
@@ -542,7 +505,7 @@ proc preferences.populate_frame {world category page} {
 					$f.t insert insert $v
 					pack $f.t -side left
 				}
-	
+
 				default {
 					puts "preferences, unable to handle type $type"
 				}
