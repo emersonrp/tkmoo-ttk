@@ -119,169 +119,167 @@ proc toolbar.start {} {
             {display "Horizontal padding"}
             {low 0}
             {high 10} }
-}
-#{ 
-#          { {directive UseToolBar}
-#              {type boolean}
-#              {default Off}
-#              {display "Display custom toolbar"} }
-#          { {directive TBbutton1Name}
-#              {type string}
-#              {default ""}
-#              {display "Button 1 (Name)"} }
-#          { {directive TBbutton1Action}
-#              {type string}
-#              {default ""}
-#              {display "Button 1 (Action)"} }
-#          { {directive TBbutton1Align}
-#              {type choice-menu}
-#              {default left}
-#              {choices {left right}}
-#              {display "Button 1 (Alignment)"} }
-#          { {directive TBbutton2Name}
-#              {type string}
-#              {default ""}
-#              {display "Button 2 (Name)"} }
-#          { {directive TBbutton2Action}
-#              {type string}
-#              {default ""}
-#              {display "Button 2 (Action)"} }
-#          { {directive TBbutton2Align}
-#              {type choice-menu}
-#              {default left}
-#              {choices {left right}}
-#              {display "Button 2 (Alignment)"} }
-#          { {directive TBbutton3Name}
-#              {type string}
-#              {default ""}
-#              {display "Button 3 (Name)"} }
-#          { {directive TBbutton3Action}
-#              {type string}
-#              {default ""}
-#              {display "Button 3 (Action)"} }
-#          { {directive TBbutton3Align}
-#              {type choice-menu}
-#              {default left}
-#              {choices {left right}}
-#              {display "Button 3 (Alignment)"} }
-#          { {directive TBbutton4Name}
-#              {type string}
-#              {default ""}
-#              {display "Button 4 (Name)"} }
-#          { {directive TBbutton4Action}
-#              {type string}
-#              {default ""}
-#              {display "Button 4 (Action)"} }
-#          { {directive TBbutton4Align}
-#              {type choice-menu}
-#              {default left}
-#              {choices {left right}}
-#              {display "Button 4 (Alignment)"} }
-#          { {directive TBbutton5Name}
-#              {type string}
-#              {default ""}
-#              {display "Button 5 (Name)"} }
-#          { {directive TBbutton5Action}
-#              {type string}
-#              {default ""}
-#              {display "Button 5 (Action)"} }
-#          { {directive TBbutton5Align}
-#              {type choice-menu}
-#              {default left}
-#              {choices {left right}}
-#              {display "Button 5 (Alignment)"} }
-#          { {directive TBbutton6Name}
-#              {type string}
-#              {default ""}
-#              {display "Button 6 (Name)"} }
-#          { {directive TBbutton6Action}
-#              {type string}
-#              {default ""}
-#              {display "Button 6 (Action)"} }
-#          { {directive TBbutton6Align}
-#              {type choice-menu}
-#              {default left}
-#              {choices {left right}}
-#              {display "Button 6 (Alignment)"} }
-#          { {directive TBbutton7Name}
-#              {type string}
-#              {default ""}
-#              {display "Button 7 (Name)"} }
-#          { {directive TBbutton7Action}
-#              {type string}
-#              {default ""}
-#              {display "Button 7 (Action)"} }
-#          { {directive TBbutton7Align}
-#              {type choice-menu}
-#              {default left}
-#              {choices {left right}}
-#              {display "Button 7 (Alignment)"} }
-#          { {directive TBbutton8Name}
-#              {type string}
-#              {default ""}
-#              {display "Button 8 (Name)"} }
-#          { {directive TBbutton8Action}
-#              {type string}
-#              {default ""}
-#              {display "Button 8 (Action)"} }
-#          { {directive TBbutton8Align}
-#              {type choice-menu}
-#              {default left}
-#              {choices {left right}}
-#              {display "Button 8 (Alignment)"} }
-#          { {directive TBbutton9Name}
-#              {type string}
-#              {default ""}
-#              {display "Button 9 (Name)"} }
-#          { {directive TBbutton9Action}
-#              {type string}
-#              {default ""}
-#              {display "Button 9 (Action)"} }
-#          { {directive TBbutton9Align}
-#              {type choice-menu}
-#              {default left}
-#              {choices {left right}}
-#              {display "Button 9 (Alignment)"} }
-#          { {directive TBbutton10Name}
-#              {type string}
-#              {default ""}
-#              {display "Button 10 (Name)"} }
-#          { {directive TBbutton10Action}
-#              {type string}
-#              {default ""}
-#              {display "Button 10 (Action)"} }
-#          { {directive TBbutton10Align}
-#              {type choice-menu}
-#              {default left}
-#              {choices {left right}}
-#              {display "Button 10 (Alignment)"} }
-#          { {directive TBbutton11Name}
-#              {type string}
-#              {default ""}
-#              {display "Button 11 (Name)"} }
-#          { {directive TBbutton11Action}
-#              {type string}
-#              {default ""}
-#              {display "Button 11 (Action)"} }
-#          { {directive TBbutton11Align}
-#              {type choice-menu}
-#              {default left}
-#              {choices {left right}}
-#              {display "Button 11 (Alignment)"} }
-#          { {directive TBbutton12Name}
-#              {type string}
-#              {default ""}
-#              {display "Button 12 (Name)"} }
-#          { {directive TBbutton12Action}
-#              {type string}
-#              {default ""}
-#              {display "Button 12 (Action)"} }
-#          { {directive TBbutton12Align}
-#              {type choice-menu}
-#              {default left}
-#              {choices {left right}}
-#              {display "Button 12 (Alignment)"} }
-#     }
+          { {directive UseToolBar}
+              {type boolean}
+              {default Off}
+              {display "Display custom toolbar"} }
+          { {directive TBbutton1Name}
+              {type string}
+              {default ""}
+              {display "Button 1 (Name)"} }
+          { {directive TBbutton1Action}
+              {type string}
+              {default ""}
+              {display "Button 1 (Action)"} }
+          { {directive TBbutton1Align}
+              {type choice-menu}
+              {default left}
+              {choices {left right}}
+              {display "Button 1 (Alignment)"} }
+          { {directive TBbutton2Name}
+              {type string}
+              {default ""}
+              {display "Button 2 (Name)"} }
+          { {directive TBbutton2Action}
+              {type string}
+              {default ""}
+              {display "Button 2 (Action)"} }
+          { {directive TBbutton2Align}
+              {type choice-menu}
+              {default left}
+              {choices {left right}}
+              {display "Button 2 (Alignment)"} }
+          { {directive TBbutton3Name}
+              {type string}
+              {default ""}
+              {display "Button 3 (Name)"} }
+          { {directive TBbutton3Action}
+              {type string}
+              {default ""}
+              {display "Button 3 (Action)"} }
+          { {directive TBbutton3Align}
+              {type choice-menu}
+              {default left}
+              {choices {left right}}
+              {display "Button 3 (Alignment)"} }
+          { {directive TBbutton4Name}
+              {type string}
+              {default ""}
+              {display "Button 4 (Name)"} }
+          { {directive TBbutton4Action}
+              {type string}
+              {default ""}
+              {display "Button 4 (Action)"} }
+          { {directive TBbutton4Align}
+              {type choice-menu}
+              {default left}
+              {choices {left right}}
+              {display "Button 4 (Alignment)"} }
+          { {directive TBbutton5Name}
+              {type string}
+              {default ""}
+              {display "Button 5 (Name)"} }
+          { {directive TBbutton5Action}
+              {type string}
+              {default ""}
+              {display "Button 5 (Action)"} }
+          { {directive TBbutton5Align}
+              {type choice-menu}
+              {default left}
+              {choices {left right}}
+              {display "Button 5 (Alignment)"} }
+          { {directive TBbutton6Name}
+              {type string}
+              {default ""}
+              {display "Button 6 (Name)"} }
+          { {directive TBbutton6Action}
+              {type string}
+              {default ""}
+              {display "Button 6 (Action)"} }
+          { {directive TBbutton6Align}
+              {type choice-menu}
+              {default left}
+              {choices {left right}}
+              {display "Button 6 (Alignment)"} }
+          { {directive TBbutton7Name}
+              {type string}
+              {default ""}
+              {display "Button 7 (Name)"} }
+          { {directive TBbutton7Action}
+              {type string}
+              {default ""}
+              {display "Button 7 (Action)"} }
+          { {directive TBbutton7Align}
+              {type choice-menu}
+              {default left}
+              {choices {left right}}
+              {display "Button 7 (Alignment)"} }
+          { {directive TBbutton8Name}
+              {type string}
+              {default ""}
+              {display "Button 8 (Name)"} }
+          { {directive TBbutton8Action}
+              {type string}
+              {default ""}
+              {display "Button 8 (Action)"} }
+          { {directive TBbutton8Align}
+              {type choice-menu}
+              {default left}
+              {choices {left right}}
+              {display "Button 8 (Alignment)"} }
+          { {directive TBbutton9Name}
+              {type string}
+              {default ""}
+              {display "Button 9 (Name)"} }
+          { {directive TBbutton9Action}
+              {type string}
+              {default ""}
+              {display "Button 9 (Action)"} }
+          { {directive TBbutton9Align}
+              {type choice-menu}
+              {default left}
+              {choices {left right}}
+              {display "Button 9 (Alignment)"} }
+          { {directive TBbutton10Name}
+              {type string}
+              {default ""}
+              {display "Button 10 (Name)"} }
+          { {directive TBbutton10Action}
+              {type string}
+              {default ""}
+              {display "Button 10 (Action)"} }
+          { {directive TBbutton10Align}
+              {type choice-menu}
+              {default left}
+              {choices {left right}}
+              {display "Button 10 (Alignment)"} }
+          { {directive TBbutton11Name}
+              {type string}
+              {default ""}
+              {display "Button 11 (Name)"} }
+          { {directive TBbutton11Action}
+              {type string}
+              {default ""}
+              {display "Button 11 (Action)"} }
+          { {directive TBbutton11Align}
+              {type choice-menu}
+              {default left}
+              {choices {left right}}
+              {display "Button 11 (Alignment)"} }
+          { {directive TBbutton12Name}
+              {type string}
+              {default ""}
+              {display "Button 12 (Name)"} }
+          { {directive TBbutton12Action}
+              {type string}
+              {default ""}
+              {display "Button 12 (Action)"} }
+          { {directive TBbutton12Align}
+              {type choice-menu}
+              {default left}
+              {choices {left right}}
+              {display "Button 12 (Alignment)"} }
+     }
 
 
     set d_north { R0lGODlhFQAVAPEAAAAAAIAAAP8AAL29vSH5BAEAAAMALAAAAAAVABUAAAI3nI+pe8FvgnBQ
@@ -473,13 +471,10 @@ proc toolbar.create {} {
         set align [worlds.get_generic {} {} {} TBbutton${button}Align]
         if { $name != "" } {
             ttk::button .toolbar.button${button} \
-                -font $tbfont -relief $tbstyle \
-                -background $buttonbg -foreground $buttonfg \
-                -activebackground $buttonabg -activeforeground $buttonafg \
-                -text $name -command "client.outgoing {$action}" \
+                -text $name -command "client.outgoing {$action}"
+            pack .toolbar.button${button} -side $align \
                 -padx $tbpadx -pady $tbpady
-            pack .toolbar.button${button} -side $align
-            set_balloon .toorbar.button${button} "$name"     
+            set_balloon .toolbar.button${button} "$name"     
         }
     }
     window.add_toolbar .toolbar
@@ -504,7 +499,7 @@ proc toolbar.create_quickconnect {} {
     entry .quickconn.port -width 8 \
         -background [colourdb.get pink] \
         -font [fonts.fixedwidth]
-    label .quickconn.sep -padx 0 -pady 0 -width 1
+    ttk::label .quickconn.sep -width 1
     ttk::button .quickconn.connect -text "Connect" -command "toolbar.quickconnect"
     ttk::button .quickconn.clear -text "Clear" -command "toolbar.clear_quickconnect"
     ttk::button .quickconn.close -text "Hide" -command "toolbar.destroy_quickconnect"
@@ -589,8 +584,8 @@ proc toolbar.create_rosette {} {
             -image [toolbar.rosette_image ${wname}] \
             -width $rose_width
     }
-    label $r.l.top.sep1 -padx 0 -pady 0 -width $sep_width
-    label $r.l.top.sep2 -padx 0 -pady 0 -width $sep_width
+    ttk::label $r.l.top.sep1 -width $sep_width
+    ttk::label $r.l.top.sep2 -width $sep_width
     foreach toppack {northwest north northeast sep1 up sep2 in} {
         pack configure $r.l.top.${toppack} -side left -in $r.l.top }
 
@@ -604,8 +599,8 @@ proc toolbar.create_rosette {} {
             -width $rose_width
     }
 
-    label $r.l.mid.sep1 -padx 0 -pady 0 -width $sep_width
-    label $r.l.mid.sep2 -padx 0 -pady 0 -width $sep_width
+    ttk::label $r.l.mid.sep1 -width $sep_width
+    ttk::label $r.l.mid.sep2 -width $sep_width
     foreach midpack {west home east sep1 down sep2 out} {
         pack configure $r.l.mid.${midpack} -side left -in $r.l.mid }
 
@@ -626,8 +621,8 @@ proc toolbar.create_rosette {} {
 
     set dig_room_name ""
 
-    label $r.l.bot.diglabel -text " Dig: " -padx 0 -pady 0
-    ttk::checkbutton $r.l.bot.dig -variable dig_with_rosette -padx 0
+    ttk::label $r.l.bot.diglabel -text " Dig: "
+    ttk::checkbutton $r.l.bot.dig -variable dig_with_rosette
 
     foreach botpack {southwest south southeast} {
         pack configure $r.l.bot.${botpack} -side left -in $r.l.bot }
@@ -660,7 +655,7 @@ proc toolbar.invoke_rosette dir {
         wm title $rn "Dig $dir to ..."
 
         ttk::frame $rn.input
-        label $rn.input.textstuff -text "Enter room name or obj#:" -padx 0 -pady 5
+        ttk::label $rn.input.textstuff -text "Enter room name or obj#:"
         entry $rn.input.room -width 35 \
             -background [colourdb.get pink] \
             -font [fonts.fixedwidth]
@@ -684,24 +679,24 @@ proc toolbar.invoke_rosette dir {
 
         ttk::frame $rn.options1
 
-        label $rn.options1.closelabel -text "Close on completion:" -padx 0 -pady 0 -width 20 -justify left -anchor w
-        ttk::checkbutton $rn.options1.closeoncomplete -variable close_on_completion -padx 0
+        ttk::label $rn.options1.closelabel -text "Close on completion:" -width 20 -justify left -anchor w
+        ttk::checkbutton $rn.options1.closeoncomplete -variable close_on_completion
         pack configure $rn.options1.closelabel -side left -in $rn.options1
         pack configure $rn.options1.closeoncomplete -side left -in $rn.options1
         pack configure $rn.options1 -side top -in $rn -fill x
 
         ttk::frame $rn.options2
 
-        label $rn.options2.followlabel -text "Follow new exit:" -padx 0 -pady 0 -width 20 -justify left -anchor w
-        ttk::checkbutton $rn.options2.follownewexit -variable follow_new_exit -padx 0
+        ttk::label $rn.options2.followlabel -text "Follow new exit:" -width 20 -justify left -anchor w
+        ttk::checkbutton $rn.options2.follownewexit -variable follow_new_exit
         pack configure $rn.options2.followlabel -side left -in $rn.options2
         pack configure $rn.options2.follownewexit -side left -in $rn.options2
         pack configure $rn.options2 -side top -in $rn -fill x
 
         ttk::frame $rn.options3
 
-        label $rn.options3.returnlabel -text "Dig return exit:" -padx 0 -pady 0 -width 20 -justify left -anchor w
-        ttk::checkbutton $rn.options3.digreturnexit -variable dig_return_exit -padx 0
+        ttk::label $rn.options3.returnlabel -text "Dig return exit:" -width 20 -justify left -anchor w
+        ttk::checkbutton $rn.options3.digreturnexit -variable dig_return_exit
         pack configure $rn.options3.returnlabel -side left -in $rn.options3
         pack configure $rn.options3.digreturnexit -side left -in $rn.options3
         pack configure $rn.options3 -side top -in $rn -fill x
@@ -788,14 +783,14 @@ proc toolbar.create_client_toolbar {} {
     set_balloon .clienttb.open "Open a New Session"
     ttk::button .clienttb.disc -image i_disc -command "window.do_disconnect"
     set_balloon .clienttb.disc "Close Current Session"
-    label .clienttb.sep1 -padx 0 -pady 0 -width 1
+    ttk::label .clienttb.sep1 -width 1
     ttk::button .clienttb.worlds -image i_worlds -command "window.open_list"
     set_balloon .clienttb.worlds "Open Worlds Dialog"
     ttk::button .clienttb.pref -image i_pref -command "preferences.edit"
     set_balloon .clienttb.pref "Edit Preferences"
     ttk::button .clienttb.triggers -image i_triggers -command "edittriggers.edit"
     set_balloon .clienttb.triggers "Edit Triggers"
-    label .clienttb.sep2 -padx 0 -pady 0 -width 1
+    ttk::label .clienttb.sep2 -width 1
     ttk::button .clienttb.cut -image i_cut -command "ui.delete_selection .input"
     set_balloon .clienttb.cut "Cut"
     ttk::button .clienttb.copy -image i_copy -command "ui.copy_selection .input"
@@ -804,7 +799,7 @@ proc toolbar.create_client_toolbar {} {
     set_balloon .clienttb.paste "Paste"
     ttk::button .clienttb.editsel -image i_editsel -command "paste.do_selection"
     set_balloon .clienttb.editsel "Paste Selection"
-    label .clienttb.sep3 -padx 0 -pady 0 -width 1
+    ttk::label .clienttb.sep3 -width 1
     ttk::button .clienttb.editor -image i_editor -command "edit.SCedit {} {} {} Editor Editor"
     set_balloon .clienttb.editor "Open Editor"
     ttk::button .clienttb.macmoose -image i_macmoose -command "macmoose.create_browser"
@@ -813,7 +808,7 @@ proc toolbar.create_client_toolbar {} {
     set_balloon .clienttb.toolbartog "Toggle Custom Toolbar"
     ttk::button .clienttb.rosettetog -image i_rosette -command "toolbar.rosette_toggle"
     set_balloon .clienttb.rosettetog "Toggle Rosette"
-    label .clienttb.sep4 -padx 0 -pady 0 -width 1
+    ttk::label .clienttb.sep4 -width 1
     ttk::button .clienttb.log -image i_log -command "logging.create_dialog"
     set_balloon .clienttb.log "Logging"
     ttk::button .clienttb.exit -image i_exit -command "client.exit"
@@ -850,19 +845,19 @@ proc toolbar.create_editorbar w {
     set_balloon $w.edittb.save "Save"
     ttk::button $w.edittb.saveas -image i_saveas -command "edit.fs_save_as $w"
     set_balloon $w.edittb.saveas "Save As"
-    label $w.edittb.sep1 -padx 0 -pady 0 -width 1
+    ttk::label $w.edittb.sep1 -width 1
     ttk::button $w.edittb.cut -image i_cut -command "edit.do_cut $w"
     set_balloon $w.edittb.cut "Cut"
     ttk::button $w.edittb.copy -image i_copy -command "edit.do_copy $w"
     set_balloon $w.edittb.copy "Copy"
     ttk::button $w.edittb.paste -image i_paste -command "edit.do_paste $w"
     set_balloon $w.edittb.paste "Paste"
-    label $w.edittb.sep2 -padx 0 -pady 0 -width 1
+    ttk::label $w.edittb.sep2 -width 1
     ttk::button $w.edittb.find -image i_find -command "edit.find $w"
     set_balloon $w.edittb.find "Find"
     ttk::button $w.edittb.goto -image i_goto -command "edit.goto $w"
     set_balloon $w.edittb.goto "Goto"
-    label $w.edittb.sep3 -padx 0 -pady 0 -width 1
+    ttk::label $w.edittb.sep3 -width 1
     ttk::button $w.edittb.exit -image i_exit -command "edit.destroy $w"
     set_balloon $w.edittb.exit "Close Editor"
 
