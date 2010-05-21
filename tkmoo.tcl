@@ -1,11 +1,5 @@
 package require Tcl 8.5
 
-# this is so we can find 'scrodget' inside our own directory
-set thisDir [file normalize [file dirname [info script]]]
-lappend auto_path $thisDir
-
-package require ttk::scrodget
-
 #!
 set tkmooLibrary build/.tkMOO-lite
 # tkMOO-SE is Copyright (c) Stephen Alderman 2003-2006.

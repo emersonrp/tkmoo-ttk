@@ -2,25 +2,6 @@
 window.menu_preferences_add "Edit Preferences..." preferences.edit
 window.menu_preferences_state "Edit Preferences..." disabled
 
-proc preferences.set_world world {
-	global preferences_current preferences_category
-
-	# preferences.copy_middle_to_world
-	# preferences.remove_middle
-	# preferences.fill_middle $world $preferences_category
-
-	set preferences_current $world
-}
-
-proc preferences.set_category category {
-	global preferences_current preferences_category 
-	# preferences.copy_middle_to_world
-	# .preferences.notebook.m configure -text "$category"
-	# preferences.remove_middle
-	# preferences.fill_middle $preferences_current $category
-	set preferences_category $category
-}
-
 proc preferences.save {} {
 	preferences.copy_middle_to_world
 	global tkmooVersion
@@ -186,19 +167,13 @@ proc preferences.edit { {world ""} } {
 	set cat [lindex [preferences.cp] 0]
 
 	foreach c [preferences.reverse $cat] {
-		set tabpage $notebook.[util.unique_id pf]
-		ttk::scrodget $tabpage -autohide true
+		# the entire tab entity
+		set tab $notebook.[util.unique_id pf]
+		ttk::frame $tab
 
-		set page $tabpage.page
-		canvas $page
-		$tabpage associate $page
-		$page configure -scrollregion [ $page bbox all ]
+		preferences.populate_frame $preferences_current $c $tab
 
-		$tabpage configure -scrollsides se
-
-		preferences.populate_frame $preferences_current $c $page
-
-		$notebook add $tabpage -text $c -sticky nsew
+		$notebook add $tab -text $c -sticky nsew
 	}
 	# set preferences_category {General Settings}
 
