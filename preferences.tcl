@@ -182,6 +182,7 @@ proc preferences.edit { {world ""} } {
 
 	preferences.set_title "Preferences: [worlds.get $preferences_current Name]"
 
+	wm resizable $pw 0 0
 	wm deiconify $pw 
 	after idle raise $pw
 }
