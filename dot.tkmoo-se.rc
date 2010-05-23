@@ -4,8 +4,8 @@
 ## will override entries in this file.  Tk uses the Xdefaults syntax.
 
 ## All Text widgets have steel-grey background colours.
-#*Text.background: #c0c0c0
+#*Text.background: #ffffc6
 
 ## Fonts appear in white, this setting is overriden for the client's
 ## main output window by settings in the Preferences Editor.
-#*foreground: white
+#*foreground: black

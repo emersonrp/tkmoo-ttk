@@ -49,6 +49,8 @@ set worlds_default_tkm "
 World: DEFAULT WORLD
 IsDefaultWorld: 1
 ConnectScript: connect %u %p
+colourbackground: #ffffc6
+colourforeground: #000000
 
 World: Localhost
 Host: 127.0.0.1

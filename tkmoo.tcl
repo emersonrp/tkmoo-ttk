@@ -2,6 +2,9 @@ package require Tcl 8.5
 
 #!
 set tkmooLibrary build/.tkMOO-lite
+
+set home [ file dirname [ info script ]]
+
 # tkMOO-SE is Copyright (c) Stephen Alderman 2003-2006.
 # 
 # 	All Rights Reserved
@@ -51,20 +54,20 @@ if {[regexp {4\.1(a|b).} $tk_patchLevel]} {
     exit 1
 }
 
-source "db.tcl"
-source "client.tcl"
-source "modules.tcl"
-source "bindings.tcl"
-source "default.tcl"
-source "history.tcl"
-source "help.tcl"
-source "fonts.tcl"
-source "colours.tcl"
-source "window.tcl"
-source "io.tcl"
-source "util.tcl"
-source "worlds.tcl"
-source "edit.tcl"
+source [ file join $home "db.tcl" ]
+source [ file join $home "client.tcl" ]
+source [ file join $home "modules.tcl" ]
+source [ file join $home "bindings.tcl" ]
+source [ file join $home "default.tcl" ]
+source [ file join $home "history.tcl" ]
+source [ file join $home "help.tcl" ]
+source [ file join $home "fonts.tcl" ]
+source [ file join $home "colours.tcl" ]
+source [ file join $home "window.tcl" ]
+source [ file join $home "io.tcl" ]
+source [ file join $home "util.tcl" ]
+source [ file join $home "worlds.tcl" ]
+source [ file join $home "edit.tcl" ]
 
 
 proc initapi.rcfile {} {
@@ -119,31 +122,31 @@ if { ($rcfile != "") && [file readable $rcfile] } {
 window.buildWindow
 #
 #
-source "ui.tcl"
-source "request.tcl"
-source "imagedata.tcl"
-source "xmcp11.tcl"
-source "mcp.tcl"
-source "desktop.tcl"
-source "whiteboard.tcl"
-source "localedit.tcl"
-source "tkmootag.tcl"
-source "logging.tcl"
-source "hashhash_edit.tcl"
-source "mail.tcl"
-source "chess.tcl"
-source "macmoose.tcl"
-source "edittriggers.tcl"
+source [ file join $home "ui.tcl" ]
+source [ file join $home "request.tcl" ]
+source [ file join $home "imagedata.tcl" ]
+source [ file join $home "xmcp11.tcl" ]
+source [ file join $home "mcp.tcl" ]
+source [ file join $home "desktop.tcl" ]
+source [ file join $home "whiteboard.tcl" ]
+source [ file join $home "localedit.tcl" ]
+source [ file join $home "tkmootag.tcl" ]
+source [ file join $home "logging.tcl" ]
+source [ file join $home "hashhash_edit.tcl" ]
+source [ file join $home "mail.tcl" ]
+source [ file join $home "chess.tcl" ]
+source [ file join $home "macmoose.tcl" ]
+source [ file join $home "edittriggers.tcl" ]
 
 window.menu_tools_add "@paste selection" {window.paste_selection}
 #
 #
-source "who.tcl"
-source "open.tcl"
-source "preferences.tcl"
-source "colourchooser.tcl"
-source "fontchooser.tcl"
-source "plugin.tcl"
+source [ file join $home "who.tcl" ]
+source [ file join $home "open.tcl" ]
+source [ file join $home "preferences.tcl" ]
+source [ file join $home "colourchooser.tcl" ]
+source [ file join $home "fontchooser.tcl" ]
+source [ file join $home "plugin.tcl" ]
 
 set main_host		""
 set main_port		""

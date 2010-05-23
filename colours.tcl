@@ -17,14 +17,14 @@ set colourdb_colours(magenta)	"#ff00ff"
 set colourdb_colours(cyan)	"#00ffff"
 
 proc colourdb.get colour {
-    global colourdb_colours
-    set col ""
-    catch { set col $colourdb_colours($colour) };
-    if { $col == "" } {
-	puts "colourdb.get, colour '$colour' unknown"
-	set col black
-    }
-    return $col
+	global colourdb_colours
+	set col ""
+	catch { set col $colourdb_colours($colour) };
+	if { $col == "" } {
+		puts "colourdb.get, colour '$colour' unknown"
+		set col black
+	}
+	return $col
 }
 #
 #
