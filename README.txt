@@ -3,6 +3,12 @@ some additions from tkmoo-se < http://sourceforge.net/projects/tkmoo-se/ >.  It
 attempts to update most of the UI elements to the ttk widget set so they look
 and act like it's 2002 instead of 1995.  Baby steps, right?
 
+I've added in tkmoo-SE's giant collection of approximately every plugin ever,
+and started a couple new ones of my own.  In general, this is borrowed and
+plundered from several sources, often second- or third- hand.  I hope to
+document this better as I pare it down to what will eventually actually be part
+of it.
+
 There are some known issues, and like all forks of tkmoo-light, it had a giant
 flurry of activity once and since then is basically unmaintained.  You're
 welcome to use it, and pull requests are encouraged.  Bug reports are certainly
