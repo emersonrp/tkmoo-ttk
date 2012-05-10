@@ -1,5 +1,5 @@
-tkmoo-ttk is a fork of tkmoo-light < http://www.awns.com/tkMOO-light > with
-some additions from tkmoo-se < http://sourceforge.net/projects/tkmoo-se/ >.  It
+tkmoo-ttk is a fork of tkmoo-light <http://www.awns.com/tkMOO-light> with
+some additions from tkmoo-se <http://sourceforge.net/projects/tkmoo-se/>.  It
 attempts to update most of the UI elements to the ttk widget set so they look
 and act like it's 2002 instead of 1995.  Baby steps, right?
 
@@ -8,6 +8,11 @@ and started a couple new ones of my own.  In general, this is borrowed and
 plundered from several sources, often second- or third- hand.  I hope to
 document this better as I pare it down to what will eventually actually be part
 of it.
+
+The extra plugins and various experiments and hacks require a few more packages
+than the original tkMOO-light did, the mmedia plugin in particular wanting Img,
+snack, and snackogg.  If installing those is problematic, remove
+plugins/mmedia.tcl.  The hope is eventually to make that a little cleaner.
 
 There are some known issues, and like all forks of tkmoo-light, it had a giant
 flurry of activity once and since then is basically unmaintained.  You're
