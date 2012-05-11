@@ -110,7 +110,7 @@ source [ file join $home "open.tcl" ]
 source [ file join $home "preferences.tcl" ]
 source [ file join $home "colourchooser.tcl" ]
 source [ file join $home "fontchooser.tcl" ]
-source [ file join $home "plugin.tcl" ]
+source [ file join $home "plugins.tcl" ]
 
 set main_host        ""
 set main_port        ""
