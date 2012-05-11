@@ -273,7 +273,7 @@ proc client.login_dialog { uid pwd } {
 }
 
 proc client.default_settings {} {
-    global tcl_platform window_binding window_fonts client_echo
+    global window_binding window_fonts client_echo
 
     set font(proportional) plain
     set font(fixedwidth)   fixedwidth
@@ -313,7 +313,7 @@ proc client.set_bindings {} {
 }
 
 proc client.connect_world world {
-    global window_binding window_fonts tcl_platform client_echo
+    global window_binding window_fonts client_echo
 
 
     set session [client.new_session]
@@ -416,9 +416,5 @@ proc client.update {} {
 proc client.exit {} {
     client.stop
     destroy .
-
-    global tcl_platform
-    if { $tcl_platform(platform) == "windows" } {
-        exit
-    }
+    exit
 }

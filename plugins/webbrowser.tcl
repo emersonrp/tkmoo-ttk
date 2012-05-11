@@ -261,17 +261,6 @@ proc webbrowser.is_available {} {
     return 1
 }
 
-proc webbrowser.random {range} {
-  global webbrowser_ran
-  set webbrowser_ran [expr ($webbrowser_ran * 9301 + 49297) % 233280]
-  set rv [expr int($range * ($webbrowser_ran / double(233280)))]
-  return $rv
-}
-
-# use native random if available
-global tcl_version
-if { $tcl_version >= 8.0 } {
 proc webbrowser.random range {
     return [expr int(rand() * $range)]
-}
 }

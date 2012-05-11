@@ -313,31 +313,18 @@ proc edittriggers.outgoing line {
 
 
 proc edittriggers.preferred_file {} {
-    global tcl_platform env tkmooLibrary
+    global env tkmooLibrary
     set file triggers.tkm
 
     set dirs {}
-    switch $tcl_platform(platform) {
-        windows {
-            if { [info exists env(TKMOO_LIB_DIR)] } {
-                lappend dirs [file join $env(TKMOO_LIB_DIR)]
-            }
-            if { [info exists env(HOME)] } {
-                lappend dirs [file join $env(HOME) tkmoo]
-            }
-            lappend dirs [file join $tkmooLibrary]
-        }
-        unix -
-        default {
-            if { [info exists env(TKMOO_LIB_DIR)] } {
-                lappend dirs [file join $env(TKMOO_LIB_DIR)]
-            }
-            if { [info exists env(HOME)] } {
-                lappend dirs [file join $env(HOME) .tkMOO-lite]
-            }
-            lappend dirs [file join $tkmooLibrary]
-        }
+    if { [info exists env(TKMOO_LIB_DIR)] } {
+        lappend dirs [file join $env(TKMOO_LIB_DIR)]
     }
+    if { [info exists env(HOME)] } {
+        lappend dirs [file join $env(HOME) tkmoo]
+        lappend dirs [file join $env(HOME) .tkMOO-lite]
+    }
+    lappend dirs [file join $tkmooLibrary]
 
     foreach dir $dirs {
         if { [file exists $dir] &&
@@ -351,23 +338,13 @@ proc edittriggers.preferred_file {} {
 }
 
 proc edittriggers.file {} {
-    global tkmooLibrary tcl_platform env
-
+    global tkmooLibrary
 
     set f triggers.tkm
     set files {}
 
-    switch $tcl_platform(platform) {
-        windows {
-            lappend files [file join [pwd] $f]
-            lappend files [edittriggers.preferred_file]
-        }
-        unix -
-        default {
-            lappend files [file join [pwd] $f]
-            lappend files [edittriggers.preferred_file]
-        }
-    }
+    lappend files [file join [pwd] $f]
+    lappend files [edittriggers.preferred_file]
 
     foreach file $files {
         if { [file exists $file] } {

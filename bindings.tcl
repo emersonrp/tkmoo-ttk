@@ -33,7 +33,6 @@ proc bindings.set emulate {
 
 ###
 #
-
 set bindings_db(Text:emacs:<Left>)         { ui.left_char %W }
 set bindings_db(Text:emacs:<Right>)         { ui.right_char %W }
 set bindings_db(Text:emacs:<Down>)         { ui.down_line %W }
@@ -96,9 +95,7 @@ set bindings_db(Entry:macintosh:<Command-a>) [bind Entry <Control-slash>]
 set bindings_db(.input:macintosh:<Command-Home>) { ui.page_top .output }
 set bindings_db(.input:macintosh:<Command-End>) { ui.page_end .output }
 
-if { $tcl_platform(platform) == "windows" } {
-    set bindings_db(.:default:<Alt-F4>)     { client.exit }
-}
+set bindings_db(.:default:<Alt-F4>)     { client.exit }
 
 
 set bindings_db(.input:default:<Tab>) { window.dabbrev; break }
@@ -138,21 +135,13 @@ set bindings_db(.input:default:<Shift-Return>)     { tkTextInsert .input "\n"; b
 set bindings_db(.input:default:<Control-Up>)     "[bind Text <Up>]; break"
 set bindings_db(.input:default:<Control-Down>)     "[bind Text <Down>]; break"
 
+set bindings_db(.output:default:<Control-v>)       { ui.paste_selection .input;  focus .input }
 
-if { ($tcl_platform(platform) == "windows") } {
-
-    set modifier(windows) Control
-
-    set bindings_db(.output:default:<$modifier($tcl_platform(platform))-v>)       { ui.paste_selection .input;  focus .input }
-
-    set bindings_db(.output:default:<1>)    { focus .output }
-    set bindings_db(.output:default:<Button1-ButtonRelease>) {
-        set sel ""
-        catch { set sel [selection get -displayof .output] }
-        if { "x$sel" == "x" } {
-            focus .input
-        }
+set bindings_db(.output:default:<1>)    { focus .output }
+set bindings_db(.output:default:<Button1-ButtonRelease>) {
+    set sel ""
+    catch { set sel [selection get -displayof .output] }
+    if { "x$sel" == "x" } {
+        focus .input
     }
 }
-#
-#

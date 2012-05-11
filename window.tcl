@@ -75,11 +75,7 @@ set window_input_size_display 1
 set window_close_state disabled
 
 proc window.hidemargin menu {
-    global tcl_platform
-    if { $tcl_platform(platform) == "windows" } {
-        return
-    }
-    if { ([util.eight] == 1) && ([$menu type end] != "separator") } {
+    if { [$menu type end] != "separator" } {
         $menu entryconfigure end -hidemargin 1
     }
 }
@@ -565,7 +561,6 @@ proc window.do_disconnect {} {
 }
 
 proc window.post_connect {} {
-    global tcl_platform
     set menu .menu.connections
 
     global window_close_state
@@ -898,10 +893,7 @@ proc window.buildWindow {} {
 
     window.configure_help_menu
 
-    global tcl_platform
-    if { $tcl_platform(platform) == "windows" } {
-        frame .canyon -bd 2 -height 2 -relief sunken
-    }
+    frame .canyon -bd 2 -height 2 -relief sunken
 
     text .output \
         -cursor {} \
@@ -961,17 +953,10 @@ proc window.buildWindow {} {
 }
 
 proc window.accel str {
-    global tcl_platform
     return $str
 }
 
 proc window.focus win {
-    global tcl_platform
-    if {
-        $tcl_platform(platform) == "windows"
-    } {
-        after idle raise [winfo toplevel $win]
-    }
     focus $win
 }
 
@@ -1124,11 +1109,7 @@ proc window.really_repack {} {
         pack $sidebar -side right -fill y -in .
     }
 
-    global tcl_platform
-    if { $tcl_platform(platform) == "windows" } {
-        pack .canyon -side top -fill x -in .
-    }
-
+    pack .canyon -side top -fill x -in .
     pack .scrollbar -side right -fill y -in .
     pack .output -side bottom -fill both -expand on -in .
 

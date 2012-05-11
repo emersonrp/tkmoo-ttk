@@ -59,15 +59,6 @@ proc util.buildtime {} {
     return $tkmooBuildTime
 }
 
-proc util.eight {} {
-    global tcl_version
-    if { $tcl_version >= 8.0 } {
-        return 1
-    }
-    return 0
-}
-
-
 proc util.slice { list { n 0 } } {
     set tmp {}
     foreach item $list {

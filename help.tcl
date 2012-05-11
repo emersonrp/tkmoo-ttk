@@ -67,10 +67,8 @@ proc help.show subject {
         $h.t delete 1.0 end
     }
 
-    if { [util.eight] == 1 } {
-        $h.t tag configure help_paragraph \
-        -lmargin1 10p -lmargin2 10p -rmargin 10p
-    }
+    $h.t tag configure help_paragraph \
+    -lmargin1 10p -lmargin2 10p -rmargin 10p
 
     set help_CR 0
 

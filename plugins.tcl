@@ -1,31 +1,17 @@
 proc plugin.plugins_directories {} {
     set home [ file dirname [ info script ]]
 
-    global tkmooLibrary tcl_platform env
+    global tkmooLibrary env
     set dirs {}
-    switch $tcl_platform(platform) {
-        windows {
-            lappend dirs [file join $home plugins]
-            if { [info exists env(TKMOO_LIB_DIR)] } {
-                lappend dirs [file join $env(TKMOO_LIB_DIR) plugins]
-            }
-            if { [info exists env(HOME)] } {
-                lappend dirs [file join $env(HOME) tkmoo plugins]
-            }
-            lappend dirs [file join $tkmooLibrary plugins]
-        }
-        unix -
-        default {
-            lappend dirs [file join $home plugins]
-            if { [info exists env(TKMOO_LIB_DIR)] } {
-                lappend dirs [file join $env(TKMOO_LIB_DIR) plugins]
-            }
-            if { [info exists env(HOME)] } {
-                lappend dirs [file join $env(HOME) .tkMOO-lite plugins]
-            }
-            lappend dirs [file join $tkmooLibrary plugins]
-        }
+    lappend dirs [file join $home plugins]
+    if { [info exists env(TKMOO_LIB_DIR)] } {
+        lappend dirs [file join $env(TKMOO_LIB_DIR) plugins]
     }
+    if { [info exists env(HOME)] } {
+        lappend dirs [file join $env(HOME) tkmoo plugins]
+        lappend dirs [file join $env(HOME) .tkMOO-lite plugins]
+    }
+    lappend dirs [file join $tkmooLibrary plugins]
 }
 
 proc plugin.plugins_dir {} {

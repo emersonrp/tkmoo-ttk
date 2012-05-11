@@ -5,7 +5,6 @@ proc default.default {} {
 }
 
 proc default.options {} {
-    global tcl_platform
     option add *Text.background #f0f0f0 userDefault
     option add *Entry.background #d3b6b6 userDefault
     option add *desktopBackground #d9d9d9 userDefault

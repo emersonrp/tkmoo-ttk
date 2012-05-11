@@ -76,19 +76,8 @@ proc rose2.destroy {} {
     }
 }
 
-proc rose2.random {range} {
-  global rose2_ran
-  set rose2_ran [expr ($rose2_ran * 9301 + 49297) % 233280]
-  set rv [expr int($range * ($rose2_ran / double(233280)))]
-  return $rv
-}
-
-# use native random if available
-global tcl_version
-if { $tcl_version >= 8.0 } {
 proc rose2.random range {
     return [expr int(rand() * $range)]
-}
 }
 
 proc rose2.start {} {

@@ -37,30 +37,19 @@ source [ file join $home "edit.tcl" ]
 
 
 proc initapi.rcfile {} {
-    global tcl_platform env
+    global env
 
     set files {}
-    switch $tcl_platform(platform) {
-        windows {
-            lappend files [file join [pwd] tkmoo.res]
-            if { [info exists env(TKMOO_LIB_DIR)] } {
-                lappend files [file join $env(TKMOO_LIB_DIR) tkmoo tkmoo.res]
-            }
-            if { [info exists env(HOME)] } {
-                lappend files [file join $env(HOME) tkmoo tkmoo.res]
-            }
-        }
-        unix -
-        default {
-            lappend files [file join [pwd] .tkmoorc]
-            if { [info exists env(TKMOO_LIB_DIR)] } {
-                    lappend files [file join $env(TKMOO_LIB_DIR) .tkmoorc]
-            }
-            if { [info exists env(HOME)] } {
-                    lappend files [file join $env(HOME) .tkmoorc]
-            }
-        }
+    lappend files [file join [pwd] tkmoo.res]
+    if { [info exists env(TKMOO_LIB_DIR)] } {
+        lappend files [file join $env(TKMOO_LIB_DIR) tkmoo tkmoo.res]
+        lappend files [file join $env(TKMOO_LIB_DIR) .tkmoorc]
     }
+    if { [info exists env(HOME)] } {
+        lappend files [file join $env(HOME) tkmoo tkmoo.res]
+        lappend files [file join $env(HOME) .tkmoorc]
+    }
+    lappend files [file join [pwd] .tkmoorc]
 
     foreach file $files {
         if { [file exists $file] } {
@@ -103,9 +92,9 @@ source [ file join $home "plugins.tcl" ]
 
 set main_host        ""
 set main_port        ""
-set main_login        ""
+set main_login       ""
 set main_password    ""
-set main_script        ""
+set main_script      ""
 
 set main_usage "Usage: tkmoo \[-dir <dir>\] \[host \[port 23\]\]
        tkmoo \[-dir <dir>\] -world <world>
@@ -154,9 +143,8 @@ client.start
 
 if { ($main_error_str == "") && [info exists main_arg(-f)] } {
 
-
     if { ($main_arg(-f) == [worlds.file]) ||
-     ($main_arg(-f) == [edittriggers.file]) } {
+         ($main_arg(-f) == [edittriggers.file]) } {
         append main_error_str "Error: can't read file '$main_arg(-f)'\n"
         append main_error_str "$main_usage"
     } elseif { [file isfile $main_arg(-f)] &&
@@ -168,9 +156,9 @@ if { ($main_error_str == "") && [info exists main_arg(-f)] } {
         global worlds_worlds
         set worlds_worlds [concat $worlds_worlds $worlds]
 
-    foreach world $worlds {
-        worlds.set $world "MustNotSave" 1
-    }
+        foreach world $worlds {
+            worlds.set $world "MustNotSave" 1
+        }
 
         if { $worlds != {} } {
             client.connect_world [lindex $worlds 0]
@@ -267,5 +255,3 @@ proc stacktrace {} {
     }
     return $stack
 }
-
-
