@@ -14,7 +14,7 @@ proc window.open_list {} {
         window.place_nice $o
 
         wm iconname $o "Worlds"
-        wm title $o "tkMOO-SE v$tkmooVersion: Worlds"
+        wm title $o "tkMOO-ttk v$tkmooVersion: Worlds"
 
         listbox $o.lb \
             -height 15 -width 35 \

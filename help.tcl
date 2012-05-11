@@ -1,7 +1,3 @@
-
-#
-#
-
 set help_subject_list {
     Starting
     Preferences
@@ -293,8 +289,8 @@ set help_subject(Resources) {
 
     {preformatted
     Platform    Location
-    UNIX     $HOME/.tkmoo-serc
-    MAC     $env(PREF_FOLDER):tkmoo-se.RC
+    UNIX        $HOME/.tkmoorc
+    MAC         $env(PREF_FOLDER):tkmoo.RC
     WINDOWS     $HOME\tkmoo\tkmoo.res
     }
 }
@@ -350,18 +346,21 @@ set help_subject(Worlds) {
 }
 
 set help_subject(About) {
-    {title About tkMOO-SE}
-    {header About tkMOO-SE}
+    {title About tkMOO-ttk}
+    {header About tkMOO-ttk}
 
     Version number {version foo} , built {buildtime foo} .
     {paragraph foo}
 
-    tkMOO-SE is Copyright (c) Stephen Alderman
-    2003-2006.  All Rights Reserved.
+    tkMOO-ttk is Copyright (c)
+      Andrew Wilson 1994,1995,1996,1997,1998,1999,2000,2001,2002
+      Stephen Alderman 2003-2006.
+      Russell Pickett 2010-2012
+    All Rights Reserved.
 
     {paragraph foo}
 
-    {bold tkMOO-SE} is the development of the tkMOO-light client
+    {bold tkMOO-ttk} is the development of the tkMOO-light client
     which brang mudding kicking and screaming into the early
     eighties. The client supports a ric graphical user interface,
     and can be extended to implement a wide range of new tools
@@ -376,9 +375,9 @@ set help_subject(About) {
     {link http://www.awns.com/tkMOO-light/}
 
     {paragraph foo}
-    {header Technical Support for tkMOO-SE}
+    {header Technical Support for tkMOO-ttk}
 
-    If you need technical support for tkMOO-SE or would like to
+    If you need technical support for tkMOO-ttk or would like to
     see some new features designed for the client then please
     contact <info@awns.com>.
 }
@@ -387,7 +386,7 @@ set help_subject(Starting) {
     {title Getting Started}
     {header Getting Started}
 
-    {bold tkMOO-SE} is a powerful and flexible piece of software
+    {bold tkMOO-ttk} is a powerful and flexible piece of software
     which you can customise to suit your own needs.  Don't be put off
     by the complexity and all those menu-options because getting
     started is really easy.
@@ -396,7 +395,7 @@ set help_subject(Starting) {
     {header Choosing a world}
 
     The first thing you'll need to do is choose a mud you'd like
-    to visit.  tkMOO-SE lets you define {bold worlds} , each of
+    to visit.  tkMOO-ttk lets you define {bold worlds} , each of
     which details the host name and port number of a mud server as
     well as a username, a password and an optional login script.
     You can also define how the client looks when you're in that
@@ -439,7 +438,7 @@ set help_subject(Starting) {
     {paragraph foo}
     {header Customising the connection}
 
-    tkMOO-SE has been developed to work well with MOO and Cold
+    tkMOO-ttk has been developed to work well with MOO and Cold
     mud servers.  Both of these types of server expect you to log
     in by typing {bold connect <username> <password>} .  When the
     client connects to a server its normal behaviour is to send
@@ -939,7 +938,7 @@ set help_subject(Manners) {
 set help_subject(LICENCE) {
     {title LICENCE}
     {header LICENCE}
-tkMOO-SE is Copyright (c) Stephen Alderman 2003-2006.
+tkMOO-ttk is Copyright (c) Stephen Alderman 2003-2006.
 
     All Rights Reserved.
 

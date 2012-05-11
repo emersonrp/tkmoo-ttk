@@ -12,7 +12,7 @@ proc worlds.start {} {
 
     set current [worlds.get_current]
     if { $current != "" } {
-    worlds.unset $current IsCurrentWorld
+        worlds.unset $current IsCurrentWorld
     }
 
     set file [worlds.file]

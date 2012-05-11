@@ -463,7 +463,7 @@ proc window.client_connected {} {
     }
     window.reconfigure_fonts
 
-    catch { wm title . "[worlds.get [worlds.get_current] Name] - tkMOO-SE v$tkmooVersion" }
+    catch { wm title . "[worlds.get [worlds.get_current] Name] - tkMOO-ttk v$tkmooVersion" }
     catch { wm iconname . [worlds.get [worlds.get_current] Name] }
 
     set lm      [worlds.get_generic 0 {} {} ParagraphLMargin]
@@ -561,8 +561,8 @@ proc window.client_disconnected {} {
     global window_close_state tkmooVersion
     set window_close_state disabled
     window.displayCR "Connection closed" window_highlight
-    wm title    . "tkMOO-SE v$tkmooVersion"
-    wm iconname . "tkMOO-SE v$tkmooVersion"
+    wm title    . "tkMOO-ttk v$tkmooVersion"
+    wm iconname . "tkMOO-ttk v$tkmooVersion"
     window.clear_status_if_present
     window.menu_preferences_state "Edit Preferences..." disabled
     .menu.connections entryconfigure "Close" -state disabled
@@ -867,8 +867,8 @@ proc window.buildWindow {} {
     global tkmooVersion client_mode client_echo \
         window_activity_flash_colour window_flash
 
-    wm title    . "tkMOO-SE v$tkmooVersion"
-    wm iconname . "tkMOO-SE v$tkmooVersion"
+    wm title    . "tkMOO-ttk v$tkmooVersion"
+    wm iconname . "tkMOO-ttk v$tkmooVersion"
     . configure -bd 0
 
     window.configure_for_macintosh .

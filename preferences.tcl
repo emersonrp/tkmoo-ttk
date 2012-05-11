@@ -5,7 +5,7 @@ window.menu_preferences_state "Edit Preferences..." disabled
 proc preferences.save {} {
     preferences.copy_middle_to_world
     global tkmooVersion
-    catch { wm title . "[worlds.get [worlds.get_current] Name] - tkMOO-SE v$tkmooVersion" }
+    catch { wm title . "[worlds.get [worlds.get_current] Name] - tkMOO-ttk v$tkmooVersion" }
     catch { wm iconname . [worlds.get [worlds.get_current] Name] }
 
     preferences.clean_up
@@ -91,7 +91,7 @@ proc preferences.create_edit_window {} {
 
     window.place_nice $pw
 
-    preferences.set_title "tkMOO-SE v$tkmooVersion: Preferences"
+    preferences.set_title "tkMOO-ttk v$tkmooVersion: Preferences"
 
     set notebook $pw.notebook
     grid [ttk::notebook $notebook] -row 0 -sticky nsew

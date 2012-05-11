@@ -20,7 +20,5 @@ welcome to use it, and pull requests are encouraged.  Bug reports are certainly
 welcome, but the vicissitudes of my attention mean there's no guarantee of me
 fixing them.  Can't hurt to ask, though.
 
-Licensing is murky:  tkMOO-light was released under a fairly lenient license,
-but with commercial-use prohibition.  tkMOO-SE was released under the GPL,
-which might not be compatible with the original license.  I've included each
-one here, in order to muddle the situation even further.
+tkmoo-ttk is released under the same license as tkMOO-light; please read
+LICENCE.txt for details.

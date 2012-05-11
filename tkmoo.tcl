@@ -5,52 +5,23 @@ set tkmooLibrary build/.tkMOO-lite
 
 set home [ file dirname [ info script ]]
 
-# tkMOO-SE is Copyright (c) Stephen Alderman 2003-2006.
-#
-#     All Rights Reserved
-#
-# Permission is hereby granted to use this software for private, academic
-# and non-commercial use. No commercial or profitable use of this
-# software may be made without the prior permission of the author.
-#
-# THIS SOFTWARE IS PROVIDED BY ANDREW WILSON ``AS IS'' AND ANY
-# EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-# THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-# PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL ANDREW WILSON BE LIABLE
-# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
-# OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
-# BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-# OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-# EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-set tkmooVersion "0.3"
-set tkmooBuildTime "Fri Jun 23 18:05:05 GMT 2006"
-
+set tkmooVersion "tkmoo-ttk 0.1"
 if { $tcl_platform(platform) == "macintosh" } {
     catch { console hide }
 }
 #
 #
 
-if {[info tclversion] < 7.5} {
-    puts stderr "This application requires Tcl 7.5 or better.  This is only Tcl [info tclversion]"
-    exit 1
-}
-if {[regexp {7\.5(a|b).} [info patchlevel]]} {
-    puts stderr "This application will not work with a Tcl alpha or beta release"
+if {[info tclversion] < 8.5} {
+    puts stderr "This application requires Tcl 8.5 or better.  This is only Tcl [info tclversion]"
     exit 1
 }
 if {![info exists tk_version]} {
     puts stderr "This application requires Tk"
     exit 1
 }
-if {$tk_version < 4.1} {
-    puts stderr "This application requires Tk 4.1 or better.  This is only Tk $tk_version"
-    exit 1
-}
-if {[regexp {4\.1(a|b).} $tk_patchLevel]} {
-    puts stderr "This application will not work with a Tk alpha or beta release"
+if {$tk_version < 8.5} {
+    puts stderr "This application requires Tk 8.5 or better.  This is only Tk $tk_version"
     exit 1
 }
 
@@ -76,9 +47,9 @@ proc initapi.rcfile {} {
     set files {}
     switch $tcl_platform(platform) {
         macintosh {
-            lappend files [file join [pwd] tkmoo-se.RC]
+            lappend files [file join [pwd] tkmoo.RC]
         if { [info exists env(PREF_FOLDER)] } {
-                lappend files [file join $env(PREF_FOLDER) tkmoo-se.RC]
+                lappend files [file join $env(PREF_FOLDER) tkmoo.RC]
         }
         }
         windows {
@@ -92,12 +63,12 @@ proc initapi.rcfile {} {
         }
         unix -
         default {
-            lappend files [file join [pwd] .tkmoo-serc]
+            lappend files [file join [pwd] .tkmoorc]
         if { [info exists env(TKMOO_LIB_DIR)] } {
-                lappend files [file join $env(TKMOO_LIB_DIR) .tkmoo-serc]
+                lappend files [file join $env(TKMOO_LIB_DIR) .tkmoorc]
         }
         if { [info exists env(HOME)] } {
-                lappend files [file join $env(HOME) .tkmoo-serc]
+                lappend files [file join $env(HOME) .tkmoorc]
         }
         }
     }
