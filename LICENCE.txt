@@ -1,5 +1,7 @@
 tkMOO-light is Copyright (c) Andrew Wilson 1994,1995,1996,1997,1998,
                                            1999,2000,2001
+tkMOO-se is Copyright(c) Stephen Alderman 2003-2006 
+tkMOO-ttk is Copyright(c) Russell Pickett 2010-2012
 
 	All Rights Reserved
 
