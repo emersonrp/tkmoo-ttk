@@ -21,12 +21,12 @@ proc bindings.set emulate {
     return
     }
     foreach binding [array names bindings_db] {
-    if { [regexp {^(.*):(.*):(.*)} $binding _ widget emul event] == 1 } {
-        if { ($emulate == $emul) } {
-            set bindings_db($widget:default:$event) [bind $widget $event]
-            catch { bind $widget $event $bindings_db($binding) }
+        if { [regexp {^(.*):(.*):(.*)} $binding _ widget emul event] == 1 } {
+            if { ($emulate == $emul) } {
+                set bindings_db($widget:default:$event) [bind $widget $event]
+                catch { bind $widget $event $bindings_db($binding) }
+            }
         }
-    }
     }
     set window_binding $emulate
 }

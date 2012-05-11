@@ -1,5 +1,3 @@
-
-
 proc client.new_session {} {
     set session [util.unique_id session]
     return $session
@@ -32,9 +30,9 @@ proc client.register {plugin event {priority 50}} {
 
     global client_plugin_location
     if { [info procs plugin.plugin_location] != {} } {
-    set client_plugin_location($plugin) [plugin.plugin_location]
+        set client_plugin_location($plugin) [plugin.plugin_location]
     } {
-    set client_plugin_location($plugin) INTERNAL
+        set client_plugin_location($plugin) INTERNAL
     }
 }
 
@@ -75,8 +73,6 @@ proc client.compare_priority { a b } {
     }
     return $rv
 }
-
-
 
 proc client.reconfigure_fonts {} {
     window.reconfigure_fonts
@@ -123,15 +119,14 @@ proc client.client_disconnected {} {
     client.destroy_session $session
 }
 
-
 proc client.incoming-character event {
     global modules_module_deferred
     if { [modules.incoming $event] == $modules_module_deferred } {
-    if { [io.noCR] == 1 } {
-            window.display [db.get $event line]
-    } {
-            window.displayCR [db.get $event line]
-    }
+        if { [io.noCR] == 1 } {
+                window.display [db.get $event line]
+        } {
+                window.displayCR [db.get $event line]
+        }
     }
 }
 
@@ -292,9 +287,9 @@ proc client.default_settings {} {
 
     set echo [worlds.get_generic on {} {} LocalEcho]
     if { [string tolower $echo] == "on" } {
-    client.set_echo 1
+        client.set_echo 1
     } {
-    client.set_echo 0
+        client.set_echo 0
     }
 }
 

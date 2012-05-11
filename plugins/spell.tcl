@@ -244,18 +244,18 @@ proc spell.do_marks {} {
 proc spell.can.look {} {
     global spell_can
     if { [info exists spell_can(look)] } {
-    return $spell_can(look)
+        return $spell_can(look)
     }
     set LOOK "look"
     set look ""
     catch {
-    set look [open "| $LOOK"]
-    close $look
+        set look [open "| $LOOK"]
+        close $look
     }
     if { $look == "" } {
-    set spell_can(look) 0
+        set spell_can(look) 0
     } {
-    set spell_can(look) 1
+        set spell_can(look) 1
     }
     return $spell_can(look)
 }
