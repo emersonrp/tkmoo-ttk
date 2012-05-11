@@ -82,12 +82,6 @@ proc preferences.create_edit_window {} {
     catch {destroy $pw}
 
     toplevel $pw
-    window.configure_for_macintosh $pw
-
-    global tcl_platform
-    if { $tcl_platform(platform) != "macintosh" } {
-        bind $pw <Escape> "preferences.clean_up; destroy $pw"
-    }
 
     window.place_nice $pw
 
@@ -383,24 +377,15 @@ proc preferences.populate_frame {world category page} {
                      ([string tolower [lindex $file_access 1]] == "readonly") } {
                         set get_proc tk_getOpenFile
                     }
-                    global tcl_platform
                     ttk::button $f.b -text "Choose" \
                         -command "
                             set file \[$f.e get\]
-                            if { \$tcl_platform(platform) == \"macintosh\" &&
-                                 ! \[file exists \$file\] } {
-                                set filename \[$get_proc -filetypes $filetypes \
-                                    -parent .preferences \
-                                    -title \"$display\" \
-                                    \]
-                            } {
-                                set filename \[$get_proc -filetypes $filetypes \
-                                    -initialdir \[file dirname \$file\] \
-                                    -initialfile \[file tail \$file\] \
-                                    -parent .preferences \
-                                    -title \"$display\" \
-                                    \]
-                            }
+                            set filename \[$get_proc -filetypes $filetypes \
+                                -initialdir \[file dirname \$file\] \
+                                -initialfile \[file tail \$file\] \
+                                -parent .preferences \
+                                -title \"$display\" \
+                                \]
                             if { \$filename != \"\" } {
                                 set preferences_v($world,$directive) \$filename
                                 $f.e delete 0 end
@@ -454,10 +439,6 @@ proc preferences.populate_frame {world category page} {
                         -borderwidth 1 \
                         -relief sunken \
                         -width 30 -height 2
-                    global tcl_platform
-                    if { $tcl_platform(platform) == "macintosh" } {
-                        $f.t configure -highlightbackground #cccccc
-                    }
                     bind $f.t <KeyRelease> "set preferences_v($world,$directive) \[preferences.text_list_to_str \[preferences.get_text $f.t\]\]"
                     bind $f.t <Leave> "set preferences_v($world,$directive) \[preferences.text_list_to_str \[preferences.get_text $f.t\]\]"
                     set v $default
@@ -622,11 +603,7 @@ preferences.register window {General Settings} {
         {display "Disconnection script"} }
 }
 
-if { $tcl_platform(platform) == "macintosh" } {
-    set default_binding "macintosh"
-} {
-    set default_binding "windows"
-}
+set default_binding "windows"
 
 preferences.register window {General Settings} [list    \
     [list {directive KeyBindings}    \

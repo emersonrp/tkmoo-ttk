@@ -15,7 +15,6 @@ proc colourchooser.create { {callback ""} hexcolour } {
     if { [winfo exists $c] == 0 } {
 
         toplevel $c
-        window.configure_for_macintosh $c
 
         window.bind_escape_to_destroy $c
 

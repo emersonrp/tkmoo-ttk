@@ -5,7 +5,6 @@ proc edit.start {} {
     global edit_functions
     set edit_functions [list]
     window.menu_tools_add "Editor" {edit.SCedit {} {} {} "Editor" "Editor"}
-    window.menu_tools_macintosh_accelerator Editor "Cmd+E"
     global edit_file_matches
     set edit_file_matches [list]
 }
@@ -297,7 +296,6 @@ proc edit.create { title icon_title } {
     set edit_toolbars($w) {}
 
     toplevel $w
-    window.configure_for_macintosh $w
 
     window.place_nice $w
 
@@ -318,21 +316,18 @@ proc edit.create { title icon_title } {
         -label "Open..." \
         -underline 0 \
         -command "edit.fs_open $w"
-    window.menu_macintosh_accelerator $w.controls.file "Open..." "Cmd+O"
     window.hidemargin $w.controls.file
 
     $w.controls.file add command \
         -label "Save" \
         -underline 0 \
         -command "edit.fs_save $w"
-    window.menu_macintosh_accelerator $w.controls.file "Save" "Cmd+S"
     window.hidemargin $w.controls.file
 
     $w.controls.file add command \
         -label "Save As..." \
         -underline 5 \
         -command "edit.fs_save_as $w"
-    window.menu_macintosh_accelerator $w.controls.file "Save As..." "Cmd+A"
     window.hidemargin $w.controls.file
 
     $w.controls.file add separator
@@ -342,21 +337,18 @@ proc edit.create { title icon_title } {
         -label "Send" \
         -underline 1 \
         -command "edit.send $w"
-    window.menu_macintosh_accelerator $w.controls.file "Send" "Cmd+E"
     window.hidemargin $w.controls.file
 
     $w.controls.file add command \
         -label "Send and Close" \
         -underline 10 \
         -command "edit.send_and_close $w"
-    window.menu_macintosh_accelerator $w.controls.file "Send and Close" "Cmd+L"
     window.hidemargin $w.controls.file
 
     $w.controls.file add command \
         -label "Close" \
         -underline 0 \
         -command "edit.destroy $w"
-    window.menu_macintosh_accelerator $w.controls.file "Close" "Cmd+Q"
     window.hidemargin $w.controls.file
 
     $w.controls add cascade -label "Edit" -menu $w.controls.edit \
@@ -441,8 +433,6 @@ proc edit.repack editor {
         eval pack forget $slaves
     }
 
-    window.pack_for_macintosh $editor
-
     foreach toolbar $edit_toolbars($editor) {
         pack $editor.$toolbar -side top -fill x
     }
@@ -512,7 +502,6 @@ proc edit.find w {
 
     if { [winfo exists $f] == 0 } {
         toplevel $f
-        window.configure_for_macintosh $f
 
         window.bind_escape_to_destroy $f
 
@@ -626,7 +615,6 @@ proc edit.goto w {
 
     if { [winfo exists $f] == 0 } {
         toplevel $f
-        window.configure_for_macintosh $f
 
         window.bind_escape_to_destroy $f
 

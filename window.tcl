@@ -47,60 +47,7 @@ proc window.set_geometry {win geometry} {
 }
 
 proc window.bind_escape_to_destroy win {
-    global tcl_platform
-    if { $tcl_platform(platform) != "macintosh" } {
-        bind $win <Escape> "destroy $win"
-    }
-}
-
-proc window.configure_for_macintosh win {
-    global tcl_platform
-    if { $tcl_platform(platform) != "macintosh" } {
-        return;
-    }
-       set mac _macintosh
-       if { $win != "." } {
-        set mac "._macintosh"
-    }
-
-    set topline "_topline"
-    set cell "_cell"
-    if { [winfo exists $win$mac$topline] } {
-        return;
-    }
-
-    frame $win$mac$topline \
-        -height 1 \
-        -borderwidth 0 \
-        -highlightthickness 0 \
-        -background #000000
-    frame $win$mac$cell \
-        -height 14 \
-        -borderwidth 0 \
-        -highlightthickness 0 \
-        -background #cccccc
-    window.pack_for_macintosh $win
-}
-
-proc window.pack_for_macintosh win {
-    global tcl_platform
-    if { $tcl_platform(platform) != "macintosh" } {
-        return;
-    }
-    set mac _macintosh
-    if { $win != "." } {
-        set mac "._macintosh"
-    }
-    set topline "_topline"
-    set cell "_cell"
-    pack $win$mac$cell \
-        -side bottom \
-        -fill x \
-        -in $win
-    pack $win$mac$topline \
-        -side bottom \
-        -fill x \
-        -in $win
+    bind $win <Escape> "destroy $win"
 }
 
 proc window.iconify {} {
@@ -130,9 +77,6 @@ set window_close_state disabled
 proc window.hidemargin menu {
     global tcl_platform
     if { $tcl_platform(platform) == "windows" } {
-        return
-    }
-    if { $tcl_platform(platform) == "macintosh" } {
         return
     }
     if { ([util.eight] == 1) && ([$menu type end] != "separator") } {
@@ -580,7 +524,6 @@ proc window.do_open {} {
 proc window.open {} {
     catch { destroy .open };
     toplevel .open
-    window.configure_for_macintosh .open
 
     window.place_nice .open
 
@@ -633,33 +576,25 @@ proc window.post_connect {} {
         -label "Worlds..." \
         -underline 0 \
         -command "window.open_list"
-        window.menu_macintosh_accelerator $menu "Worlds..." "Cmd+W"
         window.hidemargin $menu
 
     $menu add command \
         -label "Open..." \
         -underline 0 \
         -command "window.open"
-        window.menu_macintosh_accelerator $menu "Open..." "Cmd+O"
         window.hidemargin $menu
 
     $menu add command \
         -label "Close" \
         -underline 0 \
         -command "window.do_disconnect"
-        window.menu_macintosh_accelerator $menu Close "Cmd+K"
         window.hidemargin $menu
 
     $menu entryconfigure "Close" -state $window_close_state
 
     $menu add separator
 
-    if { $tcl_platform(platform) == "macintosh" } {
-        set hints [split 0123456789 {}]
-    } {
-        set hints [split 0123456789abdefghijklmnprstuvxyz {}]
-    }
-
+    set hints [split 0123456789abdefghijklmnprstuvxyz {}]
 
     foreach world [worlds.worlds] {
     if { $world != 0 } {
@@ -669,16 +604,11 @@ proc window.post_connect {} {
         if { [string tolower $shortlist] == "on" } {
             set hint [lindex $hints 0]
             set hints [lrange $hints 1 end]
-        if { $tcl_platform(platform) == "macintosh" } {
-            set label [worlds.get $world Name]
-        } {
             set label "$hint. [worlds.get $world Name]"
-        }
                 $menu add command \
                     -label $label \
                     -underline 0 \
                     -command "client.connect_world $world"
-                window.menu_macintosh_accelerator $menu end "Cmd+$hint"
                 window.hidemargin $menu
         }
     }
@@ -725,11 +655,6 @@ proc window.menu_help_state { text state } {
     .menu.help entryconfigure $text -state $state
 }
 
-proc window.menu_tools_macintosh_accelerator { text accelerator } {
-    set menu .menu.tools
-    window.menu_macintosh_accelerator $menu $text $accelerator
-}
-
 proc window.menu_tools_add { text {command ""} } {
     set menu .menu.tools
     if { $text == "SEPARATOR" } {
@@ -752,11 +677,6 @@ proc window.menu_tools_add_cascade { text cascade } {
 
 proc window.menu_tools_state { text state } {
     .menu.tools entryconfigure $text -state $state
-}
-
-proc window.menu_preferences_macintosh_accelerator { text accelerator } {
-    set menu .menu.prefs
-    window.menu_macintosh_accelerator $menu $text $accelerator
 }
 
 proc window.menu_preferences_state { text state } {
@@ -795,13 +715,6 @@ proc window.resize_event {} {
     set window_resize_event_task [after idle {
         window.save_layout
     }]
-}
-
-proc window.menu_macintosh_accelerator {menu pattern accelerator} {
-    global tcl_platform
-    if { $tcl_platform(platform) == "macintosh" } {
-        $menu entryconfigure $pattern -accelerator $accelerator
-    }
 }
 
 ###
@@ -871,8 +784,6 @@ proc window.buildWindow {} {
     wm iconname . "tkMOO-ttk v$tkmooVersion"
     . configure -bd 0
 
-    window.configure_for_macintosh .
-
     menu .menu -bd 0 -tearoff 0 -relief raised -bd 1
     . configure -menu .menu
 
@@ -899,7 +810,6 @@ proc window.buildWindow {} {
     .menu.edit add command -label "Clear" \
         -underline 1 \
         -command "ui.clear_screen .output"
-    window.menu_macintosh_accelerator .menu.edit Clear "Cmd+L"
     window.hidemargin .menu.edit
 
     .menu add cascade -label "Tools" -underline 0 -menu .menu.tools
@@ -1052,17 +962,13 @@ proc window.buildWindow {} {
 
 proc window.accel str {
     global tcl_platform
-    if { $str == "Ctrl" && $tcl_platform(platform) == "macintosh" } {
-        return "Cmd"
-    }
     return $str
 }
 
 proc window.focus win {
     global tcl_platform
     if {
-        $tcl_platform(platform) == "windows" ||
-        $tcl_platform(platform) == "macintosh"
+        $tcl_platform(platform) == "windows"
     } {
         after idle raise [winfo toplevel $win]
     }
@@ -1202,9 +1108,6 @@ proc window.really_repack {} {
     }
 
     . configure -menu .menu
-
-    window.configure_for_macintosh .
-    window.pack_for_macintosh .
 
     if { [window.get_statusbar_flag] == 1 } {
         foreach statusbar $window_statusbars {

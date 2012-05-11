@@ -15,7 +15,6 @@ proc macmoose.start {} {
     $macmenu add command -label "Help" -command macmoose.help
     $macmenu add command -label "Send Mail" -command macmoose.mail
     window.menu_tools_add_cascade "MacMOOSE" .macmoosemenu
-    window.menu_tools_macintosh_accelerator "MacMOOSE" "Cmd+M"
 
     preferences.register macmoose {Out of Band} {
         { {directive MacMOOSELogging}
@@ -561,7 +560,6 @@ proc macmoose.add_script_or_property browser {
 
     catch { destroy $w; db.drop $w }
     toplevel $w
-    window.configure_for_macintosh $w
 
     window.place_nice $w
 
@@ -639,12 +637,6 @@ proc macmoose.add_script_or_property browser {
     ttk::button $w.controls.a -text "Add" -command "macmoose.add_dialog $w"
     ttk::button $w.controls.c -text "Close" -command "destroy $w; db.drop $w"
 
-    global tcl_platform
-    if { $tcl_platform(platform) != "macintosh" } {
-        bind $w <Escape> "destroy $w; db.drop $w"
-    }
-
-
     pack $w.controls.a $w.controls.c -side left \
         -padx 5 -pady 5
     pack $w.controls -side bottom
@@ -677,7 +669,6 @@ proc macmoose.post_object_menu browser {
     $browser.cmenu.object add command -label "Close" \
     -underline 0 \
         -command "macmoose.destroy_browser $browser"
-    window.menu_macintosh_accelerator $browser.cmenu.object "Close" "Cmd+Q"
     window.hidemargin $browser.cmenu.object
 }
 
@@ -692,7 +683,6 @@ proc macmoose.create_browser {} {
 
     catch { destroy $browser; db.drop $browser }
     toplevel $browser
-    window.configure_for_macintosh $browser
 
     window.place_nice $browser
 
@@ -717,12 +707,10 @@ proc macmoose.create_browser {} {
     $browser.cmenu.tools add command -label "Add Script/Property" \
         -underline 0 \
         -command "macmoose.add_script_or_property $browser"
-    window.menu_macintosh_accelerator $browser.cmenu.tools "Add Script/Property" "Cmd+A"
     window.hidemargin $browser.cmenu.tools
     $browser.cmenu.tools add command -label "New Browser" \
         -underline 0 \
         -command macmoose.create_browser
-    window.menu_macintosh_accelerator $browser.cmenu.tools "New Browser" "Cmd+N"
     window.hidemargin $browser.cmenu.tools
 
     ttk::frame $browser.toolbar

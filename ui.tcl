@@ -9,11 +9,6 @@ proc ui.page_end win {
 
 proc ui.paste_selection win {
     tk_textPaste $win
-    global tcl_platform
-    if { $tcl_platform(platform) == "macintosh" &&
-         "$win" == ".input" } {
-        focus .input
-    }
 }
 
 proc ui.delete_selection win {

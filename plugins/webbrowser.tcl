@@ -25,7 +25,7 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # A wrapper for the webbrowser on your platform.  On startup it'll
-# look for an executable (on UNIX and Macintosh platforms), which
+# look for an executable (on UNIX and MacOS X platforms), which
 # you can override using the 'Webbrowser executable' directive in
 # the Preferences Editor.  The plugin provies the Tcl procedure:
 #
@@ -75,10 +75,6 @@ proc webbrowser.start {} {
         webbrowser.find_executable
     }
 
-    if { $tcl_platform(platform) == "macintosh" } {
-    package require Tclapplescript
-    }
-
     edittriggers.register_alias webbrowser.open webbrowser.open
     edittriggers.register_alias webbrowser.is_available webbrowser.is_available
 
@@ -118,7 +114,6 @@ proc webbrowser.find_executable {} {
 
     # no file, no comment...
     set webbrowser_executable(unix) ""
-    set webbrowser_executable(macintosh) ""
 
     # look for the executable, on unix and w95.  provide a list of
     # possible locations, pick the first one which really exists,
@@ -126,7 +121,7 @@ proc webbrowser.find_executable {} {
 
     if { $tcl_platform(platform) == "unix" } {
         set executable [worlds.get_generic "" {} {} WebbrowserExecutable]
-    lappend possibles $executable
+        lappend possibles $executable
 
         # path elements separated by colon
         set paths [split $env(PATH) ":"]
@@ -147,18 +142,12 @@ proc webbrowser.find_executable {} {
 
     foreach possible $possibles {
         if { [file exists $possible] && [file executable $possible] } {
-        set webbrowser_executable(unix) $possible
-        break
+            set webbrowser_executable(unix) $possible
+            break
+            }
         }
-    }
     }
 
-    if { $tcl_platform(platform) == "macintosh" } {
-    set possible [worlds.get_generic "" {} {} WebbrowserExecutable]
-    if { [file exists $possible] && [file executable $possible] } {
-        set webbrowser_executable(macintosh) $possible
-        }
-    }
 }
 
 proc webbrowser.open url {
@@ -166,22 +155,22 @@ proc webbrowser.open url {
        webbrowser_redirector_port webbrowser_redirector_key
 
     if { $tcl_platform(platform) == "windows" } {
-    if { [string tolower $tcl_platform(os)] == "windows nt" } {
-        # Windows NT
-        # protect '&' if it appears in the URL
-        regsub -all "&" $url "\"\&\"" url
-        if { [catch {exec -- cmd /c start "$url" &} error] } {
-        window.displayCR "Error opening URL $url" window_highlight
-        window.displayCR "$error" window_highlight
+        if { [string tolower $tcl_platform(os)] == "windows nt" } {
+            # Windows NT
+            # protect '&' if it appears in the URL
+            regsub -all "&" $url "\"\&\"" url
+            if { [catch {exec -- cmd /c start "$url" &} error] } {
+            window.displayCR "Error opening URL $url" window_highlight
+            window.displayCR "$error" window_highlight
+            }
+        } {
+            # Windows 9x
+            if { [catch {exec -- start "$url" &} error] } {
+            window.displayCR "Error opening URL $url" window_highlight
+            window.displayCR "$error" window_highlight
+            }
         }
-    } {
-        # Windows 9x
-        if { [catch {exec -- start "$url" &} error] } {
-        window.displayCR "Error opening URL $url" window_highlight
-        window.displayCR "$error" window_highlight
-        }
-    }
-    return
+        return
     }
 
     if { $tcl_platform(platform) == "unix" &&
@@ -219,23 +208,6 @@ proc webbrowser.open url {
         }
     }
     return
-    }
-
-    if { $tcl_platform(platform) == "macintosh" } {
-    if { $webbrowser_executable(macintosh) == "" } {
-        return
-    }
-    if { [catch {
-                 AppleScript execute "
-                 tell application \"$webbrowser_executable(macintosh)\"
-             activate
-                     geturl \"$url\"
-                 end tell
-             "
-          } error] } {
-        window.displayCR "Error opening URL $url" window_highlight
-        window.displayCR "$error" window_highlight
-    }
     }
 
 }

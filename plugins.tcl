@@ -1,21 +1,9 @@
-
-
 proc plugin.plugins_directories {} {
     set home [ file dirname [ info script ]]
 
     global tkmooLibrary tcl_platform env
     set dirs {}
     switch $tcl_platform(platform) {
-        macintosh {
-            lappend dirs [file join $home plugins]
-            if { [info exists env(TKMOO_LIB_DIR)] } {
-                lappend dirs [file join $env(TKMOO_LIB_DIR) plugins]
-            }
-            if { [info exists env(PREF_FOLDER)] } {
-                lappend dirs [file join $env(PREF_FOLDER) plugins]
-            }
-            lappend dirs [file join $tkmooLibrary plugins]
-        }
         windows {
             lappend dirs [file join $home plugins]
             if { [info exists env(TKMOO_LIB_DIR)] } {
@@ -48,7 +36,6 @@ proc plugin.plugins_dir {} {
             return $dir
         }
     }
-
     return ""
 }
 
@@ -101,20 +88,18 @@ proc registry.start {} {
     global tcl_platform
 
     if { $tcl_platform(platform) != "windows" } {
-    return;
+        return;
     }
 
     if { [catch { package require registry 1.0 }] } {
-    return;
+        return;
     }
-
 
     registry set {HKEY_CLASSES_ROOT\.tkm} {} TkmWorld sz
     registry set {HKEY_CLASSES_ROOT\.tkm} {Content Type} "application/x-tkm" sz
     registry set {HKEY_CLASSES_ROOT\TkmWorld}
     registry set {HKEY_CLASSES_ROOT\TkmWorld} {} TkmWorld sz
     registry set {HKEY_CLASSES_ROOT\TkmWorld\DefaultIcon}
-
 
     set executable [info nameofexecutable]
 
@@ -136,5 +121,3 @@ proc registry.start {} {
     {notepad.exe "%1"} sz
 
 }
-#
-#

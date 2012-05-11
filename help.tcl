@@ -28,7 +28,6 @@ proc help.show subject {
     set h .help
     if { [winfo exists $h] == 0 } {
         toplevel $h
-        window.configure_for_macintosh $h
 
         window.bind_escape_to_destroy $h
 
@@ -331,17 +330,13 @@ set help_subject(Worlds) {
     from the {bold first} matching file is used by the client:
 
     {preformatted
-    On UNIX        ./.worlds.tkm
-                $HOME/.tkMOO-lite/.worlds.tkm
-                $tkmooLibrary/.worlds.tkm
+    On UNIX / MacOS X        ./.worlds.tkm
+                             $HOME/.tkMOO-lite/.worlds.tkm
+                             $tkmooLibrary/.worlds.tkm
 
-    On Macintosh    worlds.tkm
-                $env(PREF_FOLDER):worlds.tkm
-                $tkmooLibrary:worlds.tkm
-
-    On Windows        .\worlds.tkm
-                $HOME\tkmoo\worlds.tkm
-                $tkmooLibrary\worlds.tkm
+    On Windows               .\worlds.tkm
+                             $HOME\tkmoo\worlds.tkm
+                             $tkmooLibrary\worlds.tkm
     }
 }
 

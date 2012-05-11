@@ -26,12 +26,6 @@ proc fontchooser.create { {callback ""} font } {
 
     if { [winfo exists $fc] == 0 } {
         toplevel $fc -bd 0 -highlightthickness 0
-        window.configure_for_macintosh $fc
-
-        global tcl_platform
-        if { $tcl_platform(platform) != "macintosh" } {
-            bind $fc <Escape> "fontchooser.destroy $fc"
-        }
 
         window.place_nice $fc
 

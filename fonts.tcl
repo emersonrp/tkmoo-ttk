@@ -17,15 +17,6 @@ switch $tcl_platform(platform) {
             set fonts_header     {helvetica 10 bold italic}
         }
     }
-    macintosh {
-        if { $tk_version >= 8.0 } {
-            set fonts_plain      {helvetica 12}
-            set fonts_fixedwidth {courier 12}
-            set fonts_bold       {helvetica 12 bold}
-            set fonts_italic     {helvetica 12 italic}
-            set fonts_header     {helvetica 14 bold italic}
-        }
-    }
     unix - default {
         if { $tk_version >= 8.0 } {
             set fonts_plain      {helvetica 12}

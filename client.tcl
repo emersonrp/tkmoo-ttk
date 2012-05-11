@@ -237,8 +237,6 @@ proc client.login_dialog { uid pwd } {
     catch { destroy $l }
     toplevel $l
 
-    window.configure_for_macintosh $l
-
     window.bind_escape_to_destroy $l
 
     window.place_nice $l
@@ -417,18 +415,7 @@ proc client.update {} {
 
 proc client.exit {} {
     client.stop
-    #
-    #
-    #
-    #
-    #
-    global tcl_platform
-    if { $tcl_platform(platform) == "macintosh" } {
-        after 1500 destroy .
-    } {
     destroy .
-    }
-
 
     global tcl_platform
     if { $tcl_platform(platform) == "windows" } {

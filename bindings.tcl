@@ -139,11 +139,8 @@ set bindings_db(.input:default:<Control-Up>)     "[bind Text <Up>]; break"
 set bindings_db(.input:default:<Control-Down>)     "[bind Text <Down>]; break"
 
 
-if { ($tcl_platform(platform) == "macintosh") ||
-     ($tcl_platform(platform) == "windows") } {
+if { ($tcl_platform(platform) == "windows") } {
 
-
-    set modifier(macintosh) Command
     set modifier(windows) Control
 
     set bindings_db(.output:default:<$modifier($tcl_platform(platform))-v>)       { ui.paste_selection .input;  focus .input }

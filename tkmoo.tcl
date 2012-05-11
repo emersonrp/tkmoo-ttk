@@ -6,11 +6,6 @@ set tkmooLibrary build/.tkMOO-lite
 set home [ file dirname [ info script ]]
 
 set tkmooVersion "tkmoo-ttk 0.1"
-if { $tcl_platform(platform) == "macintosh" } {
-    catch { console hide }
-}
-#
-#
 
 if {[info tclversion] < 8.5} {
     puts stderr "This application requires Tcl 8.5 or better.  This is only Tcl [info tclversion]"
@@ -46,30 +41,24 @@ proc initapi.rcfile {} {
 
     set files {}
     switch $tcl_platform(platform) {
-        macintosh {
-            lappend files [file join [pwd] tkmoo.RC]
-        if { [info exists env(PREF_FOLDER)] } {
-                lappend files [file join $env(PREF_FOLDER) tkmoo.RC]
-        }
-        }
         windows {
-        lappend files [file join [pwd] tkmoo.res]
-        if { [info exists env(TKMOO_LIB_DIR)] } {
+            lappend files [file join [pwd] tkmoo.res]
+            if { [info exists env(TKMOO_LIB_DIR)] } {
                 lappend files [file join $env(TKMOO_LIB_DIR) tkmoo tkmoo.res]
-        }
-        if { [info exists env(HOME)] } {
+            }
+            if { [info exists env(HOME)] } {
                 lappend files [file join $env(HOME) tkmoo tkmoo.res]
-        }
+            }
         }
         unix -
         default {
             lappend files [file join [pwd] .tkmoorc]
-        if { [info exists env(TKMOO_LIB_DIR)] } {
-                lappend files [file join $env(TKMOO_LIB_DIR) .tkmoorc]
-        }
-        if { [info exists env(HOME)] } {
-                lappend files [file join $env(HOME) .tkmoorc]
-        }
+            if { [info exists env(TKMOO_LIB_DIR)] } {
+                    lappend files [file join $env(TKMOO_LIB_DIR) .tkmoorc]
+            }
+            if { [info exists env(HOME)] } {
+                    lappend files [file join $env(HOME) .tkmoorc]
+            }
         }
     }
 

@@ -102,16 +102,6 @@ proc worlds.preferred_file {} {
     global tcl_platform env tkmooLibrary
     set dirs {}
     switch $tcl_platform(platform) {
-    macintosh {
-        set file worlds.tkm
-            if { [info exists env(TKMOO_LIB_DIR)] } {
-                lappend dirs [file join $env(TKMOO_LIB_DIR)]
-            }
-            if { [info exists env(PREF_FOLDER)] } {
-                lappend dirs [file join $env(PREF_FOLDER)]
-            }
-            lappend dirs [file join $tkmooLibrary]
-    }
     windows {
         set file worlds.tkm
             if { [info exists env(TKMOO_LIB_DIR)] } {
@@ -153,10 +143,6 @@ proc worlds.file {} {
     set files {}
 
     switch $tcl_platform(platform) {
-    macintosh {
-            lappend files [file join [pwd] worlds.tkm]
-            lappend files [worlds.preferred_file]
-    }
     windows {
             lappend files [file join [pwd] worlds.tkm]
             lappend files [worlds.preferred_file]

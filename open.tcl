@@ -7,7 +7,6 @@ proc window.open_list {} {
     if { [winfo exists $o] == 0 } {
 
         toplevel $o
-        window.configure_for_macintosh $o
 
         window.bind_escape_to_destroy $o
 

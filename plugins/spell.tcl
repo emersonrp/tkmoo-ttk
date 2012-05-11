@@ -32,7 +32,7 @@
 #
 # On UNIX systems words are checked against the standard dictionary
 # in /usr/dict/words by using the UNIX 'look' command.  On windows
-# and macintosh systems you can use any plain-text file of words as
+# systems you can use any plain-text file of words as
 # a dictionary (Main Dictionary in the Preferences Editor, no need
 # to define a value for this if you're using UNIX).  Unrecognised
 # words are displayed on the command line in red.  Right-clicking on
@@ -362,10 +362,6 @@ proc spell.check.windows text {
         lappend wrong $word
     }
     return $wrong
-}
-
-proc spell.check.macintosh text {
-    return [spell.check.windows $text]
 }
 
 proc spell.check text {

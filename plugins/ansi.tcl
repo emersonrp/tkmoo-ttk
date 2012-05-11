@@ -476,7 +476,6 @@ proc ansi.callback {} {
     catch { destroy $c }
 
     toplevel $c
-    window.configure_for_macintosh $c
 
     window.place_nice $c
     window.bind_escape_to_destroy $c

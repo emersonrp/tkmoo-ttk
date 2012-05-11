@@ -125,12 +125,6 @@ proc logging.create_dialog {} {
     set l .logging
     catch { destroy $l }
     toplevel $l
-    window.configure_for_macintosh $l
-
-    global tcl_platform
-    if { $tcl_platform(platform) != "macintosh" } {
-        bind $l <Escape> "logging.close_dialog"
-    }
 
     window.place_nice $l
 

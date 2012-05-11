@@ -5,9 +5,6 @@ client.register edittriggers incoming
 client.register edittriggers outgoing
 
 window.menu_tools_add "Edit Triggers" edittriggers.edit
-window.menu_tools_macintosh_accelerator "Edit Triggers" "Cmd+T"
-
-
 
 set edittriggers_default_triggers {## An example triggers.tkm file.  Comment lines begin with the '#'
 ## character.  This file can contain valid TCL commands and procedure
@@ -321,32 +318,23 @@ proc edittriggers.preferred_file {} {
 
     set dirs {}
     switch $tcl_platform(platform) {
-        macintosh {
-        if { [info exists env(TKMOO_LIB_DIR)] } {
-            lappend dirs [file join $env(TKMOO_LIB_DIR)]
-        }
-        if { [info exists env(PREF_FOLDER)] } {
-                lappend dirs [file join $env(PREF_FOLDER)]
-        }
-            lappend dirs [file join $tkmooLibrary]
-        }
         windows {
-        if { [info exists env(TKMOO_LIB_DIR)] } {
-            lappend dirs [file join $env(TKMOO_LIB_DIR)]
-        }
-        if { [info exists env(HOME)] } {
-            lappend dirs [file join $env(HOME) tkmoo]
-        }
+            if { [info exists env(TKMOO_LIB_DIR)] } {
+                lappend dirs [file join $env(TKMOO_LIB_DIR)]
+            }
+            if { [info exists env(HOME)] } {
+                lappend dirs [file join $env(HOME) tkmoo]
+            }
             lappend dirs [file join $tkmooLibrary]
         }
         unix -
         default {
-        if { [info exists env(TKMOO_LIB_DIR)] } {
-            lappend dirs [file join $env(TKMOO_LIB_DIR)]
-        }
-        if { [info exists env(HOME)] } {
-            lappend dirs [file join $env(HOME) .tkMOO-lite]
-        }
+            if { [info exists env(TKMOO_LIB_DIR)] } {
+                lappend dirs [file join $env(TKMOO_LIB_DIR)]
+            }
+            if { [info exists env(HOME)] } {
+                lappend dirs [file join $env(HOME) .tkMOO-lite]
+            }
             lappend dirs [file join $tkmooLibrary]
         }
     }
@@ -370,10 +358,6 @@ proc edittriggers.file {} {
     set files {}
 
     switch $tcl_platform(platform) {
-        macintosh {
-            lappend files [file join [pwd] $f]
-            lappend files [edittriggers.preferred_file]
-        }
         windows {
             lappend files [file join [pwd] $f]
             lappend files [edittriggers.preferred_file]
