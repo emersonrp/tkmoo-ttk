@@ -2,31 +2,31 @@
 client.register desktop start
 proc desktop.start {} {
      global desktop_width desktop_height desktop_margin \
-	 desktop_icon_width desktop_icon_height desktop_text_width \
-	 desktop_data desktop_synthesise_callbacks
+     desktop_icon_width desktop_icon_height desktop_text_width \
+     desktop_data desktop_synthesise_callbacks
 
-    set desktop_width	500
-    set desktop_height	600
-    set desktop_margin	10
-    set desktop_icon_width	48
-    set desktop_icon_height	48
-    set desktop_text_width	100
+    set desktop_width    500
+    set desktop_height    600
+    set desktop_margin    10
+    set desktop_icon_width    48
+    set desktop_icon_height    48
+    set desktop_text_width    100
 
     array set desktop_data "
-        folder,bitmap 	dir.xbm
-        note,bitmap 	text.xbm
-        thing,bitmap 	burst.xbm
-        player,bitmap 	person.xbm
+        folder,bitmap     dir.xbm
+        note,bitmap     text.xbm
+        thing,bitmap     burst.xbm
+        player,bitmap     person.xbm
         whiteboard,bitmap image2.xbm
-        folder,fg 	[colourdb.get darkgreen]
-        note,fg 	[colourdb.get blue]
-        thing,fg 	[colourdb.get white]
-        player,fg 	[colourdb.get red]
-        whiteboard,fg 	[colourdb.get orange]
-        folder,drag 	idir.xbm
-        note,drag 	idaho.xbm
-        thing,drag 	iburst.xbm
-        player,drag 	iperson.xbm
+        folder,fg     [colourdb.get darkgreen]
+        note,fg     [colourdb.get blue]
+        thing,fg     [colourdb.get white]
+        player,fg     [colourdb.get red]
+        whiteboard,fg     [colourdb.get orange]
+        folder,drag     idir.xbm
+        note,drag     idaho.xbm
+        thing,drag     iburst.xbm
+        player,drag     iperson.xbm
         whiteboard,drag iimage2.xbm
     "
 
@@ -83,41 +83,41 @@ proc desktop.create { title object type } {
     set canvas $dt.frame.canvas
 
     canvas $canvas \
-	-background [option get . desktopBackground DesktopBackground] \
-	-relief flat \
+    -background [option get . desktopBackground DesktopBackground] \
+    -relief flat \
         -bd 0 -highlightthickness 0 \
-	-scrollregion { 0 0 500 800 } \
-	-width 500 -height 300 \
-	-yscrollcommand "$dt.frame.vscroll set" \
-	-xscrollcommand "$dt.frame.bottom.hscroll set" 
+    -scrollregion { 0 0 500 800 } \
+    -width 500 -height 300 \
+    -yscrollcommand "$dt.frame.vscroll set" \
+    -xscrollcommand "$dt.frame.bottom.hscroll set"
 
     scrollbar $dt.frame.vscroll -command "$canvas yview" \
-	-highlightthickness 0
+    -highlightthickness 0
 
     frame $dt.frame.bottom \
-	-bd 0 -highlightthickness 0
+    -bd 0 -highlightthickness 0
 
     frame $dt.frame.bottom.padding
 
     scrollbar $dt.frame.bottom.hscroll -command "$canvas xview" \
-	-highlightthickness 0 \
-	-orient horizontal
+    -highlightthickness 0 \
+    -orient horizontal
 
-	pack $dt.frame.bottom.padding -side right
-	pack $dt.frame.bottom.hscroll -side left -fill x -expand 1
+    pack $dt.frame.bottom.padding -side right
+    pack $dt.frame.bottom.hscroll -side left -fill x -expand 1
 
     pack $dt.frame.bottom -side bottom -fill x
     pack $dt.frame.vscroll -side right -fill y
 
-    bind $canvas <2>		"$canvas scan mark %x %y"
-    bind $canvas <B2-Motion>	"$canvas scan dragto %x %y"
+    bind $canvas <2>        "$canvas scan mark %x %y"
+    bind $canvas <B2-Motion>    "$canvas scan dragto %x %y"
 
     pack $canvas -expand yes -fill both
     pack $dt.frame -expand yes -fill both
 
     set desktop_current ""
 
-    draganddrop.set $canvas drop 1	
+    draganddrop.set $canvas drop 1
     set desktop_item_callback($canvas:objid) $object
 
     set desktop_item_callback($canvas:Drop) "@move that to this"
@@ -143,7 +143,7 @@ proc desktop.garbage_collect_icons dt {
     foreach name [array names desktop_item_callback] {
         catch {
             if { [regexp "^$dt.frame.canvas.(nt.*):objid" $name throwaway icon] == 1 } {
-	        destroy $dt.frame.canvas.$icon
+            destroy $dt.frame.canvas.$icon
             }
         }
         if { [regexp "^$dt.frame.canvas\\..*" $name throwaway] == 1 } {
@@ -160,14 +160,14 @@ proc desktop.garbage_collect_all dt {
 }
 
 proc desktop.destroy dt {
-    global desktop_desktop 
+    global desktop_desktop
 
     draganddrop.destroy $dt
     foreach foo [array names desktop_desktop] {
         if { $desktop_desktop($foo) == $dt } {
             io.outgoing "remove $foo from desk"
             unset desktop_desktop($foo)
-	    desktop.garbage_collect_all $dt
+        desktop.garbage_collect_all $dt
             break
         }
     }
@@ -176,9 +176,9 @@ proc desktop.destroy dt {
 proc desktop.item { type text x y obj dt eOne eThree eDrop eDropped ePick } {
     global tkmooLibrary \
         desktop_data \
-	desktop_item_callback \
-	desktop_icon_width desktop_icon_height desktop_text_width \
-	image_data
+    desktop_item_callback \
+    desktop_icon_width desktop_icon_height desktop_text_width \
+    image_data
 
     set new_tag [util.unique_id "nt"]
 
@@ -186,9 +186,9 @@ proc desktop.item { type text x y obj dt eOne eThree eDrop eDropped ePick } {
     set graphic $canvas.$new_tag
 
     canvas $graphic \
-	-background [option get . desktopBackground DesktopBackground] \
-	-width $desktop_icon_width -height $desktop_icon_height \
-        -highlightthickness 0 
+    -background [option get . desktopBackground DesktopBackground] \
+    -width $desktop_icon_width -height $desktop_icon_height \
+        -highlightthickness 0
 
 
     bindtags $graphic $graphic
@@ -196,28 +196,28 @@ proc desktop.item { type text x y obj dt eOne eThree eDrop eDropped ePick } {
     bind $graphic <1>                       "desktop.itemPick $dt %x %y %X %Y"
     bind $graphic <B1-Motion>               "desktop.itemDrag $dt %x %y %X %Y"
     bind $graphic <B1-ButtonRelease>        "desktop.itemDrop $dt %x %y %X %Y"
-    bind $graphic <Double-1>                "desktop.itemOpen $dt %x %y %X %Y" 
+    bind $graphic <Double-1>                "desktop.itemOpen $dt %x %y %X %Y"
     bind $graphic <Double-B3-ButtonRelease> "desktop.itemOpen3 $dt %x %y %X %Y"
 
     set i [image create bitmap \
-	-foreground $desktop_data($type,fg) \
-	-data $image_data($desktop_data($type,bitmap))]
+    -foreground $desktop_data($type,fg) \
+    -data $image_data($desktop_data($type,bitmap))]
     $graphic create image \
-	[expr int($desktop_icon_width/2)] [expr int($desktop_icon_height/2)] \
-	-image $i \
-	-tags "$new_tag object"
+    [expr int($desktop_icon_width/2)] [expr int($desktop_icon_height/2)] \
+    -image $i \
+    -tags "$new_tag object"
 
 
     set ex $x
     set wy [expr $y + 40]
     set nn [$canvas create window $ex $wy \
-	        -window $graphic \
-	        -anchor s]
+            -window $graphic \
+            -anchor s]
 
     $canvas create text $x $wy -text $text \
         -tags "$new_tag" -width $desktop_text_width \
-	-anchor n \
-	-justify center \
+    -anchor n \
+    -justify center \
         -font [fonts.plain]
 
     set desktop_item_callback($canvas:$nn) $graphic
@@ -225,15 +225,15 @@ proc desktop.item { type text x y obj dt eOne eThree eDrop eDropped ePick } {
     draganddrop.set $graphic drag 1
 
     if { $type == "folder" } {
-	draganddrop.set $graphic drop 1
+    draganddrop.set $graphic drop 1
     }
 
     if { $eDrop != "-" } {
-	draganddrop.set $graphic drop 1
+    draganddrop.set $graphic drop 1
     };
 
     if { $eDropped != "-" } {
-	draganddrop.set $graphic dropped 1
+    draganddrop.set $graphic dropped 1
     };
 
     set desktop_item_callback($graphic:Open1)   $eOne
@@ -274,8 +274,8 @@ proc desktop.itemOpen {dt x y X Y} {
     set cb "-"
     catch { set cb [desktop.get_callback $where Open1] }
     if { $cb != "-" } {
-	set objid $desktop_item_callback($where:objid)
-        set new_cb [desktop.build_callback $cb $objid THAT] 
+    set objid $desktop_item_callback($where:objid)
+        set new_cb [desktop.build_callback $cb $objid THAT]
         io.outgoing $new_cb
     }
 }
@@ -289,15 +289,15 @@ proc desktop.itemOpen3 {dt x y X Y} {
     catch { set cb [desktop.get_callback $where Open3] }
     if { $cb != "-" } {
         set objid $desktop_item_callback($where:objid)
-    	set new_cb [desktop.build_callback $cb $objid THAT]
-    	io.outgoing $new_cb
+        set new_cb [desktop.build_callback $cb $objid THAT]
+        io.outgoing $new_cb
     }
 }
 
 proc desktop.itemPick {dt x y X Y} {
     global desktop_lastX desktop_lastY desktop_current \
-	desktop_height desktop_width desktop_margin \
-	tkmooLibrary desktop_item_callback desktop_dragging
+    desktop_height desktop_width desktop_margin \
+    tkmooLibrary desktop_item_callback desktop_dragging
 
     set desktop_dragging 0
 
@@ -322,15 +322,15 @@ proc desktop.itemPick {dt x y X Y} {
 
 proc desktop.itemDrag {dt x y X Y} {
     global desktop_current \
-	desktop_width   \
-	desktop_item_callback desktop_data \
-	desktop_dragging \
-	tkmooLibrary 
+    desktop_width   \
+    desktop_item_callback desktop_data \
+    desktop_dragging \
+    tkmooLibrary
 
     if { $desktop_current == "" } { return }
 
     if { $desktop_dragging == 0 } {
-	set desktop_dragging 1
+    set desktop_dragging 1
         set where $desktop_current
         $where configure -cursor icon
     }
@@ -339,8 +339,8 @@ proc desktop.itemDrag {dt x y X Y} {
 
 proc desktop.itemDrop {dt x y X Y} {
     global desktop_current \
-	desktop_dragging \
-	desktop_item_callback
+    desktop_dragging \
+    desktop_item_callback
 
     set desktop_dragging 0
 
@@ -372,7 +372,7 @@ proc desktop.itemDrop {dt x y X Y} {
                 set old_location $desktop_item_callback($location:objid)
             }
 
-	    set check_list "$check_list $dobjid $iobjid $old_location"
+        set check_list "$check_list $dobjid $iobjid $old_location"
         }
 
     } {
@@ -397,16 +397,16 @@ proc desktop.itemDrop {dt x y X Y} {
             if { $cb != "-" } {
                 set new_cb [desktop.build_callback $cb $iobjid $dobjid]
                 io.outgoing $new_cb
-        
+
 
                 set old_location ""
                 if { [regexp {^(.*)\.nt} $desktop_current throwaway location] == 1 } {
                     set old_location $desktop_item_callback($location:objid)
                 }
-        
-	        set check_list "$check_list $dobjid $iobjid $old_location"
+
+            set check_list "$check_list $dobjid $iobjid $old_location"
             }
-	}
+    }
 
     } {
     }
@@ -432,9 +432,9 @@ proc desktop.SCdesktop { name type object parent location lines } {
         set dt $desktop_desktop($object)
 
         $dt.frame.canvas delete all
-	draganddrop.destroy $dt.frame.canvas
-	draganddrop.set $dt.frame.canvas drop 1
-	desktop.garbage_collect_icons $dt
+    draganddrop.destroy $dt.frame.canvas
+    draganddrop.set $dt.frame.canvas drop 1
+    desktop.garbage_collect_icons $dt
     } {
         set dt [desktop.create $name $object $type]
         set desktop_desktop($object) $dt
@@ -445,7 +445,7 @@ proc desktop.SCdesktop { name type object parent location lines } {
 
     set xxx -1
     set yyy -1
-    
+
     foreach line $lines {
         set xxx [expr int( ($xxx + 1) % 5)]
 
@@ -461,28 +461,28 @@ proc desktop.SCdesktop { name type object parent location lines } {
 
         catch {unset object_data}
 
-	array set object_data {
-	    location	""
-	    parent	""
-	    type	""
-	    name	""
-	    1		-
-	    drop	-
-	    dropped	-
-	    3		-
-	    pick	-
-	}
+    array set object_data {
+        location    ""
+        parent    ""
+        type    ""
+        name    ""
+        1        -
+        drop    -
+        dropped    -
+        3        -
+        pick    -
+    }
 
         util.populate_array object_data $line
 
-        set object	$object_data(object)
-        set name	$object_data(name)
-        set type	$object_data(type)
-        set xone	$object_data(1)
-        set xdrop	$object_data(drop)
-        set xdropped	$object_data(dropped)
-        set xthree	$object_data(3)
-        set xpick	$object_data(pick)
+        set object    $object_data(object)
+        set name    $object_data(name)
+        set type    $object_data(type)
+        set xone    $object_data(1)
+        set xdrop    $object_data(drop)
+        set xdropped    $object_data(dropped)
+        set xthree    $object_data(3)
+        set xpick    $object_data(pick)
 
         switch $type {
             note {
@@ -513,11 +513,11 @@ proc desktop.SCdesktop { name type object parent location lines } {
 
 proc desktop.synthesise_callback { type event } {
     array set callback {
-	Open1	-
-	Open3	-
-	Drop	-
-	Dropped	-
-	Pick	-
+    Open1    -
+    Open3    -
+    Drop    -
+    Dropped    -
+    Pick    -
     }
     switch $type {
         note {
@@ -528,7 +528,7 @@ proc desktop.synthesise_callback { type event } {
             set callback(Open1) "put this on desk"
             set callback(Drop) "@move that to this"
         }
-        whiteboard { 
+        whiteboard {
             set callback(Open1) "watch this"
             set callback(Open3) "ignore this"
         }
@@ -541,10 +541,10 @@ proc desktop.synthesise_callback { type event } {
             set callback(Drop) "@move that to this"
         }
         thing {
-        } 
+        }
         default {
-	    puts "desktop.synthesise_callback: Unknown type '$type'"
-        } 
+        puts "desktop.synthesise_callback: Unknown type '$type'"
+        }
     }
     return $callback($event)
 }
@@ -596,27 +596,27 @@ proc xmcp11.do_callback_desktop* {} {
 ###
 proc mcp.do_desktop-remove {} {
         if { [mcp.authenticated] == 1 } {
-        	desktop.SCremove [request.get current object]
+            desktop.SCremove [request.get current object]
         }
 }
 
 proc mcp.do_desktop* {} {
-	if { [mcp.authenticated] == 1 } {
-		request.set current mcp_multiline_procedure "desktop*"
-	}
+    if { [mcp.authenticated] == 1 } {
+        request.set current mcp_multiline_procedure "desktop*"
+    }
 }
 
 proc mcp.do_callback_desktop* {} {
-	set which [request.current]
-	set name     [request.get $which name]
-	set type     [request.get $which type]
-	set object   [request.get $which object]
-	set parent   [request.get $which parent]
-	set location [request.get $which location]
-	set lines    [request.get $which _lines]
+    set which [request.current]
+    set name     [request.get $which name]
+    set type     [request.get $which type]
+    set object   [request.get $which object]
+    set parent   [request.get $which parent]
+    set location [request.get $which location]
+    set lines    [request.get $which _lines]
 
-	set desktop [desktop.SCdesktop $name $type $object $parent \
-		$location $lines]
+    set desktop [desktop.SCdesktop $name $type $object $parent \
+        $location $lines]
         desktop.set_handler $desktop mcp
 }
 #

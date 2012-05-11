@@ -26,8 +26,8 @@
 # This plugin defines a new Macro.  Type '?' followed by a search-term
 # and the client will open a webbrowser containing the results from
 # a search on a popular search engine.  For example:
-# 
-#	?weather in boston
+#
+#    ?weather in boston
 #
 # Two new entries are added to the 'Special Forces' category of
 # the Preferences Editor.  The 'Use search-engines' check-box turns
@@ -40,11 +40,11 @@ client.register search_macro start 90
 
 proc search_macro.start {} {
     edittriggers.macro \
-	-regexp {^\?(.*)} \
-	-priority 55 \
-	-directive UseSearchEngines \
+    -regexp {^\?(.*)} \
+    -priority 55 \
+    -directive UseSearchEngines \
         -command {
-	    search_macro.do_search $m1
+        search_macro.do_search $m1
         }
 
     edittriggers.register_alias search_macro.de_chaff search_macro.de_chaff
@@ -70,7 +70,7 @@ proc search_macro.start {} {
         { {directive SearchEngine}
             {type choice-menu}
             {default google}
-	    {e-choices search_macro.engines}
+        {e-choices search_macro.engines}
             {display "Preferred search-engine"} }
     }
 }

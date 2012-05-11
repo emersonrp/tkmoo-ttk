@@ -1,18 +1,18 @@
 #
 #       tkMOO
 #       ~/.tkMOO-lite/plugins/client-info.tcl
-#	*** ALFA VERSION *** come here often !!!
+#    *** ALFA VERSION *** come here often !!!
 #
 #       v0.8
 #        
-#	This plugin implements the package "dns-com-vmoo-client" with
-#	the following messages:
+#    This plugin implements the package "dns-com-vmoo-client" with
+#    the following messages:
 #
-#		dns-com-vmoo-client-info
+#        dns-com-vmoo-client-info
 #
-#	It's missing "dns-com-vmoo-client-disconnect"
+#    It's missing "dns-com-vmoo-client-disconnect"
 #
-#	http://www.vmoo.com/support/moo/mcp-specs/#vgm-client
+#    http://www.vmoo.com/support/moo/mcp-specs/#vgm-client
 #
 
 client.register clientinfo start 55

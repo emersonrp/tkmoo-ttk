@@ -13,7 +13,7 @@ proc hashhash_edit.start {} {
             {type boolean}
             {default Off}
             {display "Allow ## editing"} }
-    } 
+    }
 }
 
 proc hashhash_edit.client_connected {} {
@@ -55,12 +55,12 @@ proc hashhash_edit.incoming event {
 
     if { $hashhash_edit_receiving == 1 } {
 
-	if { [string match "## endrecord" $line] == 1 } {
-	    set hashhash_edit_receiving 0
+    if { [string match "## endrecord" $line] == 1 } {
+        set hashhash_edit_receiving 0
             hashhash_edit.editor
             hashhash_edit.unset_header
             return [modules.module_ok]
-	}
+    }
 
         request.set current hashhash_edit_lines [concat [request.get current hashhash_edit_lines] [list $line]]
 

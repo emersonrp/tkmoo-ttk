@@ -1,6 +1,6 @@
 #
-#	tkMOO
-#	~/.tkMOO-lite/plugins/message.tcl
+#    tkMOO
+#    ~/.tkMOO-lite/plugins/message.tcl
 #
 
 # tkMOO-light is Copyright (c) Andrew Wilson 1994,1995,1996,1997,1998,1999.
@@ -28,9 +28,9 @@ client.register message start 60
 
 proc message.start {} {
     mcp21.register dns-com-awns-status 1.0 \
-	dns-com-awns-status message.dns_com_awns_status
+    dns-com-awns-status message.dns_com_awns_status
     mcp21.register dns-com-ben-tfstatus 1.0 \
-	dns-com-ben-tfstatus-update message.dns_com_ben_tfstatus_update
+    dns-com-ben-tfstatus-update message.dns_com_ben_tfstatus_update
 }
 
 proc message.dns_com_awns_status {} {

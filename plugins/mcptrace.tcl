@@ -37,7 +37,7 @@ proc mcptrace.start {} {
     global mcp21_authentication_key
 
     if { $mcp21_authentication_key == "" } {
-	return
+    return
     }
 
     set multiline 0

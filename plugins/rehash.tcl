@@ -72,13 +72,13 @@ proc rehash.start {} {
              # send everything after the '\' verbatim
              io.outgoing "$m1"
          }
-  
+
     edittriggers.macro \
         -regexp {^(.)([^ ]*)(.*)$} \
         -nocase \
         -directive UseRehashMacros \
         -command {
-            set commands [rehash.commands] 
+            set commands [rehash.commands]
             if { ($commands != {}) &&
                  ([lsearch -exact {\" \: \@ \` \; \' \! \| \- \.} $m1] == -1) &&
                  ([lsearch -exact $commands $m1$m2] == -1) } {
@@ -93,7 +93,7 @@ proc rehash.start {} {
             {type boolean}
             {default Off}
             {display "Use Rehash Macros"} }
-    } 
+    }
     rehash.zero_task
     rehash.set_cache_marks {} {} {}
 }
@@ -150,7 +150,7 @@ proc rehash.client_disconnected {} {
 proc rehash.handle_keyrelease {} {
     global rehash_task
     if { $rehash_task != 0 } {
-	after cancel $rehash_task
+    after cancel $rehash_task
     }
     set rehash_task [after 250 {rehash.do_marks;rehash.zero_task}]
 }
@@ -175,9 +175,9 @@ proc rehash.do_marks {} {
     # start with '"' which causes an 'unmatched quote in list' error
     # only whitespace (space, tab) terminates words.
 
-    if { ! [regexp {^([ 	]*)([^ 	]*)} $text _ whitespace first] } {
-	set first $text
-	set whitespace {}
+    if { ! [regexp {^([     ]*)([^     ]*)} $text _ whitespace first] } {
+    set first $text
+    set whitespace {}
     }
 
     set original "$whitespace$first"
@@ -189,18 +189,18 @@ proc rehash.do_marks {} {
 
     if { $first != {} && $original == $word } {
         .input tag add rehash_COMMAND $from $to
-	return
+    return
     }
 
     set commands [rehash.commands]
     if { ($first != {}) &&
-	 ([lsearch -exact $commands $first] != -1) } {
-	 set beginning [.input search -forwards $first 1.0 end]
-	 if { $beginning != "" } {
-	     set ending [.input index "$beginning + [expr [string length $first]] chars"]
-	     .input tag add rehash_COMMAND $beginning $ending
-	     rehash.set_cache_marks $original $beginning $ending
-	 }
+     ([lsearch -exact $commands $first] != -1) } {
+     set beginning [.input search -forwards $first 1.0 end]
+     if { $beginning != "" } {
+         set ending [.input index "$beginning + [expr [string length $first]] chars"]
+         .input tag add rehash_COMMAND $beginning $ending
+         rehash.set_cache_marks $original $beginning $ending
+     }
     }
 }
 

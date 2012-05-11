@@ -1,12 +1,12 @@
 #
-#	tkMOO
-#	~/.tkMOO-lite/plugins/checkmail.tcl
+#    tkMOO
+#    ~/.tkMOO-lite/plugins/checkmail.tcl
 #
-#	Keep an eye on the status of received mail
+#    Keep an eye on the status of received mail
 
 # tkMOO-light is Copyright (c) Andrew Wilson 1994,1995,1996,1997,1998
 #
-#	All Rights Reserved
+#    All Rights Reserved
 #
 # Permission is hereby granted to use this software for private, academic
 # and non-commercial use. No commercial or profitable use of this
@@ -95,9 +95,9 @@ proc checkmail.check task_id {
     global checkmail_task checkmail_frame
     set f $checkmail_frame
     if { [winfo exists $f] == 0 } { return };
-    if { $task_id != $checkmail_task } { 
+    if { $task_id != $checkmail_task } {
         # kill this task...
-        return 
+        return
     }
     set stat [checkmail.stat]
     set messages {
@@ -125,9 +125,9 @@ proc checkmail.stat {} {
         set mailbox [worlds.get [worlds.get_current] CheckMailMailbox]
     }
     # is a file name specified, does the file exists, is it readable
-    if { $mailbox == "" } { 
+    if { $mailbox == "" } {
         # ignore
-        return 0 
+        return 0
     };
 
     # stat the file
@@ -135,7 +135,7 @@ proc checkmail.stat {} {
     # is there more information than before?
     set size [file size $mailbox]
 
-    if { [info exists checkmail_mtime] == 0 } { 
+    if { [info exists checkmail_mtime] == 0 } {
         set checkmail_mtime $mtime
         set checkmail_size $size
         if { $size == 0 } {
@@ -147,7 +147,7 @@ proc checkmail.stat {} {
         }
     }
 
-    if { ($mtime > $checkmail_mtime) && 
+    if { ($mtime > $checkmail_mtime) &&
          ($size > $checkmail_size) } {
         set checkmail_mtime $mtime
         set checkmail_size $size

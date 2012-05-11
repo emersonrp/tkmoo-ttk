@@ -33,7 +33,7 @@
 # dialog box entry for shelled command input
 
 # A useful macro for the triggers editor:
-# 
+#
 # macro -regexp {^/shell (.*)$} \
 #      -command { shell.shell $m1 }
 #

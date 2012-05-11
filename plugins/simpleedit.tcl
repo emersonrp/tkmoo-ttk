@@ -29,7 +29,7 @@ client.register simpleedit start 60
 proc simpleedit.start {} {
     mcp21.register dns-org-mud-moo-simpleedit 1.0 \
         dns-org-mud-moo-simpleedit-content \
-        simpleedit.do_dns_org_mud_moo_simpleedit_content   
+        simpleedit.do_dns_org_mud_moo_simpleedit_content
 }
 
 proc simpleedit.do_dns_org_mud_moo_simpleedit_content {} {
@@ -50,10 +50,10 @@ proc simpleedit.do_dns_org_mud_moo_simpleedit_content {} {
     edit.set_type $e $type
     edit.SCedit "" $lines "" $name $name $e
     edit.configure_send $e "Send" "simpleedit.send $e" 1
-    edit.configure_send_and_close $e "Send and Close" "simpleedit.send_and_close $e" 10 
+    edit.configure_send_and_close $e "Send and Close" "simpleedit.send_and_close $e" 10
     edit.configure_close $e "Close" "simpleedit.close $e" 0
-}   
- 
+}
+
 # redefine normal editor behaviour
 proc simpleedit.send e {
     global simpleedit_db
@@ -61,7 +61,7 @@ proc simpleedit.send e {
     set type $simpleedit_db($e:type)
     set content [edit.get_text $e]
     mcp21.server_notify dns-org-mud-moo-simpleedit-set [list [list reference $reference] [list type $type] [list content $content 1] ]
-}   
+}
 
 proc simpleedit.send_and_close e {
     global simpleedit_db
@@ -73,7 +73,7 @@ proc simpleedit.send_and_close e {
     unset simpleedit_db($e:reference)
     unset simpleedit_db($e:type)
     edit.destroy $e
-}   
+}
 
 proc simpleedit.close e {
     global simpleedit_db
@@ -81,4 +81,4 @@ proc simpleedit.close e {
     unset simpleedit_db($e:reference)
     unset simpleedit_db($e:type)
     edit.destroy $e
-}   
+}

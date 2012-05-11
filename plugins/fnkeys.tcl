@@ -81,8 +81,8 @@ proc fnkeys.start {} {
 
 proc fnkeys.invoke key {
     set action [worlds.get_generic {} {} {} FNKey${key}Macro]
-    regsub "\n\$" $action {} action 
+    regsub "\n\$" $action {} action
     if { $action != {} } {
-	client.outgoing "$action"
+    client.outgoing "$action"
     }
 }

@@ -49,7 +49,7 @@ proc modules.stop {} {
 
 proc modules.incoming_2 event {
     global modules_module_ok modules_module_deferred \
-	   client_event_callbacks
+       client_event_callbacks
 
     foreach module $client_event_callbacks(incoming_2) {
         if { [catch { $module.incoming_2 $event } rv] && [modules.debug] } {
@@ -66,7 +66,7 @@ proc modules.incoming_2 event {
 
 proc modules.incoming event {
     global modules_module_ok modules_module_deferred \
-	   client_event_callbacks
+       client_event_callbacks
 
     foreach module $client_event_callbacks(incoming) {
         if { [catch { $module.incoming $event } rv] && [modules.debug] } {
@@ -74,7 +74,7 @@ proc modules.incoming event {
         } {
             if { $rv == $modules_module_ok } {
                 return $rv
-	    }
+        }
         }
     }
 
@@ -83,7 +83,7 @@ proc modules.incoming event {
 
 proc modules.outgoing line {
     global modules_module_ok modules_module_deferred \
-	   client_event_callbacks
+       client_event_callbacks
 
     foreach module $client_event_callbacks(outgoing) {
         if { [catch { $module.outgoing $line } rv] && [modules.debug] } {
@@ -100,7 +100,7 @@ proc modules.outgoing line {
 
 proc modules.client_connected {} {
     global modules_module_ok modules_module_deferred \
-	   client_event_callbacks
+       client_event_callbacks
 
     foreach module $client_event_callbacks(client_connected) {
         if { [catch $module.client_connected rv] && [modules.debug] } {
@@ -116,7 +116,7 @@ proc modules.client_connected {} {
 
 proc modules.client_disconnected {} {
     global modules_module_ok modules_module_deferred \
-	   client_event_callbacks
+       client_event_callbacks
 
     foreach module $client_event_callbacks(client_disconnected) {
         if { [catch $module.client_disconnected rv] && [modules.debug] } {

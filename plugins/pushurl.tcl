@@ -1,6 +1,6 @@
 #
-#	tkMOO
-#	~/.tkMOO-lite/plugins/pushurl.tcl
+#    tkMOO
+#    ~/.tkMOO-lite/plugins/pushurl.tcl
 #
 
 

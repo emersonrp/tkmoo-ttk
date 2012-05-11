@@ -1,6 +1,6 @@
 #
-#	tkMOO
-#	~/.tkMOO-light/plugins/mcp21.tcl
+#    tkMOO
+#    ~/.tkMOO-light/plugins/mcp21.tcl
 #
 
 # tkMOO-light is Copyright (c) Andrew Wilson 1994,1995,1996,1997,1998,1999.
@@ -29,16 +29,16 @@
 
 # TODO
 #
-# o	when we see an 'mcp' message and we don't support the given
-#	version then we should allow other modules/plugins to get
-#	a chance to check the message.  right now we're just
-#	swallowing it.  I suppose we could force handlers to return
-#	module.module_ok/.module_deferred and do something with that...
+# o    when we see an 'mcp' message and we don't support the given
+#    version then we should allow other modules/plugins to get
+#    a chance to check the message.  right now we're just
+#    swallowing it.  I suppose we could force handlers to return
+#    module.module_ok/.module_deferred and do something with that...
 
 # Further information on the MCP/2.1 protocol specification can be
 # found here:
 #
-#	http://www.moo.mud.org/mcp2/
+#    http://www.moo.mud.org/mcp2/
 
 ###
 #
@@ -67,13 +67,13 @@
 # which calls mcp21.register when the 'start' message arrives.  For
 # example:
 #
-#	# wibble.tcl, an example plugin
-#	# wait for mcp21 to initialise before registering
-#	client.register wibble start 60
-#	proc wibble.start {} {
-#	    mcp21.register foo 1.0 foo-bar wibble.foo_bar
-#	    mcp21.register foo 1.0 foo-baz wibble.foo_baz
-#	}
+#    # wibble.tcl, an example plugin
+#    # wait for mcp21 to initialise before registering
+#    client.register wibble start 60
+#    proc wibble.start {} {
+#        mcp21.register foo 1.0 foo-bar wibble.foo_bar
+#        mcp21.register foo 1.0 foo-baz wibble.foo_baz
+#    }
 #
 #
 # Retreiving arguments
@@ -82,21 +82,21 @@
 # The client's 'request' API lets your handler procedures pick up
 # their arguments.  You need to provide a $request_id of the following
 # form.
-# 
-# 'current'			if the procedure is handling a single-line
-#				message.
-# value of '_data-tag' field	if the procedure is handling a multi-line
-#				message.
-# 
+#
+# 'current'            if the procedure is handling a single-line
+#                message.
+# value of '_data-tag' field    if the procedure is handling a multi-line
+#                message.
+#
 # If in doubt the following construction will always work:
-# 
+#
 # # use the correct request_id
 # set request_id current
 # catch { set request_id [request.get current _data-tag] }
 # # get the message arguments 'blah' and 'wibble'
-# set blah [request.get $request_id blah] 
-# set wibble [request.get $request_id wibble] 
-# 
+# set blah [request.get $request_id blah]
+# set wibble [request.get $request_id wibble]
+#
 # request.get $request_id $keyword => value
 #
 #
@@ -112,7 +112,7 @@
 #    if { ($version == {}) || ([lindex $version 1] != 1.0) } {
 #        puts "Sorry, only dns-com-awns-something/1.0 spoken here."
 #        return
-#    }   
+#    }
 #    # continue processing
 #
 #
@@ -145,12 +145,12 @@ client.register mcp21 incoming 40
 
 proc mcp21.start {} {
     global mcp21_authentication_key mcp21_registry_internal \
-	mcp21_report_overlap
+    mcp21_report_overlap
     set mcp21_authentication_key ""
     set mcp21_registry_internal {}
     set mcp21_report_overlap {}
     # register a bunch of message handlers
-    mcp21.register mcp 2.1 mcp mcp21.do_mcp 
+    mcp21.register mcp 2.1 mcp mcp21.do_mcp
     mcp21.register mcp 2.1 : mcp21.do_:
     mcp21.register mcp 2.1 * mcp21.do_*
     mcp21.register mcp-negotiate 2.0 mcp-negotiate-can mcp21.do_mcp_negotiate_can
@@ -164,16 +164,16 @@ proc mcp21.start {} {
 proc mcp21.register_internal { module event } {
     global mcp21_registry_internal
     lappend mcp21_registry_internal [list $module $event]
-}   
+}
 
 proc mcp21.dispatch_internal event {
     global mcp21_registry_internal
-    foreach me $mcp21_registry_internal {  
+    foreach me $mcp21_registry_internal {
         if { $event == [lindex $me 1] } {
             [lindex $me 0].$event
         }
     }
-}   
+}
 
 # minimal configuration using the preferences
 preferences.register mcp21 {Out of Band} {
@@ -190,7 +190,7 @@ preferences.register mcp21 {Out of Band} {
 # handle connections
 proc mcp21.client_connected {} {
     global mcp21_use mcp21_active mcp21_server_registry mcp21_report_overlap \
-	   mcp21_log
+       mcp21_log
 
     set mcp21_report_overlap {}
     set mcp21_server_registry {}
@@ -214,7 +214,7 @@ proc mcp21.client_connected {} {
     set mcp21_active 0
 
     return [modules.module_deferred]
-}   
+}
 
 # handle incoming events
 proc mcp21.incoming event {
@@ -231,7 +231,7 @@ proc mcp21.incoming event {
 
     set line [db.get $event line]
     if { [string match $MATCH $line] == 0 } {
-	# nothing to do with us
+    # nothing to do with us
         return [modules.module_deferred]
     }
 
@@ -240,9 +240,9 @@ proc mcp21.incoming event {
     # this message in the logfile
 
     if { $mcp21_log == 0 } {
-	# tell the incoming_2 phase of the logging module to ignore
-	# this line
-	db.set $event logging_ignore_incoming 1
+    # tell the incoming_2 phase of the logging module to ignore
+    # this line
+    db.set $event logging_ignore_incoming 1
     }
 
     regexp {^#\$(.)([^ ]+)(.*)} $line all type message rest
@@ -250,12 +250,12 @@ proc mcp21.incoming event {
     # the Network Layer's quoting mechanism is active whether or
     # not the MCP session has begun.
     if { $type == "\"" } {
-	db.set $event line [string range $line 3 end]
+    db.set $event line [string range $line 3 end]
         return [modules.module_deferred]
     }
 
     if { ($mcp21_active == 0) &&
-	 ($message != "mcp") } {
+     ($message != "mcp") } {
         # don't process any messages except for 'mcp' until
         # after we're active
         return [modules.module_deferred]
@@ -269,36 +269,36 @@ proc mcp21.incoming event {
     # parse out the header
     set rv 1
     if { $message == "*" } {
-	regexp {^ ([^ ]*) ([^:]*): (.*)$} $rest all tag field value
-	request.set current _data-tag $tag
-	request.set current field $field
-	request.set current value $value
+    regexp {^ ([^ ]*) ([^:]*): (.*)$} $rest all tag field value
+    request.set current _data-tag $tag
+    request.set current field $field
+    request.set current value $value
     } elseif { $message == ":" } {
-	regexp {^ ([^ ]*)} $rest all tag
-	request.set current _data-tag $tag
+    regexp {^ ([^ ]*)} $rest all tag
+    request.set current _data-tag $tag
     } {
-	set rv [mcp21.parse $rest]
+    set rv [mcp21.parse $rest]
     }
 
     # check authentication
     if { ([lsearch -exact {* : mcp} $message] < 0) &&
-	 ([request.get current _authentication-key] != $mcp21_authentication_key) } {
+     ([request.get current _authentication-key] != $mcp21_authentication_key) } {
         return [modules.module_deferred]
     }
 
     if { $rv == "multiline" } {
-	# this is a multiline message save some state, including
-	# the original message name
+    # this is a multiline message save some state, including
+    # the original message name
         set tag [request.get current _data-tag]
-	request.set current _message $message
+    request.set current _message $message
         request.duplicate current $tag
     } {
-	# use a registered handler if we're using a supported
-	# version of MCP
+    # use a registered handler if we're using a supported
+    # version of MCP
         mcp21.dispatch $message
 
-	# do we want to swallow an unsupported 'mcp' message?  If
-	# so then test for mcp_active and return [modules.module_deferred]
+    # do we want to swallow an unsupported 'mcp' message?  If
+    # so then test for mcp_active and return [modules.module_deferred]
     }
 
     return [modules.module_ok]
@@ -317,22 +317,22 @@ proc mcp21.parse header {
     }
 
     foreach { keyword value } $header {
-	regsub ":" $keyword "" keyword
-	if { [regexp {(.*)\*} $keyword _ field] } {
-	    request.set current $field {}
-	    set rv "multiline"
-	} {
-	    request.set current $keyword $value
-	}
+    regsub ":" $keyword "" keyword
+    if { [regexp {(.*)\*} $keyword _ field] } {
+        request.set current $field {}
+        set rv "multiline"
+    } {
+        request.set current $keyword $value
+    }
     }
     return $rv
-}           
+}
 
 # look up a handler for this message
 # find it, and execute the callback, dropping any return value on the floor
 # we can tune this at connect time (after mcp-negotiate-end) by
 # dropping all the messages for those package versions the session
-# will not support.  
+# will not support.
 
 proc mcp21.dispatch message {
     global mcp21_registry
@@ -342,17 +342,17 @@ proc mcp21.dispatch message {
     set version [lindex [util.assoc $overlap $package] 1]
 
     foreach r $mcp21_registry {
-	set v		[lindex $r 1]
-	set msg		[lindex $r 2]
+    set v        [lindex $r 1]
+    set msg        [lindex $r 2]
 
         if { ($msg == $message) &&
-	      (($v == $version) ||
-	       ($package == "mcp") || 
-	       ($package == "mcp-negotiate")) } {
-	    # callback
-	    [lindex $r 3]
-	    return
-	}
+          (($v == $version) ||
+           ($package == "mcp") ||
+           ($package == "mcp-negotiate")) } {
+        # callback
+        [lindex $r 3]
+        return
+    }
 
     }
 }
@@ -368,7 +368,7 @@ proc mcp21.register {package version message callback} {
 proc mcp21.package message {
     global mcp21_registry
     if { [set record [util.assoc $mcp21_registry $message 2]] != {} } {
-	return [lindex $record 0]
+    return [lindex $record 0]
     }
     return "";
 }
@@ -380,19 +380,19 @@ proc mcp21.encode str {
         set str "\"$str\""
     }
     if { $str == "" } {
-        set str "\"\""    
+        set str "\"\""
     }
     return $str
-} 
+}
 
 # send messages to the server
 proc mcp21.server_notify {message {keyvals {}}} {
     global mcp21_authentication_key
 
     if { $mcp21_authentication_key == "" } {
-	# we were called before the MCP/2.1 authentication key 
-	# was set up!
-	return
+    # we were called before the MCP/2.1 authentication key
+    # was set up!
+    return
     }
 
     set multiline 0
@@ -429,7 +429,7 @@ proc mcp21.server_notify {message {keyvals {}}} {
     if { $multiline == 1 } {
         io.outgoing "#$#: $tag"
     }
-}   
+}
 
 
 ########
@@ -443,9 +443,9 @@ proc mcp21.do_mcp {} {
     set version [request.get current version]
     set to [request.get current to]
     if { $version == "2.1" || $to == "2.1" } {
-	set mcp21_active 1
+    set mcp21_active 1
     } {
-	return
+    return
     }
 
     scan [winfo id .] "0x%x" mcp21_authentication_key
@@ -455,13 +455,13 @@ proc mcp21.do_mcp {} {
 
     foreach r [mcp21.report_packages] {
         set package [lindex $r 0]
-	# skip mcp, because we don't want to tell the server which
-	# version of mcp we support *after* having already responded
-	# to an mcp startup message
-	if { $package == "mcp" } { continue; }
+    # skip mcp, because we don't want to tell the server which
+    # version of mcp we support *after* having already responded
+    # to an mcp startup message
+    if { $package == "mcp" } { continue; }
         set min     [lindex $r 1]
         set max     [lindex $r 2]
-	mcp21.server_notify mcp-negotiate-can [list [list package $package] [list min-version $min] [list max-version $max]]
+    mcp21.server_notify mcp-negotiate-can [list [list package $package] [list min-version $min] [list max-version $max]]
     }
 
     # finish negotiation
@@ -476,20 +476,20 @@ proc mcp21.report_packages {} {
     foreach r $mcp21_registry {
         set package [lindex $r 0]
         set version [lindex $r 1]
-	if { [info exists min($package)] == 1 } {
-	    if { $version > $max($package) } {
-		set max($package) $version
-	    } elseif { $version < $min($package) } {
-		set min($package) $version
-	    }
-	} {
-	    set min($package) $version
-	    set max($package) $version
-	}
+    if { [info exists min($package)] == 1 } {
+        if { $version > $max($package) } {
+        set max($package) $version
+        } elseif { $version < $min($package) } {
+        set min($package) $version
+        }
+    } {
+        set min($package) $version
+        set max($package) $version
+    }
     }
     set report {}
     foreach p [array names min] {
-	lappend report [list $p $min($p) $max($p)]
+    lappend report [list $p $min($p) $max($p)]
     }
     return $report
 }
@@ -506,17 +506,17 @@ proc mcp21.calculate_overlap {} {
     set them [mcp21.report_server_packages]
     set report {}
     foreach p $us {
-	set package [lindex $p 0]
-	set s [util.assoc $them $package]
-	if { $s != {} } {
-	    set cmin [lindex $p 1]
-	    set cmax [lindex $p 2]
-	    set smin [lindex $s 1]
-	    set smax [lindex $s 2]
-	    if { ($cmax >= $smin) && ($smax >= $cmin) } {
-		lappend report [list $package [mcp21.minimum $smax $cmax]]
-	    }
-	}
+    set package [lindex $p 0]
+    set s [util.assoc $them $package]
+    if { $s != {} } {
+        set cmin [lindex $p 1]
+        set cmax [lindex $p 2]
+        set smin [lindex $s 1]
+        set smax [lindex $s 2]
+        if { ($cmax >= $smin) && ($smax >= $cmin) } {
+        lappend report [list $package [mcp21.minimum $smax $cmax]]
+        }
+    }
     }
     set mcp21_report_overlap $report
 }
@@ -528,9 +528,9 @@ proc mcp21.report_overlap {} {
 
 proc mcp21.minimum { a b } {
     if { $a < $b } {
-	return $a
+    return $a
     } {
-	return $b
+    return $b
     }
 }
 
@@ -553,7 +553,7 @@ proc mcp21.do_* {} {
     set tag [request.get current _data-tag]
     set field [request.get current field]
     set value [request.get current value]
-    set new [concat [request.get $tag $field] [list $value]]  
+    set new [concat [request.get $tag $field] [list $value]]
     request.set $tag $field $new
 }
 proc mcp21.do_: {} {
@@ -582,7 +582,7 @@ proc mcp21.do_mcp_cord {} {
     # deal with null messages...
     set full_message $cord_db($id:type)
     if { $msg != "" } {
-	append full_message "-$msg"
+    append full_message "-$msg"
     }
     mcp21.dispatch $full_message
 }
@@ -603,8 +603,8 @@ proc cord.open type {
     set overlap [mcp21.report_overlap]
     set version [util.assoc $overlap mcp-cord]
     if { ($version == {}) || ([lindex $version 1] != 1.0) } {
-	# nope!
-	return ""
+    # nope!
+    return ""
     }
     mcp21.server_notify mcp-cord-open [list [list _id $id] [list _type $type]]
     set cord_db($id:type) $type

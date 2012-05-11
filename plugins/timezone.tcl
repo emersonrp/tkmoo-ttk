@@ -1,6 +1,6 @@
 #
-#	tkMOO
-#	~/.tkMOO-lite/plugins/timezone.tcl
+#    tkMOO
+#    ~/.tkMOO-lite/plugins/timezone.tcl
 #
 
 # tkMOO-light is Copyright (c) Andrew Wilson 1994,1995,1996,1997,1998,1999
@@ -31,7 +31,7 @@ preferences.register timezone {Special Forces} {
         {type boolean}
         {default On}
         {display "Send Timezone record"} }
-} 
+}
 
 proc timezone.start {} {
     # we need to register *something*

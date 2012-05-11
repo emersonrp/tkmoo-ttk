@@ -1,6 +1,6 @@
 #
-#	tkMOO
-#	~/.tkMOO-lite/plugins/displayurl.tcl
+#    tkMOO
+#    ~/.tkMOO-lite/plugins/displayurl.tcl
 #
 
 # tkMOO-light is Copyright (c) Andrew Wilson 1994,1995,1996,1997,1998,
@@ -26,7 +26,7 @@
 
 # Support for the MCP/2.1 package dns-com-awns-displayurl.  Attempt
 # to open a webbrowser pointing to the URL.
-# 
+#
 # S->C #$#dns-com-awns-displayurl <auth> url: <some URL>
 #
 # The 'Special Forces'->'Use Display URL' checkbox must be checked in

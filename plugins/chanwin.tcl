@@ -1,5 +1,5 @@
 #
-#	~/.tkMOO-light/plugins/subwindow.tcl
+#    ~/.tkMOO-light/plugins/subwindow.tcl
 #
 
 # tkMOO-light is Copyright (c) Andrew Wilson 1994,1995,1996,1997,1998,1999.
@@ -69,44 +69,44 @@ proc chanwin.start {} {
 proc chanwin.display {name label {text ""}} {
     global subwindow_db
     if { [info exists subwindow_db($name:win)] &&
-	 [winfo exists $subwindow_db($name:win)] } {
-	set win $subwindow_db($name:win)
-	set CR "\n"
+     [winfo exists $subwindow_db($name:win)] } {
+    set win $subwindow_db($name:win)
+    set CR "\n"
     } {
-	# window doesn't exist, create one
-	set win .[util.unique_id subwindow]
-	set subwindow_db($name:win) $win
-	set subwindow_db($win:name) $name
-	toplevel $win
-	wm iconname $win $name
-	wm title $win $name
-	text $win.t -width 40 -height 10 \
-	    -highlightthickness 0 \
-	    -relief flat \
-	    -yscrollcommand "$win.s set"
-	scrollbar $win.s \
-	    -bd 1 -highlightthickness 0 \
-	    -command "$win.t yview"
-	entry $win.e \
-	    -highlightthickness 0 \
-	    -bd 1 \
-	    -background [colourdb.get pink]
-	frame $win.f
-	label $win.f.lb -text $label
-	entry $win.f.e \
-	    -highlightthickness 0 \
-	    -bd 1 \
-	    -background [colourdb.get pink]
-	bind $win.e <Return> "chanwin.enter $win"
-	bind $win.f.e <Return> "chanwind.enter $win"
-	pack $win.f.lb -side left
-	pack $win.f.e -side right -fill x -expand 1
-	pack $win.f -side bottom -fill x
-	pack $win.e -side bottom -fill x
-	pack $win.s -side right -fill y
-	pack $win.t -fill both -expand 1
-	window.place_nice $win
-	set CR ""
+    # window doesn't exist, create one
+    set win .[util.unique_id subwindow]
+    set subwindow_db($name:win) $win
+    set subwindow_db($win:name) $name
+    toplevel $win
+    wm iconname $win $name
+    wm title $win $name
+    text $win.t -width 40 -height 10 \
+        -highlightthickness 0 \
+        -relief flat \
+        -yscrollcommand "$win.s set"
+    scrollbar $win.s \
+        -bd 1 -highlightthickness 0 \
+        -command "$win.t yview"
+    entry $win.e \
+        -highlightthickness 0 \
+        -bd 1 \
+        -background [colourdb.get pink]
+    frame $win.f
+    label $win.f.lb -text $label
+    entry $win.f.e \
+        -highlightthickness 0 \
+        -bd 1 \
+        -background [colourdb.get pink]
+    bind $win.e <Return> "chanwin.enter $win"
+    bind $win.f.e <Return> "chanwind.enter $win"
+    pack $win.f.lb -side left
+    pack $win.f.e -side right -fill x -expand 1
+    pack $win.f -side bottom -fill x
+    pack $win.e -side bottom -fill x
+    pack $win.s -side right -fill y
+    pack $win.t -fill both -expand 1
+    window.place_nice $win
+    set CR ""
     }
     $win.t configure -state normal
     $win.t insert end "$CR$text"

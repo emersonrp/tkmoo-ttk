@@ -68,13 +68,13 @@ proc balloon {target message {cx 0} {cy 0} } {
     global Bulle
     if {$Bulle(first) == 1 } {
         set Bulle(first) 2
-	if { $cx == 0 && $cy == 0 } {
-	    set x [expr [winfo rootx $target] + ([winfo width $target]/2)]
-	    set y [expr [winfo rooty $target] + [winfo height $target] + 4]
-	} else {
-	    set x [expr $cx + 4]
-	    set y [expr $cy + 4]
-	}
+    if { $cx == 0 && $cy == 0 } {
+        set x [expr [winfo rootx $target] + ([winfo width $target]/2)]
+        set y [expr [winfo rooty $target] + [winfo height $target] + 4]
+    } else {
+        set x [expr $cx + 4]
+        set y [expr $cy + 4]
+    }
         toplevel .balloon -bg black -screen [winfo screen $target]
         wm overrideredirect .balloon 1
         label .balloon.l \

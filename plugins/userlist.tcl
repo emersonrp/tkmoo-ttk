@@ -7,7 +7,7 @@ global tag
 set tag ""
 window.menu_tools_add "Userlist on/off" userlist.userlist_toggle
 mcp21.register dns-com-vmoo-userlist 1.0 \
-	    dns-com-vmoo-userlist userlist.do_dns_com_vmoo_userlist
+        dns-com-vmoo-userlist userlist.do_dns_com_vmoo_userlist
 userlist.iconinfo
 userlist.build
     }
@@ -23,7 +23,7 @@ proc userlist.incoming event {
     set PREFIX {#$}
     set MATCH "$PREFIX*"
     if { [string match $MATCH $line] == 0 } {
-	# nothing to do with us
+    # nothing to do with us
         return [modules.module_deferred]
     }
     if {[regexp "#\\$#dns-com-vmoo-userlist\\s$mcp21_authentication_key\\sicons\\*:\\s(.*)\\sfields\\*:\\s(.*)\\sd\\*:\\s(.*)\\s_data-tag:\\s(.*)" $line all icons field d dt]} {
@@ -118,18 +118,18 @@ proc user_info {} {
                         return [.listbox.listbox2 get $user]
                         
                 }
-	}
-	
+    }
+    
 proc user_num {} {
-	set user [.listbox.listbox2 curselection]
+    set user [.listbox.listbox2 curselection]
         if { $user=={} } { ;#If there is no job
                         return "N/A"
                 } else {
                         return [db.get usrnum [lindex [.listbox.listbox2 get 0 end] $user]]
                         
                 }
-	}
-	
+    }
+    
 
 
 proc userlist.add {name number icon} {

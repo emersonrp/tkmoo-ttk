@@ -30,7 +30,7 @@ proc url_trigger.start {} {
 
     edittriggers.trigger \
         -regexp {(ftp|http|https|telnet)://([^\"\'\`\\)\(<> ]+)} \
-	-directive UseURLLinks \
+        -directive UseURLLinks \
         -continue \
         -command {
             highlight_all_apply {(ftp|http|https|telnet)://([^\"\'\`\\)\(<> ]+)} $line url_trigger.link

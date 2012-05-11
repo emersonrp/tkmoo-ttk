@@ -1,5 +1,5 @@
 #
-#	~/.tkMOO-light/plugins/subwindow.tcl
+#    ~/.tkMOO-light/plugins/subwindow.tcl
 #
 
 # tkMOO-light is Copyright (c) Andrew Wilson 1994,1995,1996,1997,1998,1999.
@@ -28,13 +28,13 @@
 # The plugin makes the command 'subwindow.display' available to
 # the Triggers environment.  If your server uses communication channels
 # it might send you lines of text like this:
-# 
+#
 #   [chatter] Fred says, "did anyone see the game last night?"
 #   [auction] DragonLord says, "What am I bid for this fine sword?"
-# 
+#
 # You can use the following trigger to detect such lines and display
 # them in different subwindows:
-# 
+#
 # trigger -regexp {^\[([^]]*)\] (.*)$} \
 #         -command {
 #             subwindow.display $m1 $m2
@@ -46,10 +46,10 @@
 # window.  This means that macros defined in the Triggers environment
 # can intercept the message and rewrite it to suit the server's syntax
 # for channel communications.
-# 
+#
 # If your server expects channel communication (to the 'chatter'
 # channel) to be typed like this:
-# 
+#
 #   -chatter Hello!!
 #
 # You can use the following macro to detect input to the subwindow
@@ -69,34 +69,34 @@ proc subwindow.start {} {
 proc subwindow.display {name {text ""}} {
     global subwindow_db
     if { [info exists subwindow_db($name:win)] &&
-	 [winfo exists $subwindow_db($name:win)] } {
-	set win $subwindow_db($name:win)
-	set CR "\n"
+     [winfo exists $subwindow_db($name:win)] } {
+    set win $subwindow_db($name:win)
+    set CR "\n"
     } {
-	# window doesn't exist, create one
-	set win .[util.unique_id subwindow]
-	set subwindow_db($name:win) $win
-	set subwindow_db($win:name) $name
-	toplevel $win
-	wm iconname $win $name
-	wm title $win $name
-	text $win.t -width 40 -height 10 \
-	    -highlightthickness 0 \
-	    -relief flat \
-	    -yscrollcommand "$win.s set"
-	scrollbar $win.s \
-	    -bd 1 -highlightthickness 0 \
-	    -command "$win.t yview"
-	entry $win.e \
-	    -highlightthickness 0 \
-	    -bd 1 \
-	    -background [colourdb.get pink]
-	bind $win.e <Return> "subwindow.enter $win"
-	pack $win.e -side bottom -fill x
-	pack $win.s -side right -fill y
-	pack $win.t -fill both -expand 1
-	window.place_nice $win
-	set CR ""
+    # window doesn't exist, create one
+    set win .[util.unique_id subwindow]
+    set subwindow_db($name:win) $win
+    set subwindow_db($win:name) $name
+    toplevel $win
+    wm iconname $win $name
+    wm title $win $name
+    text $win.t -width 40 -height 10 \
+        -highlightthickness 0 \
+        -relief flat \
+        -yscrollcommand "$win.s set"
+    scrollbar $win.s \
+        -bd 1 -highlightthickness 0 \
+        -command "$win.t yview"
+    entry $win.e \
+        -highlightthickness 0 \
+        -bd 1 \
+        -background [colourdb.get pink]
+    bind $win.e <Return> "subwindow.enter $win"
+    pack $win.e -side bottom -fill x
+    pack $win.s -side right -fill y
+    pack $win.t -fill both -expand 1
+    window.place_nice $win
+    set CR ""
     }
     $win.t configure -state normal
     $win.t insert end "$CR$text"

@@ -1,7 +1,7 @@
 
 
 proc plugin.plugins_directories {} {
-	set home [ file dirname [ info script ]]
+    set home [ file dirname [ info script ]]
 
     global tkmooLibrary tcl_platform env
     set dirs {}
@@ -71,12 +71,12 @@ proc plugin.plugin_location {} {
 
 proc plugin.source {} {
     set dir [plugin.plugins_dir]
-    if { $dir == "" } { 
+    if { $dir == "" } {
         window.displayCR "Can't find plugins directory, searched for:" window_highlight
         foreach dir [plugin.plugins_directories] {
             window.displayCR "  $dir" window_highlight
         }
-        return 
+        return
     }
 
     set files [glob -nocomplain -- [file join $dir *.tcl]]
@@ -90,7 +90,7 @@ proc plugin.source {} {
         set files [glob -nocomplain -- [file join $subdir *.tcl]]
         foreach file $files {
             plugin.set_plugin_location $file
-	    source $file
+        source $file
         }
     }
     plugin.clear_plugin_location
@@ -101,11 +101,11 @@ proc registry.start {} {
     global tcl_platform
 
     if { $tcl_platform(platform) != "windows" } {
-	return;
+    return;
     }
 
     if { [catch { package require registry 1.0 }] } {
-	return;
+    return;
     }
 
 
@@ -131,9 +131,9 @@ proc registry.start {} {
     set directory [file dirname $executable]
 
     registry set {HKEY_CLASSES_ROOT\TkmWorld\shell\open\command} {} \
-	"\"$executable\" -dir \"$directory\" -f \"%1\"" sz
+    "\"$executable\" -dir \"$directory\" -f \"%1\"" sz
     registry set {HKEY_CLASSES_ROOT\TkmWorld\shell\edit\command} {} \
-	{notepad.exe "%1"} sz
+    {notepad.exe "%1"} sz
 
 }
 #

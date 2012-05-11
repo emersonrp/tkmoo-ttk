@@ -1,6 +1,6 @@
 #
-#	tkMOO
-#	~/.tkMOO-lite/plugins/status.tcl
+#    tkMOO
+#    ~/.tkMOO-lite/plugins/status.tcl
 #
 
 # tkMOO-light is Copyright (c) Andrew Wilson 1994,1995,1996,1997,1998,1999.
@@ -49,16 +49,16 @@ proc status.client_connected {} {
 
     set use [worlds.get_generic On {} {} UseStatus]
 
-    if { [string tolower $use] != "on" } { 
+    if { [string tolower $use] != "on" } {
         status.destroy
         return
     };
 
     set seconds [worlds.get_generic Off {} {} StatusShowSeconds]
     if { [string tolower $seconds] == "on" } {
-	set status_seconds 1
+    set status_seconds 1
     } {
-	set status_seconds 0
+    set status_seconds 0
     }
 
     status.create
@@ -87,10 +87,10 @@ proc status.update {} {
         set seconds [expr $difference % 60]
         set seconds [string range "0$seconds" [expr [string length $seconds] -1] end]
         $status_frame.time configure -text "$hours:$minutes:$seconds"
-	set status_task [after 1000 status.update]
+    set status_task [after 1000 status.update]
     } {
         $status_frame.time configure -text "$hours:$minutes"
-	set status_task [after 60000 status.update]
+    set status_task [after 60000 status.update]
     }
 }
 
@@ -109,7 +109,7 @@ proc status.destroy {} {
     global status_frame
     if { [winfo exists $status_frame] == 1 } {
         window.delete_statusbar_item $status_frame
-	# is this .repack now superfluous?
-	window.repack
+    # is this .repack now superfluous?
+    window.repack
     }
 }

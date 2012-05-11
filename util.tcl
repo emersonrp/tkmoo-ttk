@@ -15,13 +15,13 @@ proc util.populate_array { array text } {
     foreach item $text {
         if { $keyword != "" } {
             set a($keyword) $item
-            set keyword "" 
-        } {     
+            set keyword ""
+        } {
             set keyword $item
             regsub ":" $keyword "" keyword
-        }       
+        }
     }
-}       
+}
 
 proc util._populate_array { array text } {
     upvar $array a
@@ -35,18 +35,18 @@ proc util._populate_array { array text } {
 
         if { $keyword != "" } {
             set a($keyword) $item
-            set keyword "" 
-        } {     
+            set keyword ""
+        } {
             set keyword $item
             regsub ":" $keyword "" keyword
-        }       
+        }
 
         set space [string first " " $text]
         set item [string range $text 0 [expr $space - 1]]
         set text [string range $text [expr $space + 1] end]
     }
     set a($keyword) $text
-}       
+}
 
 
 proc util.version {} {

@@ -6,8 +6,8 @@ package require snack
 # package require snackogg
 
 proc media.start {} {
-	mcp21.register dns-com-vmoo-mmedia 2.0 \
-	    dns-com-vmoo-mmedia-show media.dns-com-vmoo-mmedia-show
+    mcp21.register dns-com-vmoo-mmedia 2.0 \
+        dns-com-vmoo-mmedia-show media.dns-com-vmoo-mmedia-show
       mcp21.register dns-com-vmoo-mmedia 2.0 \
           dns-com-vmoo-mmedia-play media.dns-com-vmoo-mmedia-play
         mcp21.register_internal media mcp_negotiate_end

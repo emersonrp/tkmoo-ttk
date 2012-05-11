@@ -7,8 +7,8 @@ proc ui.page_end win {
     ::tk::TextScrollPages $win {end - 1 char}
 }
 
-proc ui.paste_selection win { 
-    tk_textPaste $win 
+proc ui.paste_selection win {
+    tk_textPaste $win
     global tcl_platform
     if { $tcl_platform(platform) == "macintosh" &&
          "$win" == ".input" } {
@@ -16,15 +16,15 @@ proc ui.paste_selection win {
     }
 }
 
-proc ui.delete_selection win { 
+proc ui.delete_selection win {
     tk_textCut $win
 }
 
-proc ui.copy_selection win { 
+proc ui.copy_selection win {
     set selection ""
     catch { set selection [selection get] }
- 
-    if { "x$selection" != "x" } { 
+
+    if { "x$selection" != "x" } {
         clipboard clear
         clipboard append $selection
     } {
@@ -32,15 +32,15 @@ proc ui.copy_selection win {
     }
 }
 
-proc ui.page_down win { 
+proc ui.page_down win {
     ::tk::TextScrollPages $win 1
 }
 
-proc ui.page_up win { 
+proc ui.page_up win {
     ::tk::TextScrollPages $win -1
 }
 
-proc ui.clear_screen win { 
+proc ui.clear_screen win {
     window.clear_screen $win
 }
 
@@ -79,7 +79,7 @@ proc ui.end_line win {
 proc ui.left_word_start win {
     $win mark set insert {insert-1c wordstart}
     while { [$win get insert {insert+1c}] == " " } {
-	ui.left_char $win
+    ui.left_char $win
     }
     $win mark set insert {insert wordstart}
 }
@@ -91,7 +91,7 @@ proc ui.left_word_start_entry win {
 proc ui.right_word_start win {
     $win mark set insert {insert wordend}
     while { [$win get insert {insert+1c}] == " " } {
-	ui.right_char $win
+    ui.right_char $win
     }
 }
 
@@ -128,7 +128,7 @@ proc ui.delete_word_left win {
 }
 
 proc ui.delete_char_right win {
-    $win delete insert {insert +1c} 
+    $win delete insert {insert +1c}
 }
 
 proc ui.delete_char_left win {

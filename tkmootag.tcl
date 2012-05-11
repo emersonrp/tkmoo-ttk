@@ -70,7 +70,7 @@ proc tkmootag.incoming event {
     }
 
     if { [regexp {^tkmootag: (.*)} $line throwaway msg] } {
-	tkmootag.writeTextLine $msg .output {end - 1 chars}
+    tkmootag.writeTextLine $msg .output {end - 1 chars}
         return [modules.module_ok]
     }
 
@@ -175,11 +175,11 @@ proc tkmootag.do_callback str {
         set type [lindex [util.assoc $alist address-type] 1]
         set args [lindex [util.assoc $alist args] 1]
         mcp21.server_notify dns-com-awns-jtext-pick [list [list type $type] [list args $args]]
-	return
-    }   
+    return
+    }
 
     if { [info exists mcp_authentication_key] &&
-	 $mcp_authentication_key != "" } {
+     $mcp_authentication_key != "" } {
         io.outgoing "#$#jtext-pick $mcp_authentication_key $str"
     }
 }
@@ -187,8 +187,8 @@ proc tkmootag.do_callback str {
 proc tkmootag.to_alist str {
     set alist {}
     foreach {keyword value} $str {
-	regsub {:$} $keyword "" keyword
-	lappend alist [list $keyword $value]
+    regsub {:$} $keyword "" keyword
+    lappend alist [list $keyword $value]
     }
     return $alist
 }

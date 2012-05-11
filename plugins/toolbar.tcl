@@ -4,7 +4,7 @@
 #
 # toolbar.tcl is Copyright (c) Joshua May <joshua@paxhaven.net> 1999, 2000
 # 
-#	All Rights Reserved
+#    All Rights Reserved
 #
 # Permission is hereby granted to use this software for private, academic
 # and non-commercial use. No commercial or profitable use of this
@@ -221,7 +221,7 @@ fLHWQcjkHaBKnfUKyzK23JsMtcLlUKTSmXJpT97wuBySAAA7 }
     image create photo i_southeast -format GIF87 -data $d_southeast
     image create photo i_up        -format GIF87 -data $d_up
     image create photo i_down      -format GIF87 -data $d_down
-    image create photo i_in	       -format GIF87 -data $d_in
+    image create photo i_in           -format GIF87 -data $d_in
     image create photo i_out       -format GIF87 -data $d_out
 
     set d_open { R0lGODlhEAAQAPIAAAAAAICAAICAgMPDw729vQAAAAAAAAAAACH5BAEAAAQALAAAAAAQABAA
@@ -539,7 +539,7 @@ proc toolbar.create_rosette {} {
         window.add_toolbar $r
         window.repack
     }
-	wm resizable $r 0 0
+    wm resizable $r 0 0
 }
 
 proc toolbar.invoke_rosette dir {

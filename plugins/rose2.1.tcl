@@ -1,6 +1,6 @@
 #
-#	tkMOO
-#	~/.tkMOO-lite/plugins/rose2.1.tcl
+#    tkMOO
+#    ~/.tkMOO-lite/plugins/rose2.1.tcl
 #
 
 # tkMOO-light is Copyright (c) Andrew Wilson 1994,1995,1996,1997,1998,1999.
@@ -24,18 +24,18 @@
 # EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # TODO
-# o	replace Leave/Enter with Motion (mouse-over) events for the
-#	active area highlight
-# o	target highlights shouldn't obscure the faces
-#		land < highlights < faces
-#	mmm, tricky, since the highlights on the edges should
-#	obscure the edges, and the faces obscure the edges...
-#	except for the front edge which obscures the faces...
+# o    replace Leave/Enter with Motion (mouse-over) events for the
+#    active area highlight
+# o    target highlights shouldn't obscure the faces
+#        land < highlights < faces
+#    mmm, tricky, since the highlights on the edges should
+#    obscure the edges, and the faces obscure the edges...
+#    except for the front edge which obscures the faces...
 #
-# o	plenty of code speedups, move costly setup code to .start
+# o    plenty of code speedups, move costly setup code to .start
 # o     self is always present in 'location'.  don't print our
-#	username in another room if we're obviously 'here' instead, regardless
-#	of what the who information may say.
+#    username in another room if we're obviously 'here' instead, regardless
+#    of what the who information may say.
 
 client.register rose2 client_connected
 client.register rose2 client_disconnected
@@ -55,15 +55,15 @@ preferences.register location {Special Forces} {
 
 proc rose2.client_connected {} {
     set use [worlds.get_generic Off {} {} UseRose2]
-    
+
     if { [string tolower $use] == "on" } {
         rose2.create
-	rose2.no_data
+    rose2.no_data
     }
     return [modules.module_deferred]
-}   
+}
 
-proc rose2.client_disconnected {} {  
+proc rose2.client_disconnected {} {
     rose2.destroy
     return [modules.module_deferred]
 }
@@ -81,7 +81,7 @@ proc rose2.random {range} {
   set rose2_ran [expr ($rose2_ran * 9301 + 49297) % 233280]
   set rv [expr int($range * ($rose2_ran / double(233280)))]
   return $rv
-}   
+}
 
 # use native random if available
 global tcl_version
@@ -102,12 +102,12 @@ proc rose2.start {} {
     set p 0
     for {set y 0} {$y < 4} {incr y} {
         for {set x 0} {$x < 4} {incr x} {
-	    if { $x < 2 } {
-	        set rose2_point($p) "[expr $rose2_Xoffset + ($x * 50) - (8 * $y)] [expr $rose2_Yoffset + $y * 16]"
-	    } {
-	        set rose2_point($p) "[expr $rose2_Xoffset + ($x * 50) + (8 * $y)] [expr $rose2_Yoffset + $y * 16]"
-	    }
-	    incr p
+        if { $x < 2 } {
+            set rose2_point($p) "[expr $rose2_Xoffset + ($x * 50) - (8 * $y)] [expr $rose2_Yoffset + $y * 16]"
+        } {
+            set rose2_point($p) "[expr $rose2_Xoffset + ($x * 50) + (8 * $y)] [expr $rose2_Yoffset + $y * 16]"
+        }
+        incr p
         }
     }
 
@@ -136,15 +136,15 @@ proc rose2.start {} {
     # where are the points on each room, numbered clockwise from
     # top left
     array set rose2_corners {
-        nw	{0 1 5 4}
-        n	{1 2 6 5}
-        ne	{2 3 7 6}
-        w	{4 5 9 8}
-        x	{5 6 10 9}
-        e	{6 7 11 10}
-        sw	{8 9 13 12}
-        s	{9 10 14 13}
-        se	{10 11 15 14}
+        nw    {0 1 5 4}
+        n    {1 2 6 5}
+        ne    {2 3 7 6}
+        w    {4 5 9 8}
+        x    {5 6 10 9}
+        e    {6 7 11 10}
+        sw    {8 9 13 12}
+        s    {9 10 14 13}
+        se    {10 11 15 14}
     }
 
     visual.register rose2 update_location
@@ -161,33 +161,33 @@ proc rose2.toggle_visual {} {
     } {
         rose2.create
         rose2.no_data
-	rose2.update_self
+    rose2.update_self
     }
 }
 
 proc rose2.redither {} {
     foreach image {
-	face.small.open face.small.closed face.large.open face.large.closed
+    face.small.open face.small.closed face.large.open face.large.closed
     } {
-	$image redither
+    $image redither
     }
 }
 
 proc rose2.room_details location {
     global rose2_details
     if { [info exists rose2_details($location)] } {
-	# the value is cached, use it
+    # the value is cached, use it
         rose2.set_text $rose2_details($location)
-	return
+    return
     }
     if { ($location == "") } {
-	rose2.set_text ""
-	return
+    rose2.set_text ""
+    return
     }
     set topology [visual.get_topology $location 1]
     if { ($topology == {}) } {
-	rose2.set_text ""
-	return
+    rose2.set_text ""
+    return
     }
 
     set room_record [util.assoc $topology $location]
@@ -197,42 +197,42 @@ proc rose2.room_details location {
 
     set users [visual.get_users]
     if { ($users == {}) } {
-	rose2.set_text $text
-	return
+    rose2.set_text $text
+    return
     }
 
     set people_here {}
     foreach user $users {
-	if { [lindex $user 2] == $location } {
-	    lappend people_here $user
-	}
+    if { [lindex $user 2] == $location } {
+        lappend people_here $user
+    }
     }
 
     set very_idle_time 9999999
 
     if { $people_here != {} } {
-	append text ": "
+    append text ": "
 
-	# make our name appear at the end of any idle-time sorted list
-	# we do this by replacing our own idle time with a VERY big one
-	# sure there are faster ways to do this...
-	set self [visual.get_self]
-	if { $self != "" } {
-	    # damn, should be a utils.iassoc...
-	    for {set i 0} {$i < [llength $people_here]} {incr i} {
-		set record [lindex $people_here $i]
-		if { [lindex $record 0] == $self } {
-		    set record [lreplace $record 3 3 $very_idle_time]
-		    set people_here [lreplace $people_here $i $i $record]
-		    break
-		}
-	    }
-	}
+    # make our name appear at the end of any idle-time sorted list
+    # we do this by replacing our own idle time with a VERY big one
+    # sure there are faster ways to do this...
+    set self [visual.get_self]
+    if { $self != "" } {
+        # damn, should be a utils.iassoc...
+        for {set i 0} {$i < [llength $people_here]} {incr i} {
+        set record [lindex $people_here $i]
+        if { [lindex $record 0] == $self } {
+            set record [lreplace $record 3 3 $very_idle_time]
+            set people_here [lreplace $people_here $i $i $record]
+            break
+        }
+        }
+    }
 
         set sorted [lsort -command rose2.sort_by_idle $people_here]
 
         foreach user $sorted {
-	    lappend names [lindex $user 1]
+        lappend names [lindex $user 1]
         }
 
         append text [join $names ", "]
@@ -250,9 +250,9 @@ proc rose2.sort_by_idle {a b} {
 proc rose2.filter_exits {okdirections exits} {
     set tmp {}
     foreach exit $exits {
-	if { [lsearch -exact $okdirections [lindex $exit 0]] != -1 } {
-	    lappend tmp $exit
-	}
+    if { [lsearch -exact $okdirections [lindex $exit 0]] != -1 } {
+        lappend tmp $exit
+    }
     }
     return $tmp
 }
@@ -271,23 +271,23 @@ proc rose2.update_location {} {
     # just check the per-world directive...
 
     if { [winfo exists .rose2] == 0 } {
-	return
+    return
     }
 
     set location [visual.get_location]
     if { ($location == "") } {
-	return
+    return
     }
     set topology [visual.get_topology $location 1]
     if { ($topology == {}) } {
-	return
+    return
     }
     set users [visual.get_users]
     if { ($users == {}) } {
-	# visual doesn't have that information yet, wait for it to
-	# turn up, one or other of our handlers will be called shortly
-	# afterwards, so we get another go at doing stuff.
-	return
+    # visual doesn't have that information yet, wait for it to
+    # turn up, one or other of our handlers will be called shortly
+    # afterwards, so we get another go at doing stuff.
+    return
     }
 
     rose2.got_data
@@ -310,7 +310,7 @@ proc rose2.update_location {} {
 
     # build a hash, keyed on exit destination
     foreach exit $safe_exits {
-	set foo([lindex $exit 1]) $exit
+    set foo([lindex $exit 1]) $exit
     }
 
     # recompose from the list of de-duplicated destinations
@@ -321,7 +321,7 @@ proc rose2.update_location {} {
 
     # add the 'x' room, our current location
     rose2.populate [concat $safe_exits [list [list x $location]]] $users
-    # new information so clear any cached data 
+    # new information so clear any cached data
     rose2.init_details
     rose2.room_details $location
 }
@@ -343,9 +343,9 @@ proc rose2.create {} {
     set rose_font [worlds.get_generic "" {} {} Rose2ButtonFont]
 
     text $r.t -height 4 -width 30 -font $rose_font \
-	-highlightthickness 0 \
-	-relief flat -bg [$r cget -bg] \
-	-wrap word -cursor {}
+    -highlightthickness 0 \
+    -relief flat -bg [$r cget -bg] \
+    -wrap word -cursor {}
 
     $r.t tag configure paragraph_format -lmargin2 4
 
@@ -471,23 +471,23 @@ proc rose2.direction_details direction {
         return
     }
     if { $direction == "x" } {
-	rose2.room_details $location
+    rose2.room_details $location
     } {
-	set topology [visual.get_topology $location 1]
-	if { $topology == {} } {
-	    return
-	}
-	set room [util.assoc $topology $location]
-	set exits [lindex $room 2]
-	if { $exits == {} } {
-	    return
-	}
-	set dexit [util.assoc $exits $direction]
-	if { $dexit == {} } {
-	    return
-	}
-	set dlocation [lindex $dexit 1]
-	rose2.room_details $dlocation
+    set topology [visual.get_topology $location 1]
+    if { $topology == {} } {
+        return
+    }
+    set room [util.assoc $topology $location]
+    set exits [lindex $room 2]
+    if { $exits == {} } {
+        return
+    }
+    set dexit [util.assoc $exits $direction]
+    if { $dexit == {} } {
+        return
+    }
+    set dlocation [lindex $dexit 1]
+    rose2.room_details $dlocation
     }
 }
 
@@ -499,7 +499,7 @@ proc rose2.make_spline rooms {
     # initialise an over-large map
     for {set y 0} {$y < 5} {incr y} {
         for {set x 0} {$x < 5} {incr x} {
-	    set map($x,$y) ""
+        set map($x,$y) ""
         }
     }
 
@@ -519,21 +519,21 @@ proc rose2.make_spline rooms {
 
     # invert the array for fast lookups
     foreach xy [array names map_xy] {
-	set xy_map($map_xy($xy)) $xy
+    set xy_map($map_xy($xy)) $xy
     }
 
     # mark the named rooms on the map
     foreach room $rooms {
-	set map($xy_map($room)) 1
+    set map($xy_map($room)) 1
     }
 
     # find the top-most named room
     set top ""
     for {set y 0} {$y < 5} {incr y} {
         for {set x 0} {$x < 5} {incr x} {
-	    if { ($top == "") && ($map($x,$y) != "") } {
-		set top $map_xy($x,$y)
-	    }
+        if { ($top == "") && ($map($x,$y) != "") } {
+        set top $map_xy($x,$y)
+        }
         }
     }
 
@@ -559,14 +559,14 @@ proc rose2.make_spline rooms {
     # new = turn(old,direction)
 
     array set turn {
-        n,right	e
-        e,right	s
-        s,right	w
-        w,right	n
-        n,left	w
-        e,left	n
-        s,left	e
-        w,left	s
+        n,right    e
+        e,right    s
+        s,right    w
+        w,right    n
+        n,left    w
+        e,left    n
+        s,left    e
+        w,left    s
     }
 
     # what do we add to our present position to get the right hand
@@ -586,37 +586,37 @@ proc rose2.make_spline rooms {
 
     # roll round the maze
     while { ("$STARTX,$STARTY" != "$X,$Y") || ($first_time == 1) } {
-	set first_time 0
+    set first_time 0
 
-	# take a mark on the room to our right
-	set new_right_x [expr $X + $right_x($FACE)]
-	set new_right_y [expr $Y + $right_y($FACE)]
-	lappend MARKS [rose2.mark $FACE $rose2_corners($map_xy($new_right_x,$new_right_y))]
+    # take a mark on the room to our right
+    set new_right_x [expr $X + $right_x($FACE)]
+    set new_right_y [expr $Y + $right_y($FACE)]
+    lappend MARKS [rose2.mark $FACE $rose2_corners($map_xy($new_right_x,$new_right_y))]
 
-	# proceed if possible
-	set my_ahead_x [expr $X + $dx($FACE)]
-	set my_ahead_y [expr $Y + $dy($FACE)]
+    # proceed if possible
+    set my_ahead_x [expr $X + $dx($FACE)]
+    set my_ahead_y [expr $Y + $dy($FACE)]
 
-	if { $map($my_ahead_x,$my_ahead_y) == "" } {
-	    set X $my_ahead_x
-	    set Y $my_ahead_y
-	} {
-	    # turn 90 anticlockwise
-	    set FACE $turn($FACE,left)
-	}
+    if { $map($my_ahead_x,$my_ahead_y) == "" } {
+        set X $my_ahead_x
+        set Y $my_ahead_y
+    } {
+        # turn 90 anticlockwise
+        set FACE $turn($FACE,left)
+    }
 
-	set my_right_x [expr $X + $right_x($FACE)]
-	set my_right_y [expr $Y + $right_y($FACE)]
-	# anyone on our right?
-	if { $map($my_right_x,$my_right_y) == "" } {
+    set my_right_x [expr $X + $right_x($FACE)]
+    set my_right_y [expr $Y + $right_y($FACE)]
+    # anyone on our right?
+    if { $map($my_right_x,$my_right_y) == "" } {
 
-	    # turn 90 clockwise
-	    set FACE $turn($FACE,right)
-	    # move
-	    incr X $dx($FACE)
-	    incr Y $dy($FACE)
+        # turn 90 clockwise
+        set FACE $turn($FACE,right)
+        # move
+        incr X $dx($FACE)
+        incr Y $dy($FACE)
 
-	}
+    }
     }
 
     # remove duplicate consecutive points and return a flat list
@@ -624,11 +624,11 @@ proc rose2.make_spline rooms {
     #remove consecutive duplicates
     set last ""
     while { $tmp != {} } {
-	if { [lindex $tmp 0] != $last } {
-	    lappend tmp2 [lindex $tmp 0]
-	    set last [lindex $tmp 0]
-	}
-	set tmp [lrange $tmp 1 end]
+    if { [lindex $tmp 0] != $last } {
+        lappend tmp2 [lindex $tmp 0]
+        set last [lindex $tmp 0]
+    }
+    set tmp [lrange $tmp 1 end]
     }
 
     # clean up, drop the last element, which is the same as the first
@@ -637,23 +637,23 @@ proc rose2.make_spline rooms {
 
 proc rose2.mark { face points } {
     if { $face == "n" } {
-	return [list [lindex $points 3] [lindex $points 0]]
+    return [list [lindex $points 3] [lindex $points 0]]
     }
     if { $face == "e" } {
-	return [list [lindex $points 0] [lindex $points 1]]
+    return [list [lindex $points 0] [lindex $points 1]]
     }
     if { $face == "s" } {
-	return [list [lindex $points 1] [lindex $points 2]]
+    return [list [lindex $points 1] [lindex $points 2]]
     }
     if { $face == "w" } {
-	return [list [lindex $points 2] [lindex $points 3]]
+    return [list [lindex $points 2] [lindex $points 3]]
     }
 }
 
 proc rose2.make_coords points {
     global rose2_point
     foreach p $points {
-	lappend tmp $rose2_point($p)
+    lappend tmp $rose2_point($p)
     }
     return [eval concat $tmp]
 }
@@ -674,7 +674,7 @@ proc rose2.display rooms {
 
     foreach room $rooms {
         eval rose2.target $room $rose2_corners($room)
-    } 
+    }
 
     rose2.depth_of_field
 }
@@ -694,20 +694,20 @@ proc rose2.populate { rooms users } {
     # how many people active in each room?
     foreach room $rooms { set active([lindex $room 1]) 0 }
     foreach user $users { set active([lindex $user 2]) 0 }
-    foreach user $users { 
-	# active if idle for < 1 minute
-	if { [lindex $user 3] < 60 } {
-	    incr active([lindex $user 2])
-	}
+    foreach user $users {
+    # active if idle for < 1 minute
+    if { [lindex $user 3] < 60 } {
+        incr active([lindex $user 2])
+    }
     }
 
     foreach room $rooms {
         set direction [lindex $room 0]
         set roomid [lindex $room 1]
         if { $count($roomid) > 0 } {
-	    # breaks if you call it with a value count=0
-	    rose2.people $direction $count($roomid) $active($roomid)
-	}
+        # breaks if you call it with a value count=0
+        rose2.people $direction $count($roomid) $active($roomid)
+    }
     }
 
     # get the layering right
@@ -755,15 +755,15 @@ proc rose2.people { where count active } {
     # faces in nearer rooms.
 
     array set tags {
-	nw	FACES:FAR
-	n	FACES:FAR
-	ne	FACES:FAR
-	w	FACES:MID
-	x	FACES:MID
-	e	FACES:MID
-	sw	FACES:NEAR
-	s	FACES:NEAR
-	se	FACES:NEAR
+    nw    FACES:FAR
+    n    FACES:FAR
+    ne    FACES:FAR
+    w    FACES:MID
+    x    FACES:MID
+    e    FACES:MID
+    sw    FACES:NEAR
+    s    FACES:NEAR
+    se    FACES:NEAR
     }
 
     # draw the suckers, lowest on the screen first...
@@ -772,7 +772,7 @@ proc rose2.people { where count active } {
         set x [expr [lindex $centre($where) 0] + int($r)]
         set r [expr [rose2.random 15] - 10]
         set y [expr [lindex $centre($where) 1] + int($r)]
-	lappend coords "$x $y"
+    lappend coords "$x $y"
     }
 
     # display them highest to lowest, so from the 'back' to the
@@ -784,18 +784,18 @@ proc rose2.people { where count active } {
 
     foreach xy [lsort -command rose2.sort_by_y $coords] {
         eval set image \[$f.c create image $xy -image face.$size($where).open -tags $tags($where)\]
-	if { $diff <= 0 } {
-	    set ropen [expr 3000 + [rose2.random 1000]]
-	    rose2.blink $image $size($where) $ropen 100
-	}
-	# one less non blinker to worry about
-	incr diff -1
+    if { $diff <= 0 } {
+        set ropen [expr 3000 + [rose2.random 1000]]
+        rose2.blink $image $size($where) $ropen 100
+    }
+    # one less non blinker to worry about
+    incr diff -1
     }
 }
 
 proc rose2.sort_by_y { a b } {
     if { [lindex $a 1] > [lindex $b 1] } {
-	return 1
+    return 1
     }
     return 0
 }
@@ -842,7 +842,7 @@ proc rose2.blink_closed {item size open close} {
         after $close rose2.blink_open $item $size $open $close
     }
 }
- 
+
 proc rose2.blink {item size open close} {
     rose2.blink_open $item $size $open $close
 }

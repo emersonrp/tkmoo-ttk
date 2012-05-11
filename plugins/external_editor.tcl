@@ -10,17 +10,17 @@ global external_editor_db
 set external_editor "C:\\Program Files (x86)\\Vim\\vim72\\gvim.exe"
 
 proc external_editor.start {} {
-	edit.register load external_editor.do_load 70
+    edit.register load external_editor.do_load 70
 }
 
 proc external_editor.do_load { w args } {
-	# external_editor.SCedit "pre" "lines" "post" "title" "icon"
+    # external_editor.SCedit "pre" "lines" "post" "title" "icon"
 }
  
 
 proc external_editor.create { title icon_title } {
-	set filename [::fileutil::tempfile "tkmoo-"]
-	return $filename
+    set filename [::fileutil::tempfile "tkmoo-"]
+    return $filename
 }
 
 proc external_editor.destroy { editor } {
@@ -28,64 +28,64 @@ proc external_editor.destroy { editor } {
 }
 
 proc external_editor.set_type { editor type } {
-	window.displayCR "set_type"
+    window.displayCR "set_type"
 }
 
 proc external_editor.SCedit { pre lines post title icon_title filename } {
-	global external_editor
-	global external_editor_db
+    global external_editor
+    global external_editor_db
 
-	if { $pre == "" } {
-		if { $post == "" } {
-			set data $lines
-		} {
-			set data [concat $lines [list $post]]
-		}
-	} {
-		if { $post == "" } {
-			set data [concat [list $pre] $lines]
-		} {
-			set data [concat [list $pre] $lines [list $post]]
-		}
-	}
+    if { $pre == "" } {
+        if { $post == "" } {
+            set data $lines
+        } {
+            set data [concat $lines [list $post]]
+        }
+    } {
+        if { $post == "" } {
+            set data [concat [list $pre] $lines]
+        } {
+            set data [concat [list $pre] $lines [list $post]]
+        }
+    }
 
-	set fh [open $filename r+]
-	foreach line $data { puts $fh "$line" }
-	close $fh
+    set fh [open $filename r+]
+    foreach line $data { puts $fh "$line" }
+    close $fh
 
-	set editorpid [ exec $external_editor $filename & ]
+    set editorpid [ exec $external_editor $filename & ]
 
-	# mmkay let's start watching that file.
-	set external_editor_db($filename:editorpid) $editorpid
-	set external_editor_db($filename:mtime) [ file mtime $filename ]
-	external_editor._check_file $filename
+    # mmkay let's start watching that file.
+    set external_editor_db($filename:editorpid) $editorpid
+    set external_editor_db($filename:mtime) [ file mtime $filename ]
+    external_editor._check_file $filename
 
 }
 
 proc external_editor._check_file { filename } {
-	global external_editor_db
-	if { [file mtime $filename] != $external_editor_db($filename:mtime) } {
-		window.displayCR "file $filename changed!";
-	}
-	# stat the file
+    global external_editor_db
+    if { [file mtime $filename] != $external_editor_db($filename:mtime) } {
+        window.displayCR "file $filename changed!";
+    }
+    # stat the file
 window.displayCR "just before"
-	after 250 {
-		window.displayCR "going in...."
-		external_editor._check_file $filename
-		window.displayCR "coming out...."
-	}
+    after 250 {
+        window.displayCR "going in...."
+        external_editor._check_file $filename
+        window.displayCR "coming out...."
+    }
 }
 
 proc external_editor.configure_send { editor command callback num } {
-	window.displayCR "configure_Send"
+    window.displayCR "configure_Send"
 }
 
 proc external_editor.configure_close { editor command callback num } {
-	window.displayCR "configure_close"
+    window.displayCR "configure_close"
 }
 
 proc external_editor.configure_send_and_close { editor command callback num } {
-	window.displayCR "configure_send_and_close"
+    window.displayCR "configure_send_and_close"
 }
 
 

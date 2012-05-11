@@ -61,17 +61,17 @@ proc client.plugins {} {
 
 proc client.sort_registry {} {
     global client_event_callbacks client_event_callbacks_x
-    
+
     foreach event [array names client_event_callbacks_x] {
-	set tmp $client_event_callbacks_x($event)
-	set client_event_callbacks($event) [util.slice [lsort -increasing -command client.compare_priority $tmp]]
+    set tmp $client_event_callbacks_x($event)
+    set client_event_callbacks($event) [util.slice [lsort -increasing -command client.compare_priority $tmp]]
     }
 }
 
 proc client.compare_priority { a b } {
     set rv [expr int( [lindex $a 1] - [lindex $b 1] )]
-    if { $rv == 0 } { 
-	set rv [expr int( [lindex $a 2] - [lindex $b 2] )]
+    if { $rv == 0 } {
+    set rv [expr int( [lindex $a 2] - [lindex $b 2] )]
     }
     return $rv
 }
@@ -127,11 +127,11 @@ proc client.client_disconnected {} {
 proc client.incoming-character event {
     global modules_module_deferred
     if { [modules.incoming $event] == $modules_module_deferred } {
-	if { [io.noCR] == 1 } {
+    if { [io.noCR] == 1 } {
             window.display [db.get $event line]
-	} {
+    } {
             window.displayCR [db.get $event line]
-	}
+    }
     }
 }
 
@@ -206,7 +206,7 @@ proc client.stop {} {
     modules.stop
     set session ""
     catch {
-		set session [db.get current session]
+        set session [db.get current session]
     }
     io.stop_session $session
 }
@@ -250,21 +250,21 @@ proc client.login_dialog { uid pwd } {
     wm title $l "Login to $name"
     wm iconname $l "Login to $name"
     ttk::frame $l.u
-	ttk::label $l.u.l -text "User:"
-	ttk::entry $l.u.e
-	$l.u.e insert 0 $uid
-	pack $l.u.l -side left
-	pack $l.u.e -side right
+    ttk::label $l.u.l -text "User:"
+    ttk::entry $l.u.e
+    $l.u.e insert 0 $uid
+    pack $l.u.l -side left
+    pack $l.u.e -side right
     ttk::frame $l.p
-	ttk::label $l.p.l -text "Password:"
-	ttk::entry $l.p.e -show "*"
-	$l.p.e insert 0 $pwd
-	pack $l.p.l -side left
-	pack $l.p.e -side right
+    ttk::label $l.p.l -text "Password:"
+    ttk::entry $l.p.e -show "*"
+    $l.p.e insert 0 $pwd
+    pack $l.p.l -side left
+    pack $l.p.e -side right
     ttk::frame $l.c
-	ttk::button $l.c.l -text "Login" -command "client.do_login_from_dialog"
-	ttk::button $l.c.c -text "Cancel" -command "destroy $l"
-	pack $l.c.l $l.c.c -side left -padx 5 -pady 5
+    ttk::button $l.c.l -text "Login" -command "client.do_login_from_dialog"
+    ttk::button $l.c.c -text "Cancel" -command "destroy $l"
+    pack $l.c.l $l.c.c -side left -padx 5 -pady 5
 
     bind $l <Return> { client.do_login_from_dialog };
 
@@ -284,19 +284,19 @@ proc client.default_settings {} {
     set which [worlds.get_generic default {} {} DefaultFont]
 
     .output configure -font [fonts.$font($which)]
-    if { $which == "default" } { 
+    if { $which == "default" } {
         set window_fonts fixedwidth
     } {
         set window_fonts $which
     }
 
     client.set_bindings
- 
+
     set echo [worlds.get_generic on {} {} LocalEcho]
     if { [string tolower $echo] == "on" } {
-	client.set_echo 1
+    client.set_echo 1
     } {
-	client.set_echo 0
+    client.set_echo 0
     }
 }
 
@@ -306,10 +306,10 @@ proc client.set_echo echo {
 }
 
 proc client.set_bindings {} {
-    bindings.default 
-        
+    bindings.default
+
     set which [worlds.get_generic default {} {} KeyBindings]
-    
+
     bindings.set $which
     set window_binding $which
 }
@@ -337,15 +337,15 @@ proc client.connect_world world {
 
     if { ($host == "") || ($port == "") } {
         window.displayCR "Host or Port not defined for this World" window_highlight
-	return
+    return
     }
 
     db.set $session host $host
     db.set $session port $port
 
     if { [io.connect_session $session] == 1 } {
-	worlds.set_current $kludge_world
-	return
+    worlds.set_current $kludge_world
+    return
     }
 
 
@@ -360,7 +360,7 @@ proc client.connect_world world {
 
     if { ($uid == "") && ($pwd == "") && ([string tolower $use] == "on") } {
         client.login_dialog $uid $pwd
-	return
+    return
     }
 
     client.complete_connection $world $uid $pwd
@@ -379,7 +379,7 @@ proc client.complete_connection { world uid pwd } {
     } {
 
 
-	regsub "\n\$" $cscript {} cscript
+    regsub "\n\$" $cscript {} cscript
 
 
         io.outgoing $cscript
@@ -426,7 +426,7 @@ proc client.exit {} {
     if { $tcl_platform(platform) == "macintosh" } {
         after 1500 destroy .
     } {
-	destroy .
+    destroy .
     }
 
 

@@ -25,7 +25,7 @@ proc request.destroy tag {
 proc request.duplicate { source target } {
     global request_data
     foreach key [array names request_data "$source.*"] {
-	regsub "^$source\." $key {} key
+    regsub "^$source\." $key {} key
         set request_data($target.$key) $request_data($source.$key)
     }
 }

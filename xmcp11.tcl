@@ -29,27 +29,27 @@ proc xmcp11.start {} {
     global xmcp11_use
     set xmcp11_use 0
     ###
-    .output tag configure xmcp11_mcp	-foreground [colourdb.get darkgreen]
-    .output tag configure xmcp11_type	-foreground [colourdb.get red]
-    .output tag configure xmcp11_value	-foreground [colourdb.get blue]
+    .output tag configure xmcp11_mcp    -foreground [colourdb.get darkgreen]
+    .output tag configure xmcp11_type    -foreground [colourdb.get red]
+    .output tag configure xmcp11_value    -foreground [colourdb.get blue]
     .output tag configure xmcp11_default
     window.menu_tools_add "@xmcp_challenge"  {io.outgoing {@xmcp_challenge}}
 }
 
-proc xmcp11.logCR { line tag io } { 
-    global xmcp11_use_log 
+proc xmcp11.logCR { line tag io } {
+    global xmcp11_use_log
 
     if { $xmcp11_use_log == 0 } {
-	return
+    return
     }
     window.displayCR $line $tag
 }
 
-proc xmcp11.log { line tag io } { 
-    global xmcp11_use_log 
+proc xmcp11.log { line tag io } {
+    global xmcp11_use_log
 
     if { $xmcp11_use_log == 0 } {
-	return
+    return
     }
     window.display $line $tag
 }
@@ -71,12 +71,12 @@ proc xmcp11.incoming event {
 
 
         if { ($type != "xmcp") && ($xmcp11_active == 0) } {
-	    return [modules.module_deferred]
-	}
+        return [modules.module_deferred]
+    }
 
         xmcp11.log "\$#\$" xmcp11_mcp "<"
         xmcp11.log "$type " xmcp11_type ""
-	request.set current _type $type
+    request.set current _type $type
         if { [xmcp11.parse $rest] } {
             if { [info procs "xmcp11.do_$type"] != {} } {
                 xmcp11.do_$type
@@ -86,16 +86,16 @@ proc xmcp11.incoming event {
         }
         set last [string index $type [expr [string length $type] - 1]]
         if { $last == "*" } {
-	    request.set current xmcp11_lines ""
-	    ###
-	    catch {
-	    if { [set tag [request.get current tag]] } {
-		request.duplicate current $tag
-	    }
-	    }
-	    #
-	    ###
-	} {
+        request.set current xmcp11_lines ""
+        ###
+        catch {
+        if { [set tag [request.get current tag]] } {
+        request.duplicate current $tag
+        }
+        }
+        #
+        ###
+    } {
             xmcp11.unset_header
         }
         return [modules.module_ok]
@@ -107,17 +107,17 @@ proc xmcp11.incoming event {
 proc xmcp11.parse header {
     set first [lindex $header 0]
     if {![regexp ":" $first]} {
-	request.set current _authentication-key $first
+    request.set current _authentication-key $first
         xmcp11.log "$first " xmcp11_mcp ""
         set header [lrange $header 1 end]
     } {
-	request.set current _authentication-key NULL
+    request.set current _authentication-key NULL
     }
 
     set keyword ""
     foreach item $header {
         if { $keyword != "" } {
-	    request.set current $keyword $item
+        request.set current $keyword $item
             xmcp11.log "$keyword: " xmcp11_mcp ""
             xmcp11.log "$item " xmcp11_value ""
             set keyword ""
@@ -133,7 +133,7 @@ proc xmcp11.parse header {
 
 
 proc xmcp11.authenticated { {flag verbose} } {
-    global xmcp11_authentication_key 
+    global xmcp11_authentication_key
     if { [request.get current _authentication-key] == $xmcp11_authentication_key } {
         return 1
     }
@@ -169,7 +169,7 @@ proc xmcp11.do_xmcp {} {
         xmcp11.log "$authenticate " xmcp11_method ""
         xmcp11.logCR "$xmcp11_authentication_key" xmcp11_value ""
 
-	set xmcp11_active 1
+    set xmcp11_active 1
 
 
         set xscript ""
@@ -197,7 +197,7 @@ proc xmcp11.do_END {} {
     catch {
         set callback [request.get $which xmcp11_multiline_procedure]
         if { $callback != "" } {
-	    request.set $which _lines [request.get $which xmcp11_lines]
+        request.set $which _lines [request.get $which xmcp11_lines]
             if { [info procs "xmcp11.do_callback_$callback"] != {} } {
                 xmcp11.do_callback_$callback
             }
@@ -229,29 +229,29 @@ proc xmcp11.callback {} {
     frame $c.buttons
 
     checkbutton $c.buttons.usemcp \
-	-padx 0 \
+    -padx 0 \
         -text "use xmcp/1.1" \
         -variable xmcp11_use
 
     checkbutton $c.buttons.xmcp11active \
-	-padx 0 \
+    -padx 0 \
         -text "xmcp/1.1 active" \
         -variable xmcp11_active
 
     checkbutton $c.buttons.uselog \
-	-padx 0 \
+    -padx 0 \
         -text "log xmcp/1.1" \
         -variable xmcp11_use_log
 
     button $c.buttons.close \
         -text "Close" \
         -command "destroy $c";
- 
+
     pack append $c.buttons \
-        $c.buttons.usemcp	{left padx 4} \
-        $c.buttons.xmcp11active	{left padx 4} \
-        $c.buttons.uselog	{left padx 4} \
-        $c.buttons.close	{left padx 4}
+        $c.buttons.usemcp    {left padx 4} \
+        $c.buttons.xmcp11active    {left padx 4} \
+        $c.buttons.uselog    {left padx 4} \
+        $c.buttons.close    {left padx 4}
 
     pack append $c \
         $c.buttons {fillx pady 4}

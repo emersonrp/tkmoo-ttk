@@ -1,6 +1,6 @@
 #
-#	tkMOO
-#	~/.tkMOO-lite/plugins/serverinfo.tcl
+#    tkMOO
+#    ~/.tkMOO-lite/plugins/serverinfo.tcl
 #
 
 # tkMOO-light is Copyright (c) Andrew Wilson 1994,1995,1996,1997,1998,1999

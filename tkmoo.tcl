@@ -6,13 +6,13 @@ set tkmooLibrary build/.tkMOO-lite
 set home [ file dirname [ info script ]]
 
 # tkMOO-SE is Copyright (c) Stephen Alderman 2003-2006.
-# 
-# 	All Rights Reserved
-# 
+#
+#     All Rights Reserved
+#
 # Permission is hereby granted to use this software for private, academic
 # and non-commercial use. No commercial or profitable use of this
 # software may be made without the prior permission of the author.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY ANDREW WILSON ``AS IS'' AND ANY
 # EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
 # THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
@@ -77,28 +77,28 @@ proc initapi.rcfile {} {
     switch $tcl_platform(platform) {
         macintosh {
             lappend files [file join [pwd] tkmoo-se.RC]
-	    if { [info exists env(PREF_FOLDER)] } {
+        if { [info exists env(PREF_FOLDER)] } {
                 lappend files [file join $env(PREF_FOLDER) tkmoo-se.RC]
-	    }
+        }
         }
         windows {
-	    lappend files [file join [pwd] tkmoo.res]
-	    if { [info exists env(TKMOO_LIB_DIR)] } {
+        lappend files [file join [pwd] tkmoo.res]
+        if { [info exists env(TKMOO_LIB_DIR)] } {
                 lappend files [file join $env(TKMOO_LIB_DIR) tkmoo tkmoo.res]
-	    }
-	    if { [info exists env(HOME)] } {
+        }
+        if { [info exists env(HOME)] } {
                 lappend files [file join $env(HOME) tkmoo tkmoo.res]
-	    }
+        }
         }
         unix -
         default {
             lappend files [file join [pwd] .tkmoo-serc]
-	    if { [info exists env(TKMOO_LIB_DIR)] } {
+        if { [info exists env(TKMOO_LIB_DIR)] } {
                 lappend files [file join $env(TKMOO_LIB_DIR) .tkmoo-serc]
-	    }
-	    if { [info exists env(HOME)] } {
+        }
+        if { [info exists env(HOME)] } {
                 lappend files [file join $env(HOME) .tkmoo-serc]
-	    }
+        }
         }
     }
 
@@ -107,7 +107,7 @@ proc initapi.rcfile {} {
             return $file
         }
     }
-    
+
     return ""
 }
 
@@ -148,11 +148,11 @@ source [ file join $home "colourchooser.tcl" ]
 source [ file join $home "fontchooser.tcl" ]
 source [ file join $home "plugin.tcl" ]
 
-set main_host		""
-set main_port		""
-set main_login		""
-set main_password	""
-set main_script		""
+set main_host        ""
+set main_port        ""
+set main_login        ""
+set main_password    ""
+set main_script        ""
 
 set main_usage "Usage: tkmoo \[-dir <dir>\] \[host \[port 23\]\]
        tkmoo \[-dir <dir>\] -world <world>
@@ -197,13 +197,13 @@ if { [info exists main_arg(-dir)] } {
 }
 
 plugin.source
-client.start 
+client.start
 
 if { ($main_error_str == "") && [info exists main_arg(-f)] } {
 
 
     if { ($main_arg(-f) == [worlds.file]) ||
-	 ($main_arg(-f) == [edittriggers.file]) } {
+     ($main_arg(-f) == [edittriggers.file]) } {
         append main_error_str "Error: can't read file '$main_arg(-f)'\n"
         append main_error_str "$main_usage"
     } elseif { [file isfile $main_arg(-f)] &&
@@ -215,9 +215,9 @@ if { ($main_error_str == "") && [info exists main_arg(-f)] } {
         global worlds_worlds
         set worlds_worlds [concat $worlds_worlds $worlds]
 
-	foreach world $worlds {
-	    worlds.set $world "MustNotSave" 1
-	}
+    foreach world $worlds {
+        worlds.set $world "MustNotSave" 1
+    }
 
         if { $worlds != {} } {
             client.connect_world [lindex $worlds 0]
@@ -233,17 +233,17 @@ if { ($main_error_str == "") && [info exists main_arg(-f)] } {
     set name $main_arg(-world)
     set matches [worlds.match_world "*$name*"]
     if { [llength $matches] == 1 } {
-        client.connect_world [lindex $matches 0] 
+        client.connect_world [lindex $matches 0]
     }
     if { [llength $matches] > 1 } {
         append main_error_str "'$name' could match any of the following Worlds:\n"
         foreach w $matches {
             append main_error_str "  [worlds.get $w Name]\n"
         }
-    }   
+    }
     if { [llength $matches] == 0 } {
         append main_error_str "No World with Name matching '$name'\n"
-    }   
+    }
 
 } elseif { ($main_error_str == "") && ([llength $main_unprocessed] == 1) } {
 
@@ -301,16 +301,16 @@ if { $main_error_str != "" } {
 proc stacktrace {} {
     set stack "Stack trace:\n"
     for {set i 1} {$i < [info level]} {incr i} {
-	set lvl [info level -$i]
-	set pname [lindex $lvl 0]
-	append stack [string repeat " " $i]$pname
-	foreach value [lrange $lvl 1 end] arg [info args $pname] {
-	    if {$value eq ""} {
+    set lvl [info level -$i]
+    set pname [lindex $lvl 0]
+    append stack [string repeat " " $i]$pname
+    foreach value [lrange $lvl 1 end] arg [info args $pname] {
+        if {$value eq ""} {
                 info default $pname $arg value
-	    }
-	    append stack " $arg='$value'"
-	}
-	append stack \n
+        }
+        append stack " $arg='$value'"
+    }
+    append stack \n
     }
     return $stack
 }

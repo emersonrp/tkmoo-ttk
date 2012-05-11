@@ -1,6 +1,6 @@
 #
-#	tkMOO
-#	~/.tkMOO-lite/plugins/ping.tcl
+#    tkMOO
+#    ~/.tkMOO-lite/plugins/ping.tcl
 #
 
 # tkMOO-light is Copyright (c) Andrew Wilson 1994,1995,1996,1997,1998
@@ -29,7 +29,7 @@
 # taken for the server to reply to a timestamped message.  Each LED
 # represents a second's delay.  If no LEDs are lit then this means the
 # delay is less than a second.
-# 
+#
 #    slowness = transfer time from server to client +
 #               time taken by MOO to process request (this may be dependant
 #               on how heavily your task queue is loaded).
@@ -65,7 +65,7 @@
 # the time on the waiting clock (which could be updated in milliseconds
 # if you wanted).  This would give a much more accurate depiction of the
 # latency.
-# 
+#
 # The volume control metaphore is pretty handy.  It could be made into a
 # mega widget so that you can define height/width, number of cells, cell
 # colour etc.  Also the range of values that the cells respond to.
@@ -81,23 +81,23 @@ preferences.register ping {Statusbar Settings} {
         {type boolean}
         {default Off}
         {display "Ping server"} }
-} 
+}
 
 proc ping.start {} {
     global ping_frame
     set ping_frame 0
     catch {
-	# register with the mcp21 plugin, if it exists...
-	mcp21.register dns-com-awns-ping 1.0 \
-	    dns-com-awns-ping ping.do_dns_com_awns_ping
-	mcp21.register dns-com-awns-ping 1.0 \
-	    dns-com-awns-ping-reply ping.do_dns_com_awns_ping_reply
-	mcp21.register_internal ping mcp_negotiate_end
+    # register with the mcp21 plugin, if it exists...
+    mcp21.register dns-com-awns-ping 1.0 \
+        dns-com-awns-ping ping.do_dns_com_awns_ping
+    mcp21.register dns-com-awns-ping 1.0 \
+        dns-com-awns-ping-reply ping.do_dns_com_awns_ping_reply
+    mcp21.register_internal ping mcp_negotiate_end
 
-	# add an on/off function
-	window.menu_tools_add "Ping on/off" ping.ping_toggle
-	global ping_db
-	set ping_db(active) 0
+    # add an on/off function
+    window.menu_tools_add "Ping on/off" ping.ping_toggle
+    global ping_db
+    set ping_db(active) 0
     }
     set ping_db(current) 0
 }
@@ -106,7 +106,7 @@ proc ping.client_connected {} {
     set use [worlds.get_generic Off {} {} UsePing]
     if { [string tolower $use] == "on" } {
         ping.display 0
-	ping.no_data
+    ping.no_data
     }
     return [modules.module_deferred]
 }
@@ -114,24 +114,24 @@ proc ping.client_connected {} {
 proc ping.mcp_negotiate_end {} {
     set use [worlds.get_generic Off {} {} UsePing]
     if { [string tolower $use] == "on" } {
-	ping.ping_on
+    ping.ping_on
     }
 }
 
 proc ping.ping_toggle {} {
     global ping_db
     if { $ping_db(active) } {
-	ping.ping_off
+    ping.ping_off
     } {
-	ping.ping_on
+    ping.ping_on
     }
 }
 
 proc ping.ping_on {} {
     global ping_db
-    if { $ping_db(active) } { 
-	# already active
-	return
+    if { $ping_db(active) } {
+    # already active
+    return
     }
     set ping_db(active) 1
     # optional, the incoming reply will do this anyway
@@ -173,16 +173,16 @@ proc ping.do_dns_com_awns_ping {} {
 proc ping.do_dns_com_awns_ping_reply {} {
     global ping_db
     if { $ping_db(active) == 0 } {
-	ping.destroy
-	return
+    ping.destroy
+    return
     }
     set id [request.get current id]
 
     if { $ping_db(current) != $id } {
-	return
+    return
     }
 
-    if { [info exists ping_db($id:time)] == 0 } { 
+    if { [info exists ping_db($id:time)] == 0 } {
         return
     }
 
@@ -202,9 +202,9 @@ proc ping.client_disconnected {} {
     return [modules.module_deferred]
 }
 
-proc xmcp11.do_xmcp-ping {} { 
+proc xmcp11.do_xmcp-ping {} {
     if { [xmcp11.authenticated] == 1 } {
-	ping.create
+    ping.create
         ping.update [request.get current time]
     }
 }

@@ -1,6 +1,6 @@
 #
-#	tkMOO
-#	~/.tkMOO-light/plugins/pretty.tcl
+#    tkMOO
+#    ~/.tkMOO-light/plugins/pretty.tcl
 #
 
 # tkMOO-light is Copyright (c) Andrew Wilson 1994,1995,1996,1997,1998,1999
@@ -46,23 +46,23 @@ proc pretty.prettyprint w {
     set out {}
     set indent 0
     foreach line $lines {
-	set l [string trimleft $line]
+    set l [string trimleft $line]
 
-	if { [regexp -nocase {^(endif|endwhile|endfor|elseif|else|endfork|endtry|finally)( |;|$)} $l] } { 
-	    incr indent -2 
-	}
+    if { [regexp -nocase {^(endif|endwhile|endfor|elseif|else|endfork|endtry|finally)( |;|$)} $l] } {
+        incr indent -2
+    }
 
-	if { $indent < 0 } {
-	    set indent 0
-	}
+    if { $indent < 0 } {
+        set indent 0
+    }
 
-	# redraw the line
-	set o "[string range $blank 0 [expr $indent - 1]]$l"
-	lappend out $o
+    # redraw the line
+    set o "[string range $blank 0 [expr $indent - 1]]$l"
+    lappend out $o
 
-	if { [regexp -nocase {^(if|while|for|elseif|else|fork|try|finally)( |;|$)} $l] } { 
-	    incr indent 2 
-	}
+    if { [regexp -nocase {^(if|while|for|elseif|else|fork|try|finally)( |;|$)} $l] } {
+        incr indent 2
+    }
     }
 
     # update the widget, display the same part of the file

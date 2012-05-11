@@ -1,7 +1,7 @@
 tk::unsupported::ExposePrivateCommand *
 #
-#	tkMOO
-#	visual.tcl
+#    tkMOO
+#    visual.tcl
 #
 
 # $Id: visual.tcl,v 1.1 2010/05/07 12:28:51 emerson Exp $
@@ -27,8 +27,8 @@ tk::unsupported::ExposePrivateCommand *
 # EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #       maintain a database of cached information.  used to support
-#	the buddy list, map and compass-based navigation systems in the
-#	client.
+#    the buddy list, map and compass-based navigation systems in the
+#    client.
 
 # TODO
 # 
@@ -198,11 +198,11 @@ tk::unsupported::ExposePrivateCommand *
 #
 #        { 
 #            {$location $name
-#	         {
-#	             {$direction1 $location1}
-#	             {$direction2 $location2}
-#	             ....
-#	         }
+#             {
+#                 {$direction1 $location1}
+#                 {$direction2 $location2}
+#                 ....
+#             }
 #            }
 #            ...
 #        }
@@ -282,8 +282,8 @@ proc visual.do_dns_com_awns_visual_users {} {
     set users {}
     set len [llength $id]
     for {set i 0} {$i < $len} {incr i} {
-	set record [list [lindex $id $i] [lindex $name $i] [lindex $location $i] [lindex $idle $i]]
-	lappend users $record
+    set record [list [lindex $id $i] [lindex $name $i] [lindex $location $i] [lindex $idle $i]]
+    lappend users $record
     }
     visual.update_users $users
 }
@@ -298,15 +298,15 @@ proc visual.do_dns_com_awns_visual_topology {} {
     set topology {}
     set len [llength $id]
     for {set i 0} {$i < $len} {incr i} {
-	set the_id [lindex $id $i]
-	set the_name [lindex $name $i]
-	set the_exits [lindex $exit $i]
-	set the_exits_list {}
-	foreach {direction roomid} $the_exits {
-	    lappend the_exits_list [list $direction $roomid]
-	}
-	set record [list $the_id $the_name $the_exits_list]
-	lappend topology $record
+    set the_id [lindex $id $i]
+    set the_name [lindex $name $i]
+    set the_exits [lindex $exit $i]
+    set the_exits_list {}
+    foreach {direction roomid} $the_exits {
+        lappend the_exits_list [list $direction $roomid]
+    }
+    set record [list $the_id $the_name $the_exits_list]
+    lappend topology $record
     }
     visual.update_topology $topology
 }
@@ -346,9 +346,9 @@ proc visual.register { module event } {
 proc visual.dispatch { event args } {
     global visual_registry
     foreach me $visual_registry {
-	if { $event == [lindex $me 1] } {
-	    eval [lindex $me 0].$event $args
-	}
+    if { $event == [lindex $me 1] } {
+        eval [lindex $me 0].$event $args
+    }
     }
 }
 
@@ -404,8 +404,8 @@ proc visual.macro_topology {} {
 proc visual.get_self {} {
     global visual_db
     if { $visual_db(self) == "" } {
-	# someone please get me this information...
-	visual.dispatch get_self
+    # someone please get me this information...
+    visual.dispatch get_self
     }
     return $visual_db(self)
 }
@@ -427,15 +427,15 @@ proc visual.mcp21.get_self {} {
 proc visual.get_location { {who ""} } {
     global visual_db
     if { $who == "" } {
-	if { $visual_db(location) == "" } {
-	    visual.dispatch get_location
-	}
+    if { $visual_db(location) == "" } {
+        visual.dispatch get_location
+    }
         return $visual_db(location)
     }
     # return the user's location
     set user_record [util.assoc $visual_db(users) $who]
     if { $user_record == {} } {
-	return ""
+    return ""
     }
     return [lindex $user_record 2]
 }
@@ -444,7 +444,7 @@ proc visual.mcp21.get_location {} {
     set overlap [mcp21.report_overlap]
     set version [util.assoc $overlap dns-com-awns-visual]
     if { ($version == {}) || ([lindex $version 1] != 1.0) } {
-	return 0
+    return 0
     }
     mcp21.server_notify dns-com-awns-visual-getlocation
     return 1
@@ -455,7 +455,7 @@ proc visual.get_topology { location distance } {
     global visual_db
     # make a traversable data structure
     foreach record $visual_db(topology) {
-	set tmp([lindex $record 0]) [lrange $record 1 end]
+    set tmp([lindex $record 0]) [lrange $record 1 end]
     }
     # start at a given location traverse up to $distance hops from there
     # stub assumes distance = 1
@@ -464,8 +464,8 @@ proc visual.get_topology { location distance } {
     if { $available != "" } {
         return [list [concat [list $location] $tmp($location)]]
     } {
-	visual.dispatch get_topology $location $distance
-	return [list]
+    visual.dispatch get_topology $location $distance
+    return [list]
     }
 }
 
@@ -473,7 +473,7 @@ proc visual.mcp21.get_topology {location distance} {
     set overlap [mcp21.report_overlap]
     set version [util.assoc $overlap dns-com-awns-visual]
     if { ($version == {}) || ([lindex $version 1] != 1.0) } {
-	return 0
+    return 0
     }
     mcp21.server_notify dns-com-awns-visual-gettopology [list [list location $location] [list distance $distance]]
     return 1
@@ -483,7 +483,7 @@ proc visual.mcp21.get_topology {location distance} {
 proc visual.get_users {} {
     global visual_db
     if { $visual_db(users) == {} } {
-	visual.dispatch get_users
+    visual.dispatch get_users
     }
     return $visual_db(users)
 }
@@ -492,7 +492,7 @@ proc visual.mcp21.get_users {} {
     set overlap [mcp21.report_overlap]
     set version [util.assoc $overlap dns-com-awns-visual]
     if { ($version == {}) || ([lindex $version 1] != 1.0) } {
-	return 0
+    return 0
     }
     mcp21.server_notify dns-com-awns-visual-getusers 
     return 1
@@ -520,11 +520,11 @@ proc visual.update_location locationid {
 proc visual.update_topology topology {
     global visual_db
     foreach record [concat $visual_db(topology) $topology] {
-	set tmp([lindex $record 0]) [lrange $record 1 end]
+    set tmp([lindex $record 0]) [lrange $record 1 end]
     }
     set new_topology {}
     foreach roomid [array names tmp] {
-	lappend new_topology [concat [list $roomid] $tmp($roomid)]
+    lappend new_topology [concat [list $roomid] $tmp($roomid)]
     }
     set visual_db(topology) $new_topology
     visual.dispatch update_topology

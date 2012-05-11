@@ -41,10 +41,10 @@
 
 # TODO
 # o     <keyRelease> and <Return> might mean it's spellchecking
-#	the line when you press <Return>, that's unnecessary.
+#    the line when you press <Return>, that's unnecessary.
 # o     Output window can be used as dictionary too, permits people
-#	to type 'bwahahah' if someone else has already said it.  Common
-#	for chat use.
+#    to type 'bwahahah' if someone else has already said it.  Common
+#    for chat use.
 
 client.register spell start
 client.register spell client_connected
@@ -95,8 +95,8 @@ proc spell.client_connected {} {
 
     spell.set_available 0
     if { $tcl_platform(platform) != "unix" } {
-	if { [file exists $dictionary] ||
-	     [file exists $personal_dictionary] } {
+    if { [file exists $dictionary] ||
+         [file exists $personal_dictionary] } {
             spell.set_available 1
         }
     } {
@@ -105,8 +105,8 @@ proc spell.client_connected {} {
 
     spell.load_dictionary spell_db $dictionary
     if { [file exists $personal_dictionary] } {
-	# personal dictionary may be defined in preferences, but
-	# might not exist because no words have been saved.
+    # personal dictionary may be defined in preferences, but
+    # might not exist because no words have been saved.
         spell.load_dictionary spell_db_personal $personal_dictionary
     }
 
@@ -144,7 +144,7 @@ proc spell.load_dictionary { db file } {
 proc spell.stop_loading {} {
     global spell_task_db
     foreach key [array names spell_task_db "*,task"] {
-	catch { after cancel $spell_task_db($key) }
+    catch { after cancel $spell_task_db($key) }
         catch { unset spell_task_db($key) }
     }
 }
@@ -155,13 +155,13 @@ proc spell.read_dictionary {db fh} {
     set MAX_LINES 10
     set count 0
     while { $count < $MAX_LINES &&
-	   [gets $fh line] != -1 } {
+       [gets $fh line] != -1 } {
         set data [list]
         foreach word $line {
             lappend data $word 1
         }
         array set $db $data
-	incr count
+    incr count
     }
     # update for any text in the .input widget
     spell.do_marks
@@ -175,7 +175,7 @@ proc spell.read_dictionary {db fh} {
 
 proc spell.open_dictionary file {
     if { $file == "" } {
-	return 0
+    return 0
     }
     set fh ""
     catch { set fh [open $file "r"] }
@@ -189,7 +189,7 @@ proc spell.open_dictionary file {
 proc spell.save_dictionary { db file } {
     global $db
     if { $file == "" } {
-	return
+    return
     }
     set fh ""
     catch { set fh [open $file "w"] }
@@ -204,17 +204,17 @@ proc spell.save_dictionary { db file } {
     set SPACE ""
     set count 0
     foreach word [lsort [array names $db]] {
-	if { $count == 0 } {
-	    puts -nonewline $fh $CR
-	    set CR "\n"
-	}
-	puts -nonewline $fh "$SPACE$word"
-	set SPACE " "
-	incr count
-	if { $count > $WORDS_PER_LINE } {
-	    set count 0
-	    set SPACE ""
-	}
+    if { $count == 0 } {
+        puts -nonewline $fh $CR
+        set CR "\n"
+    }
+    puts -nonewline $fh "$SPACE$word"
+    set SPACE " "
+    incr count
+    if { $count > $WORDS_PER_LINE } {
+        set count 0
+        set SPACE ""
+    }
     }
     close $fh
 }
@@ -244,18 +244,18 @@ proc spell.do_marks {} {
 proc spell.can.look {} {
     global spell_can
     if { [info exists spell_can(look)] } {
-	return $spell_can(look)
+    return $spell_can(look)
     }
     set LOOK "look"
     set look ""
-    catch { 
-	set look [open "| $LOOK"]
-	close $look
+    catch {
+    set look [open "| $LOOK"]
+    close $look
     }
     if { $look == "" } {
-	set spell_can(look) 0
+    set spell_can(look) 0
     } {
-	set spell_can(look) 1
+    set spell_can(look) 1
     }
     return $spell_can(look)
 }
@@ -263,18 +263,18 @@ proc spell.can.look {} {
 proc spell.can.ispell {} {
     global spell_can
     if { [info exists spell_can(ispell)] } {
-	return $spell_can(ispell)
+    return $spell_can(ispell)
     }
     set ISPELL "ispell -a"
     set ispell ""
-    catch { 
-	set ispell [open "| $ISPELL"]
-	close $ispell
+    catch {
+    set ispell [open "| $ISPELL"]
+    close $ispell
     }
     if { $ispell == "" } {
-	set spell_can(ispell) 0
+    set spell_can(ispell) 0
     } {
-	set spell_can(ispell) 1
+    set spell_can(ispell) 1
     }
     return $spell_can(ispell)
 }
@@ -290,7 +290,7 @@ proc spell.look word {
     set look [open "| $LOOK $word"]
     while { [gets $look line] > 0 } {
         lappend words [string tolower $line]
-    }       
+    }
     catch {close $look}
     return $words
 }
@@ -307,9 +307,9 @@ proc spell.ispell word {
 
     while { [gets $ispell line] > 0 } {
         if { [regexp {^[\*\+]} $line] } {
-	    set first [lindex $word 0]
+        set first [lindex $word 0]
             lappend words [string tolower $first]
-	    set word [lrange $word 1 end]
+        set word [lrange $word 1 end]
         }
     }
     catch {close $ispell}
@@ -327,16 +327,16 @@ proc spell.check.unix text {
             }
             continue
         }
-	if { [info exists spell_db_personal([string tolower $word])] } {
-	    continue
-	}
-	set found ""
-	foreach command { ispell look } {
-	    if { [spell.can.$command] } {
+    if { [info exists spell_db_personal([string tolower $word])] } {
+        continue
+    }
+    set found ""
+    foreach command { ispell look } {
+        if { [spell.can.$command] } {
                 set found [spell.$command $word]
-		break
-	    }
-	}
+        break
+        }
+    }
         if { [lsearch -exact $found [string tolower $word]] != -1 } {
             # correct
             set spell_db($word) 1
@@ -353,12 +353,12 @@ proc spell.check.windows text {
     global spell_db spell_db_personal
     set wrong [list]
     foreach word $text {
-	if { [info exists spell_db([string tolower $word])] } {
-	    continue
-	}
-	if { [info exists spell_db_personal([string tolower $word])] } {
-	    continue
-	}
+    if { [info exists spell_db([string tolower $word])] } {
+        continue
+    }
+    if { [info exists spell_db_personal([string tolower $word])] } {
+        continue
+    }
         lappend wrong $word
     }
     return $wrong
@@ -385,27 +385,27 @@ proc spell.add_personal word {
 proc spell.mark_words {w words} {
     set text [$w get 1.0 end]
     foreach word $words {
-	set from 1.0
-	while { [set psn [$w search -nocase -forwards $word $from end]] != "" } {
+    set from 1.0
+    while { [set psn [$w search -nocase -forwards $word $from end]] != "" } {
             set len [string length $word]
-	    # work out where we expect this word to end, also where
-	    # we start our next search from
-	    set from [$w index "$psn + $len chars"]
-	    # work out the beginning and end of the word we're in...
-	    set beginning [$w index "$psn wordstart"]
-	    set ending [$w index "$psn wordend"]
-	    # only tag if we're tagging a whole word
-	    if { ($beginning == $psn) && ($ending == $from) } {
-		set new_tag [util.unique_id spell_add]
-		$w tag configure $new_tag
-		$w tag bind $new_tag <Button3-ButtonRelease> "
-		    spell.add_personal $word
-		    spell.do_marks
-		"
-	        $w tag add spell_TYPO $psn $from
-	        $w tag add $new_tag $psn $from
-	    }
-	}
+        # work out where we expect this word to end, also where
+        # we start our next search from
+        set from [$w index "$psn + $len chars"]
+        # work out the beginning and end of the word we're in...
+        set beginning [$w index "$psn wordstart"]
+        set ending [$w index "$psn wordend"]
+        # only tag if we're tagging a whole word
+        if { ($beginning == $psn) && ($ending == $from) } {
+        set new_tag [util.unique_id spell_add]
+        $w tag configure $new_tag
+        $w tag bind $new_tag <Button3-ButtonRelease> "
+            spell.add_personal $word
+            spell.do_marks
+        "
+            $w tag add spell_TYPO $psn $from
+            $w tag add $new_tag $psn $from
+        }
+    }
     }
 }
 
@@ -413,8 +413,8 @@ proc spell.unmark_words w {
     set tags [$w tag names]
     $w tag remove spell_TYPO 1.0 end
     foreach tag $tags {
-	if { [string match spell_add* $tag] } {
+    if { [string match spell_add* $tag] } {
             $w tag delete $tag 1.0 end
-	}
+    }
     }
 }
