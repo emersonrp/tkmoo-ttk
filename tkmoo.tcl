@@ -95,24 +95,17 @@ window.buildWindow
 #
 source [ file join $home "ui.tcl" ]
 source [ file join $home "request.tcl" ]
-source [ file join $home "imagedata.tcl" ]
-source [ file join $home "xmcp11.tcl" ]
 source [ file join $home "mcp.tcl" ]
-source [ file join $home "desktop.tcl" ]
-source [ file join $home "whiteboard.tcl" ]
 source [ file join $home "localedit.tcl" ]
 source [ file join $home "tkmootag.tcl" ]
 source [ file join $home "logging.tcl" ]
 source [ file join $home "hashhash_edit.tcl" ]
-source [ file join $home "mail.tcl" ]
-source [ file join $home "chess.tcl" ]
 source [ file join $home "macmoose.tcl" ]
 source [ file join $home "edittriggers.tcl" ]
 
 window.menu_tools_add "@paste selection" {window.paste_selection}
 #
 #
-source [ file join $home "who.tcl" ]
 source [ file join $home "open.tcl" ]
 source [ file join $home "preferences.tcl" ]
 source [ file join $home "colourchooser.tcl" ]

@@ -228,17 +228,9 @@ proc preferences.verify_updown_integer {str default low hi} {
 proc preferences.populate_frame {world category page} {
     global preferences_data preferences_v preferences_middle_windows
 
-    global image_data
-    image create bitmap up   -data $image_data(right.xbm)
-    image create bitmap down -data $image_data(left.xbm)
-
     set cp [preferences.cp]
     set categories [lindex $cp 0]
     set providors [lindex $cp 1]
-
-    # set preferences_middle_windows {}
-
-    # set CR ""
 
     foreach providor $providors {
 
@@ -252,18 +244,11 @@ proc preferences.populate_frame {world category page} {
 
             set f $page.[util.unique_id pf]
             pack [ ttk::frame $f ] -anchor w
-            # lappend preferences_middle_windows $f
 
-            # $middle configure -state normal
-            # $middle insert end $CR
-            # $middle window create end -window $f
-            # set CR "\n"
-            # $middle configure -state disabled
             foreach {_ directive} [util.assoc $preference directive] {_ type} [util.assoc $preference type] {break}
 
             foreach default [worlds.get_default $directive] {break}
             foreach {_ display} [util.assoc $preference display] {break}
-
 
             ttk::label $f.l -text $display -anchor w -width 20 -justify left
             pack $f.l -side left

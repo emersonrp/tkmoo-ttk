@@ -41,12 +41,6 @@ proc message.dns_com_ben_tfstatus_update {} {
     window.set_status [request.get current content]
 }
 
-proc xmcp11.do_xmcp-status {} {
-    if { [xmcp11.authenticated silent] == 1 } {
-        window.set_status [request.get current text]
-    };
-}
-
 proc mcp.do_status {} {
     if { [mcp.authenticated] == 1 } {
         window.set_status [request.get current msg]
