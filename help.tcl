@@ -584,8 +584,7 @@ set help_subject(Preferences) {
 
     MOO and Cold servers typically operate in line mode and
     many of the special out-of-band protocols that this client
-    uses, like XMCP/1.1 and MCP/1.0 will rely upon line-mode
-    communication.
+    uses, like MCP will rely upon line-mode communication.
 
         {paragraph foo}
 
@@ -659,29 +658,10 @@ set help_subject(Preferences) {
     Such protocols define how the client and server can pass complex
     messages to each other and they're usually associated with
     powerful user interfaces like {bold buddy lists} and {bold
-    programming environments} .  The 2 main protocols used by the
-    client are {bold XMCP/1.1} and the more modern {bold MCP/2.1} .
+    programming environments} .  The protocol used by the client
+    is {bold MCP/2.1} though the legacy {bold MCP/1.0} is also
+    supported.
 
-    {paragraph foo}
-
-    XMCP applications include board-games, maps, whiteboards and
-    drag-&-drop desktops.  Many XMCP applications are provided as
-    additional {bold plugin} programs you can add to the client.
-
-        {paragraph foo}
-        {bold XMCP/1.1 enabled}
-        {paragraph foo}
-
-    This toggle controls whether or not the client reponds to
-    XMCP messages which may be sent from the server.
-
-    {paragraph foo}
-        {bold XMCP/1.1 connection script}
-        {paragraph foo}
-
-    A series of commands, one per line, that the client will
-    send to the server once an XMCP authentication code has
-    been set.
 
         {paragraph foo}
         {bold Use MCP/2.1}

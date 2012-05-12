@@ -673,18 +673,6 @@ preferences.register window {Colours and Fonts} [list \
         {display "Header font"} } \
 ]
 
-preferences.register client {Out of Band} {
-
-    { {directive UseModuleXMCP11}
-        {type boolean}
-        {default on}
-        {display "XMCP/1.1 enabled"} }
-    { {directive XMCP11_AfterAuth}
-        {type text}
-        {default {}}
-        {display "XMCP/1.1 connection\nscript"} }
-}
-
 preferences.register client {Special Forces} {
     { {directive UseLoginDialog}
         {type boolean}
