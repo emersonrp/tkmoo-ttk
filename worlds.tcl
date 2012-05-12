@@ -52,46 +52,236 @@ ConnectScript: connect %u %p
 colourbackground: #ffffc6
 colourforeground: #000000
 
-World: Localhost
-Host: 127.0.0.1
+World: AcadianaMOO
+Host: acadianamoo.org
+Port: 6556
+Description: Acadiana is a virtual space that reflects the geography, culture and humor of Southwestern Louisiana, and is primarily intended as a teaching space.
+Website: http://acadianamoo.org/
+
+World: AnsibleMOO
+Host: ansiblemoo.org
+Port: 6000
+Description: AnsibleMOO is a roleplaying game based on the books Enter's Game and Ender's Shadow by Orson Scott Card.
+Website: http://ansiblemoo.org/
+
+World: ASI MOO
+Host: moo.asi.org
 Port: 7777
-ShortList: On
+Description: The Artemis Society International meeting server.
+Website: http://www.asi.org/adb/09/08/04/moo.html
 
-World: JHM
-Host: jhm.moo.mud.org
-Port: 1709
-ShortList: On
-
-World: Diversity University
-Host: moo.du.org
+World: BayMOO
+Host: baymoo.org
 Port: 8888
-ShortList: On
+Shortlist: On
+Description: BayMOO is a public MOO for the exploration of the San Francisco Bay Area in text based virtual reality.
+Website: http://www.baymoo.org:4242/
 
-World: the Cold Dark
-Host: ice.cold.org
-Port: 1138
-ShortList: On
+World: BrightMOO
+Host: brightmoo.genesismuds.com
+Port: 7760
+Website: http://brightmoo.genesismuds.com/
+Description: BrightMOO is an experiment.  It is a proof of concept, designed to demonstrate the feasibility of building client-side, three-dimensional environments using existing MOO technology.
+
+World: ComMOOnity
+Host: cmoo.blissed.org
+Port: 4242
+Website: http://cmoo.blissed.org:4243/
+Description: ComMOOnity was started on November 5th, 1996 as an experiment in human factors and human computer interaction at the Human-Computer Cooperative Problem Solving Lab at the University of Illinois, Urbana-Champaign campus.
+
+World: Cyber Media Culture
+Host: cmc.uib.no
+Port: 8888
+Website: http://cmc.ub.no:8000/
+
+World: Dhalgren
+Host: dhalgren.briar.com
+Port: 7777
+Website: http://www.mentallandscape.com/Dhalgren.htm
+Shortlist: On
+
+World: FooMOO
+Host: foomoo.org
+Port: 4500
+Website: http://www.foomoo.org
+Description: FooMOO is a MOO designed for the teaching and practicing of MOO programming. There is no theme, and few restrictions
+
+World: Fractured
+Host: fracturedproject.net
+Port: 5139
+Website: http://fracturedproject.net/
+
+World: Ghostwheel
+Host: moo.ghostmoo.org
+Port: 6969
+Website: http://fazigu.org/~quinn/ghost/
+
+World: Ghostwheel Redux
+Host: esque.com
+Port: 6969
+Website: http://ghostredux.wikispaces.com/
+
+World: Harper's Tale
+Host: moo.harpers-tale.com
+Port: 7007
+Website: http://www.harpers-tale.com/
+Description: Harper's Tale is a text-based online roleplaying game, a simulation of the world of Pern, created by Anne McCaffrey in her \"Dragonriders of Pern\" novels.
+
+World: HellMOO
+Host: hellmoo.org
+Port: 7777
+Website: http://hellmoo.org
+Description: HellMOO is a post-apocalyptic text based role-playing game. It is set after an atomic conflict has brought down the great civilizations of the 21st century.
+
+World: HogwartsMOO
+Host: hogwartsmoo.net
+Port: 7500
+Website: http://www.hogwartsmoo.net/
+Description: HogwartsMOO is one of the first online Harry Potter themed roleplay games. It is considered alternate universe, as none of the main characters from the books will ever show up, nor will the storylines contained in those books ever appear on-game.
+
+World: Holotrek
+Host: holotrek.org
+Port: 1701
+Website: http://www.holotrek.org/
+Description: HoloTrek is a Star Trek themed role-playing game on a timeline that branched from the events of TNG/DS9 around the first season of DS9.
+
+World: LambdaMOO
+Host: lambda.moo.mud.org
+Port: 8888
+Shortlist: On
+
+World: Meadow
+Host: hayseed.net
+Port: 7777
+Shortlist: On
+Website: http://www.hayseed.net/meadow.html
+
+World: MidgardMOO
+Host: moo.midgard.org
+Port: 1359
+
+World: Miriani
+Host: toastsoft.net
+Port: 1234
+Website: http://www.toastsoft.net
+Description: Miriani is a multi-player online roleplaying game in which you take on the role of a starship pilot. Your goal is simply to make a life for yourself through whatever means possible.
+
+World: MOO Canada, Eh?
+Host: moo.ca
+Port: 7777
+
+World: MOOMellow
+Host: moo.chilipepper.com
+Port: 7777
+Website: http://www.chilipepper.com:7000/
+
+World: MOOsaico
+Host: moo.di.umhino.pt
+Port: 7777
+Website: http://moosaico.com/
+Description: MOOsaico is the oldest text based virtual environment operating in Portugal and for some time the only one in the world with multilingual support.
+
+World: Once Upon A MOO
+Host: rupert.twyst.org
+Port: 7777
+Description: Once Upon A Moo is faerie tale, children's story and nursery rhyme based.
+
+World: OpalMOO
+Host: moo.opal.org
+Port: 7878
+Description: The Theme of OpalMOO is not easy to put into one or two phrases, but if it were, it would probably be, \"Gritty and Sensual.\" Things like abandoned warehouses and movie theatres are great. Things like Space Ports and shiny new office buildings are not.
+World: Phantasy World
+Host: pworld.dyndns.org
+Port: 1111
+Website: http://pworld.dyndns.org/
+
+World: Rupert
+Host: rupert.twyst.org
+Port: 9040
+Website: http://rupert.twyst.org/
+Description: A MOO based on the universe as described by Douglas Adams
+
+World: Ryksyll
+Host: moo.ryksyll.org
+Port: 8888
+Website: http://moo.ryksyll.com:8889/
+Description: Ryksyll MOO is a world based on the works of Peter Wright on the land of Mycle.
+
+World: Sindome
+Host:moo.sindome.org
+Port: 5555 
+Website: http://sindome.org/
+Description: Sindome is an online text based Cyberpunk Role Playing game.
+
+World: Star Conquest
+Host: squidsoft.net
+Port: 7777
+Website: http://www.squidsoft.net
+Description: The original pulp science fiction multiplayer roleplaying adventure
+
+World: Star Trek: Phoenix Rising
+Host: kydance.net
+Port: 2009
+Website: http://phxrising.org/
 
 World: TecfaMOO
 Host: tecfamoo.unige.ch
 Port: 7777
+Website: http://tecfa.unige.ch/moo/tecfamoo.html
+Description: The TecfaMOO is a Virtual Space for Educational Technology, Education, Research and Life at TECFA, School of Psychology and Education, University of Geneva, Switzerland.
 ShortList: On
 
-World: RiverMOO
-Host: rivermoo.com
-Port: 8888
-ShortList: On
+World: The Ethereal Kingdom
+Host: keep.quarteredcircle.net
+Port: 2035
+Website: http://www.virtadpt.net/
 
-World: ScriptersMOO
-localecho: Off
-shortlist: On
-port: 1111
-host: iris.scripters.be
+World: the-night.com
+Host: the-night.com
+Port: 2000
+Website: http://www.the-night.com/
+Description: 'the-night.com' (TNC) is a text-based game set in a fictional island chain in the Atlantic.
 
-World: PythonMOO
-shortlist: On
-port: 1111
-host: pythonmoo.co.uk"
+World: University
+Host: moo-education-online.com
+Port: 7777
+Website: http://moo-education-online.com/
+Description: Welcome to the wonderful world of University. Find within our online text game monsters, maidens and mayhem.
+
+World: VRoma
+Host: vroma.org
+Port: 8200
+Website: http://www.vroma.org/
+
+World: Waterpoint
+Host: waterpoint.moo.mud.org
+Port: 8301
+Website: http://waterpoint.moo.mud.org/
+
+World: Wayfar 1444
+Host: wayfar1444.com
+Port: 7777
+Website: http://www.wayfar1444.com/
+Description: multiplayer text adventure in the far future, on an alien planet
+
+World: Weyrmount II
+Host: moo.weyrmount.org
+Port: 8000
+
+World: Where No One Has Gone Before
+Host: game.wnohgb.org
+Port: 1701
+Website: http://www.wnohgb.org
+
+World: X-Men: Another Day Dawns
+Host: kydance.net
+Port: 3113
+Website: http://x-menanotherdaydawns.wikidot.com/
+
+World: YibMOO
+Host: yibmoo.dyndns.org
+Port: 7777
+"
 
 proc worlds.default_tkm {} {
     global worlds_default_tkm
