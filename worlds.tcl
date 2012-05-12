@@ -137,22 +137,13 @@ proc worlds.preferred_file {} {
 }
 
 proc worlds.file {} {
-    global tkmooLibrary tcl_platform env
-
+    global tkmooLibrary env
 
     set files {}
 
-    switch $tcl_platform(platform) {
-    windows {
-            lappend files [file join [pwd] worlds.tkm]
-            lappend files [worlds.preferred_file]
-    }
-    unix -
-    default {
-            lappend files [file join [pwd] .worlds.tkm]
-            lappend files [worlds.preferred_file]
-    }
-    }
+    lappend files [file join [pwd] worlds.tkm]
+    lappend files [file join [pwd] .worlds.tkm]
+    lappend files [worlds.preferred_file]
 
     foreach file $files {
         if { [file exists $file] } {
@@ -265,7 +256,6 @@ proc worlds.apply_lines lines {
 }
 
 proc worlds.create_default_file {} {
-    global tcl_platform
     set file [worlds.file]
     if { $file != "" } {
     return
@@ -289,7 +279,7 @@ proc worlds.create_default_file {} {
     puts $fd $line
     }
     close $fd
-    if { $tcl_platform(platform) == "unix" } {
+    if { [ platform.is_linux ] || [ platform.is_osx ]} {
         file attributes $file -permissions "rw-------"
     }
 }

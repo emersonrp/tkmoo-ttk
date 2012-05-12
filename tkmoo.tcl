@@ -238,14 +238,6 @@ if { $main_error_str != "" } {
     window.displayCR $main_error_str window_highlight
 }
 
-# set up the platform convenience thingie
-global tcl_platform platform
-if { $tcl_platform(platform) == "windows" }          { set platform windows }
-if { $tcl_platform(platform) == "unix" &&
-    [string tolower $tcl_platform(os)] == "darwin" } { set platform osx }
-if { $tcl_platform(platform) == "unix" &&
-    [string tolower $tcl_platform(os)] != "darwin" } { set platform linux }
-
 # debug me daddy
 proc stacktrace {} {
     set stack "Stack trace:\n"

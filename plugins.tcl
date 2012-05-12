@@ -71,11 +71,8 @@ proc plugin.source {} {
 client.register registry start
 
 proc registry.start {} {
-    global tcl_platform
 
-    if { $tcl_platform(platform) != "windows" } {
-        return;
-    }
+    if { ! [ platform.is_windows ]} { return; }
 
     if { [catch { package require registry 1.0 }] } {
         return;
