@@ -5,7 +5,7 @@
 # The homepage for this is <http://hayseed.net/~emerson/syntax.html>.
 #
 # tkMOO-light is an advanced chat/MOO client, written by Andrew Wilson.
-# It can be found at <http://www.cs.cf.ac.uk/User/Andrew.Wilson/tkMOO-light/>.
+# It can be found at <http://www.awns.com/tkMOO-light>.
 #
 # License:
 #
@@ -24,6 +24,7 @@
 #                             - Fix weird problem with Up/Down bindings doing
 #                               highlighting on wrong line, causing very strange
 #                               wraparound behavior when cursor on last line.
+#
 # 1999-10-14 -- 0.1.1 Change: - Updated core syntax plugin to work with new
 #                               API for the editor's load event in 0.3.21-dev2
 #
@@ -199,10 +200,10 @@ proc syntax.check_tags { w line_number } {
         global $name
         set currpos $linestart
         while { [ set currpos [ $w search -regexp -count length [set $name] $currpos $lineend ] ] != "" } {
-        #next three lines ridiculous hack to simulate proper backreferences.
-        regexp [set $name] [$w get $currpos "$currpos + $length chars" ] match catch
-        set length [string length $catch]
-        set currpos [$w index "$currpos + [string first $catch $match] chars"]
+            #next three lines ridiculous hack to simulate proper backreferences.
+            regexp [set $name] [$w get $currpos "$currpos + $length chars" ] match catch
+            set length [string length $catch]
+            set currpos [$w index "$currpos + [string first $catch $match] chars"]
             set newpos [$w index "$currpos + $length chars"]
             $w tag add $name $currpos $newpos
             set currpos $newpos
@@ -221,20 +222,20 @@ proc syntax.check_tags { w line_number } {
     set closecount 0
     set currpos $lineend
     while {[set currpos [$w search -backward "(" $currpos $linestart]] != ""} {
-      set openfirst $currpos
-      incr opencount
+        set openfirst $currpos
+        incr opencount
     }
     set currpos $linestart
     while { [ set currpos [ $w search ")" $currpos $lineend ] ] != "" } {
-      set closefirst $currpos
-      incr closecount
-      set currpos [$w index "$currpos + 1 chars"]
+        set closefirst $currpos
+        incr closecount
+        set currpos [$w index "$currpos + 1 chars"]
     }
 #    window.displayCR "openfirst: $openfirst    opencount:$opencount    closefirst:$closefirst    closecount:$closecount"
     if {($opencount > $closecount)} {
-      $w tag add syntax_${type}_unmatched $openfirst
+        $w tag add syntax_${type}_unmatched $openfirst
     } elseif { ($closecount > $opencount ) } {
-      $w tag add syntax_${type}_unmatched $closefirst
+        $w tag add syntax_${type}_unmatched $closefirst
     }
 }
 
@@ -260,33 +261,33 @@ proc syntax_moo_code.initialize w {
     set syntax_moo_code_typelist { primitives specials stringliterals numbers core language c_comments}
 
     set syntax_moo_code_primitiveslist [ join {
-    abs acos add_property add_verb asin atan binary_hash
-    boot_player buffered_output_length call_function caller_perms
-    callers ceil children chparent clear_property connected_players
-    connected_seconds connection_name connection_option
-    connection_options cos cosh create crypt ctime db_disk_size
-    decode_binary delete_property delete_verb disassemble
-    dump_database encode_binary equal eval exp floatstr floor
-    flush_input force_input function_info idle_seconds index
-    is_clear_property is_member is_player kill_task length
-    listappend listdelete listen listeners listinsert listset
-    log log10 match max max_object memory_usage min move notify
-    object_bytes open_network_connection output_delimiters
-    parent pass players properties property_info queue_info
-    queued_tasks raise random read recycle renumber reset_max_object
-    resume rindex rmatch seconds_left server_log server_version
-    set_connection_option set_player_flag set_property_info
-    set_task_perms set_verb_args set_verb_code set_verb_info
-    setadd setremove shutdown sin sinh sqrt strcmp string_hash
-    strsub substitute suspend tan tanh task_id task_stack
-    ticks_left time tofloat toint toliteral tonum toobj tostr
-    trunc typeof unlisten valid value_bytes value_hash verb_args
-    verb_code verb_info verbs
-        }  {|} ]
+        abs acos add_property add_verb asin atan binary_hash
+        boot_player buffered_output_length call_function caller_perms
+        callers ceil children chparent clear_property connected_players
+        connected_seconds connection_name connection_option
+        connection_options cos cosh create crypt ctime db_disk_size
+        decode_binary delete_property delete_verb disassemble
+        dump_database encode_binary equal eval exp floatstr floor
+        flush_input force_input function_info idle_seconds index
+        is_clear_property is_member is_player kill_task length
+        listappend listdelete listen listeners listinsert listset
+        log log10 match max max_object memory_usage min move notify
+        object_bytes open_network_connection output_delimiters
+        parent pass players properties property_info queue_info
+        queued_tasks raise random read recycle renumber reset_max_object
+        resume rindex rmatch seconds_left server_log server_version
+        set_connection_option set_player_flag set_property_info
+        set_task_perms set_verb_args set_verb_code set_verb_info
+        setadd setremove shutdown sin sinh sqrt strcmp string_hash
+        strsub substitute suspend tan tanh task_id task_stack
+        ticks_left time tofloat toint toliteral tonum toobj tostr
+        trunc typeof unlisten valid value_bytes value_hash verb_args
+        verb_code verb_info verbs
+    }  {|} ]
     set syntax_moo_code_languagelist [ join {
         INT FLOAT OBJ STR LIST ERR player this caller verb args argstr
         dobj dobjstr prepstr iobj iobjstr NUM
-        } {|} ]
+    } {|} ]
     set syntax_moo_code_primitives "\[^a-zA-Z:_@\]($syntax_moo_code_primitiveslist)\ *\[(\]"
     set syntax_moo_code_language "\[^a-zA-Z_\]($syntax_moo_code_languagelist)\[^a-zA-Z_\]"
     set syntax_moo_code_specials {(;|:|\.|\(|\)|{|}|@|=|!=|<|>|\?|\||&&|\|\||\^|\+|-|\*|/)}

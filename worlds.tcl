@@ -257,33 +257,27 @@ proc worlds.apply_lines lines {
 
 proc worlds.create_default_file {} {
     set file [worlds.file]
-    if { $file != "" } {
-    return
-    }
+    if { $file != "" } { return }
 
     set file [worlds.preferred_file]
 
     set fd ""
     catch { set fd [open $file "w+"] }
     if { $fd == "" } {
-    window.displayCR "Can't write to file $file" window_highlight
-    return
+        window.displayCR "Can't write to file $file" window_highlight
+        return
     }
-
 
     puts $fd "# $file"
     puts $fd "# This file is created automatically by the preferences editor"
     puts $fd "# any changes you make by hand to this file will be lost."
 
-    foreach line [worlds.default_tkm] {
-    puts $fd $line
-    }
+    foreach line [worlds.default_tkm] { puts $fd $line }
     close $fd
     if { [ platform.is_linux ] || [ platform.is_osx ]} {
         file attributes $file -permissions "rw-------"
     }
 }
-
 
 proc worlds.save {} {
     global worlds_worlds_db
@@ -297,10 +291,10 @@ proc worlds.save {} {
 
     set directives {}
     foreach key [array names worlds_worlds_db] {
-    set wd [split $key ":"]
-    set d [lindex $wd 1]
-    if { $d == "name" } { continue }
-    set all_used_directives($d) 1
+        set wd [split $key ":"]
+        set d [lindex $wd 1]
+        if { $d == "name" } { continue }
+        set all_used_directives($d) 1
     }
     catch { set directives [array names all_used_directives] }
 
@@ -308,8 +302,8 @@ proc worlds.save {} {
 
     foreach d $directives {
         set get_directive [preferences.get_directive $d]
-    set default_if_empty($d)      [util.assoc $get_directive default_if_empty]
-    set directive_type($d)        [lindex [util.assoc $get_directive type] 1]
+        set default_if_empty($d)      [util.assoc $get_directive default_if_empty]
+        set directive_type($d)        [lindex [util.assoc $get_directive type] 1]
         set directive_has_default($d) [worlds.get_default $d]
     }
 
@@ -318,8 +312,8 @@ proc worlds.save {} {
     set fd ""
     catch { set fd [open $file "w+"] }
     if { $fd == "" } {
-    window.displayCR "Can't write to file $file" window_highlight
-    return
+        window.displayCR "Can't write to file $file" window_highlight
+        return
     }
 
 
@@ -330,73 +324,52 @@ proc worlds.save {} {
 
     foreach world $worlds {
 
+        if { [info exists worlds_worlds_db($world:mustnotsave)] } {
+            continue
+        }
 
-
-    if { [info exists worlds_worlds_db($world:mustnotsave)] } {
-        continue
-    }
-
-
-    puts $fd "# ----"
-    puts $fd "World: $worlds_worlds_db($world:name)"
-
+        puts $fd "# ----"
+        puts $fd "World: $worlds_worlds_db($world:name)"
 
         foreach directive $directives {
-        if { [info exists worlds_worlds_db($world:$directive)] } {
+            if { [info exists worlds_worlds_db($world:$directive)] } {
 
-
-        if { ($worlds_worlds_db($world:$directive) == {}) &&
-             ($default_if_empty($directive) != {}) } {
-             continue
-        }
-
+                if { ($worlds_worlds_db($world:$directive) == {}) &&
+                     ($default_if_empty($directive) != {}) } {
+                     continue
+                }
 
                 set has_default $directive_has_default($directive)
-        if { ($world != $the_default_world) && ($has_default != {}) } {
+                if { ($world != $the_default_world) && ($has_default != {}) } {
 
-            set db     $worlds_worlds_db($world:$directive)
-            set default [lindex $has_default 0]
+                    set db     $worlds_worlds_db($world:$directive)
+                    set default [lindex $has_default 0]
 
-            set type $directive_type($directive)
+                    set type $directive_type($directive)
 
-            if { $type == "boolean" } {
-                set db      [string tolower $db]
-                set default [string tolower $default]
+                    if { $type == "boolean" } {
+                        set db      [string tolower $db]
+                        set default [string tolower $default]
+                    }
+
+                    if { $db == $default } { continue }
+                }
+
+                set lines [split $worlds_worlds_db($world:$directive) "\n"]
+
+                if { [llength $lines] > 1 } {
+
+                    set last [lindex [lrange $lines end end] 0]
+
+                    if { $last == {} } {
+                      .set lines [lrange $lines 0 [expr [llength $lines] - 2]]
+                    }
+
+                    foreach line $lines { puts $fd "$directive: $line" }
+                } {
+                    puts $fd "$directive: $worlds_worlds_db($world:$directive)"
+                }
             }
-
-
-
-            if { $db == $default } {
-                 continue
-            }
-        }
-
-
-        #
-        set lines [split $worlds_worlds_db($world:$directive) "\n"]
-
-        if { [llength $lines] > 1 } {
-
-
-
-            set last [lindex [lrange $lines end end] 0]
-
-
-            if { $last == {} } {
-            set lines [lrange $lines 0 [expr [llength $lines] - 2]]
-            } {
-            }
-
-
-            foreach line $lines {
-
-                    puts $fd "$directive: $line"
-
-            }
-        } {
-            puts $fd "$directive: $worlds_worlds_db($world:$directive)"
-        }
-        }
         }
     }
     close $fd
@@ -433,8 +406,6 @@ proc worlds.get { world key } {
     return $worlds_worlds_db($world:[string tolower $key])
 }
 
-#
-
 proc worlds.get_default directive {
     set default [util.assoc [preferences.get_directive $directive] default]
     if { $default != {} } {
@@ -459,29 +430,23 @@ proc worlds.set { world key { value NULL }} {
     } {
         set worlds_worlds_db($world:[string tolower $key]) $value
     }
-    if { [string tolower $key] != "iscurrentworld" } {
-        worlds.touch
-    }
+    if { [string tolower $key] != "iscurrentworld" } { worlds.touch }
 }
 
 proc worlds.unset { world key } {
     global worlds_worlds_db
     catch { unset worlds_worlds_db($world:[string tolower $key]) }
-    if { [string tolower $key] != "iscurrentworld" } {
-        worlds.touch
-    }
+    if { [string tolower $key] != "iscurrentworld" } { worlds.touch }
 }
 
 proc worlds.copy {world copy} {
     global worlds_worlds_db
 
-
-
     foreach key [array names worlds_worlds_db "$world:*"] {
-    regsub "^$world:" $key {} param
-    if { $param == "mustnotsave" } {
-        continue
-    }
+        regsub "^$world:" $key {} param
+        if { $param == "mustnotsave" } {
+            continue
+        }
         set worlds_worlds_db($copy:$param) $worlds_worlds_db($key)
     }
 
@@ -490,15 +455,14 @@ proc worlds.copy {world copy} {
     return $copy
 }
 
-
 proc worlds.delete world {
     global worlds_worlds_db worlds_worlds
     set index [lsearch -exact $worlds_worlds $world]
     if { $index != -1 } {
-    set worlds_worlds [lreplace $worlds_worlds $index $index]
-    foreach key [array names worlds_worlds_db "$world:*"] {
+        set worlds_worlds [lreplace $worlds_worlds $index $index]
+        foreach key [array names worlds_worlds_db "$world:*"] {
             unset worlds_worlds_db($key)
-    }
+        }
         worlds.touch
     }
 }
@@ -514,11 +478,9 @@ proc worlds.create_new_world {} {
 proc worlds.get_current {} {
     global worlds_worlds
     foreach world $worlds_worlds {
-    set is_current 0
-    catch { set is_current [worlds.get $world IsCurrentWorld] }
-    if { $is_current } {
-        return $world
-    }
+        set is_current 0
+        catch { set is_current [worlds.get $world IsCurrentWorld] }
+        if { $is_current } { return $world }
     }
     return ""
 }
@@ -526,7 +488,7 @@ proc worlds.get_current {} {
 proc worlds.set_current world {
     set current [worlds.get_current]
     if { $current != "" } {
-    worlds.unset $current IsCurrentWorld
+        worlds.unset $current IsCurrentWorld
     }
     if { $world != "" } {
         worlds.set $world IsCurrentWorld 1
@@ -537,7 +499,7 @@ proc worlds.set_current world {
 
 proc worlds.set_special {world directive {value 1}} {
     while { [set special [worlds.get_special $directive $value]] != "" } {
-    worlds.unset $special $directive
+        worlds.unset $special $directive
     }
     worlds.set $world $directive $value
 }
@@ -545,14 +507,10 @@ proc worlds.set_special {world directive {value 1}} {
 proc worlds.get_special {directive {value 1}} {
     global worlds_worlds
     foreach world $worlds_worlds {
-    set is_special 0
-    if { $value == 0 } {
-        set is_special 1
-    }
-    catch { set is_special [worlds.get $world $directive] }
-    if { $is_special == $value } {
-        return $world
-    }
+        set is_special 0
+        if { $value == 0 } { set is_special 1 }
+        catch { set is_special [worlds.get $world $directive] }
+        if { $is_special == $value } { return $world }
     }
     return ""
 }
@@ -561,9 +519,9 @@ proc worlds.match_world expr {
     global worlds_worlds
     set tmp {}
     foreach world $worlds_worlds {
-    if { [string match $expr [worlds.get $world Name]] == 1 } {
-        lappend tmp $world
-    }
+        if { [string match $expr [worlds.get $world Name]] == 1 } {
+            lappend tmp $world
+        }
     }
     return $tmp
 }
@@ -571,23 +529,18 @@ proc worlds.match_world expr {
 proc worlds.default_world {} {
     global worlds_worlds
     foreach world $worlds_worlds {
-    set default -1
-    catch { set default [worlds.get $world IsDefaultWorld] }
-    if { $default == 1 } {
-            return $world
-    }
+      set default -1
+      catch { set default [worlds.get $world IsDefaultWorld] }
+      if { $default == 1 } { return $world }
     }
     return -1
 }
 
 proc worlds.make_default_world {} {
     if { [worlds.default_world] == -1 } {
-    set world [worlds.create_new_world]
-    worlds.set $world IsDefaultWorld 1
-    worlds.set $world Name "DEFAULT WORLD"
-    worlds.set $world ConnectScript "connect %u %p"
+        set world [worlds.create_new_world]
+        worlds.set $world IsDefaultWorld 1
+        worlds.set $world Name "DEFAULT WORLD"
+        worlds.set $world ConnectScript "connect %u %p"
     }
 }
-#
-#
-
