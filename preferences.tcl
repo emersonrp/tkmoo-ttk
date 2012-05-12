@@ -39,11 +39,7 @@ proc preferences.copy_middle_to_world {} {
         set v $preferences_v($key)
 
         if { $type == "boolean" } {
-            if { $v == 1 } {
-                set v On
-            } {
-                set v Off
-            }
+            if { $v == 1 } { set v On } { set v Off }
         }
 
         worlds.set $world $directive $v
@@ -253,11 +249,7 @@ proc preferences.populate_frame {world category page} {
                         -variable preferences_v($world,$directive)
                     set v $default
                     catch { set v [worlds.get $world $directive] }
-                    if { [string tolower $v] == "on" } {
-                        set v 1
-                    } {
-                        set v 0
-                    }
+                    if { [string tolower $v] == "on" } { set v 1 } { set v 0 }
                     set preferences_v($world,$directive) $v
                     pack $f.b -side left
                 }
@@ -282,7 +274,6 @@ proc preferences.populate_frame {world category page} {
                 }
 
                 updown-integer {
-
                     set low [lindex [util.assoc $preference low] 1]
                     set high [lindex [util.assoc $preference high] 1]
 
@@ -303,7 +294,6 @@ proc preferences.populate_frame {world category page} {
                     catch { set v [worlds.get $world $directive] }
                     set preferences_v($world,$directive) $v
                     $f.e set $v
-
                 }
 
                 choice-menu {
@@ -326,10 +316,6 @@ proc preferences.populate_frame {world category page} {
                     $f.mb configure -text $v
                 }
 
-                boolean-menu {
-
-                }
-
                 string {
                     ttk::entry $f.e -width 30
                     bind $f.e <KeyRelease> "set preferences_v($world,$directive) \[$f.e get\]"
@@ -348,14 +334,16 @@ proc preferences.populate_frame {world category page} {
                 }
 
                 font {
-                    ttk::entry $f.e
                     set v $default
                     catch { set v [worlds.get $world $directive] }
                     set preferences_v($world,$directive) $v
+                    entry $f.e -text $v
+                    catch { $f.e configure -font $v }
                     ttk::button $f.b -text "Choose" \
                             -command "fontchooser.create \
                         \"preferences.set_font $f.e $world $directive\" \
                         \"\[$f.e get\]\"
+                        catch { $f.e configure -font \[$f.e get\]}
                     "
                     bind $f.e <KeyRelease> "set preferences_v($world,$directive) \[$f.e get\]"
                     bind $f.e <Leave> "set preferences_v($world,$directive) \[$f.e get\]"
@@ -405,17 +393,14 @@ proc preferences.populate_frame {world category page} {
                     catch { set v $preferences_v($world,$directive) }
                     set preferences_v($world,$directive) $v
 
-                    entry $f.c \
-                            -cursor {} \
-                            -state disabled \
-                            -background $v
+                    entry $f.c -cursor {} -state disabled -disabledbackground $v
                     ttk::button $f.b -text "Choose" \
-                                -command "preferences.set_colour $f $world $directive \
-                                            \[ tk_chooseColor -initialcolor \$preferences_v($world,$directive) \]"
+                        -command "preferences.set_colour $f $world $directive \
+                            \[ tk_chooseColor -initialcolor \$preferences_v($world,$directive) \]"
 
                     $f.c configure -bg $v
                     bind $f.c <1> "preferences.set_colour $f $world $directive \
-                                            \[ tk_chooseColor -initialcolor \$preferences_v($world,$directive) \]; window.displayCR \"$f.c\""
+                            \[ tk_chooseColor -initialcolor \$preferences_v($world,$directive) \]"
                     pack $f.c -side left
                     pack $f.b -side right -fill y -padx 3
                 }
@@ -493,7 +478,7 @@ proc preferences.set_colour { f world directive hex } {
 
 proc preferences.register { providor category info } {
     global preferences_data
-    if { [info exists preferences_data($providor,$category)] == 1 } {
+    if { [info exists preferences_data($providor,$category)] } {
         set preferences_data($providor,$category) [concat $preferences_data($providor,$category) $info]
     } {
         set preferences_data($providor,$category) $info
