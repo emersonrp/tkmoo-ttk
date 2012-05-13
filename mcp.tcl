@@ -1,4 +1,3 @@
-
 client.register mcp start
 client.register mcp client_connected
 client.register mcp incoming
@@ -18,10 +17,8 @@ proc mcp.client_connected {} {
     } elseif { $use == "off" } {
         set mcp_use 0
     }
-    ###
 
     set mcp_active 0
-
     set mcp_use_log 0
     return [modules.module_deferred]
 }
@@ -44,7 +41,6 @@ proc mcp.start {} {
     }
 }
 
-
 proc mcp.logCR { line tag io } {
     global mcp_log mcp_use_log
 
@@ -66,13 +62,11 @@ proc mcp.incoming event {
 
     set line [db.get $event line]
 
-    if { ([string match {#*} $line] == 0) &&
-     ([string match {@*} $line] == 0) } {
+    if { ([string match {#*} $line] == 0) && ([string match {@*} $line] == 0) } {
         return [modules.module_deferred]
     }
 
     if { [regexp {^#\$#([-a-zA-Z0-9*]*) *(.*)} $line throwaway type rest] } {
-
 
         if { ($type != "mcp") && ($mcp_active == 0) } {
             return [modules.module_deferred]
@@ -80,20 +74,15 @@ proc mcp.incoming event {
 
         mcp.log "#$#" mcp_mcp "<"
         mcp.log "$type " mcp_type ""
-        if { [mcp.parse $rest] } {
-            catch mcp.do_$type
-        }
+        if { [mcp.parse $rest] } { catch mcp.do_$type }
         set last [string index $type [expr [string length $type] - 1]]
         if { $last == "*" } {
             request.set current mcp_lines ""
-            ###
             catch {
                 if { [set tag [request.get current tag]] } {
                     request.duplicate current $tag
                 }
             }
-        #
-        ###
         } {
             mcp.unset_header
         }
@@ -146,16 +135,12 @@ proc mcp.authenticated {} {
     return 0
 }
 
-###
 proc mcp.unset_header {} {
     request.destroy current
 
     request.set current mcp_multiline_procedure ""
     request.set current mcp_lines ""
 }
-
-###
-###
 
 proc mcp.do_mcp {} {
     global mcp_authentication_key mcp_active
@@ -177,9 +162,7 @@ proc mcp.do_data {} {
 
 proc mcp.do_END {} {
     set which current
-    catch {
-        set which [request.get current tag]
-    }
+    catch { set which [request.get current tag] }
     if { [request.get $which mcp_multiline_procedure] != "" } {
         request.set $which _lines [request.get $which mcp_lines]
         mcp.do_callback_[request.get $which mcp_multiline_procedure]
@@ -187,12 +170,7 @@ proc mcp.do_END {} {
     request.destroy $which
 }
 
-###
-
-
-proc mcp.controls {} {
-    return {"MCP/1.0" "mcp.callback"}
-}
+proc mcp.controls {} { return {"MCP/1.0" "mcp.callback"} }
 
 proc mcp.callback {} {
     set c .modules_mcp_controlpanel
@@ -232,9 +210,6 @@ proc mcp.callback {} {
     pack append $c \
         $c.buttons {fillx pady 4}
 }
-#
-#
-
 
 proc mcp.do_edit* {} {
     if { [mcp.authenticated] == 1 } {
@@ -254,30 +229,9 @@ proc mcp.do_callback_edit* {} {
 
     edit.SCedit $pre $lines $post $title $icon_title
 }
-#
-#
-
-###
-#
-#
-#
-####
 
 proc mcp.do_display-url {} {
-    set netscape "netscape"
-
-    if { [mcp.authenticated] == 1 } {
-        set url [request.get current url]
-        set xwin ""
-        catch { set xwin [request.get current xwin] }
-        if { $xwin != "" } {
-            exec "$netscape" "-id $mcp_header(xwin) -noraise -remote openURL($ur
-l)" &
-        } {
-            exec "$netscape" "-remote openURL($url)" &
-        }
+    if { [webbrowser.is_available] } {
+        webbrowser.open [request.get current url]
     }
 }
-
-#
-#
