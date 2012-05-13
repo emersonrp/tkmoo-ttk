@@ -241,6 +241,7 @@ proc edit.fs_write_file { e filename } {
     close $fh
 
     edit.fs_set_current_filename $e $filename
+    edit.show_line_number $e
 }
 
 proc edit.create { title icon_title } {
@@ -364,7 +365,7 @@ proc edit.create { title icon_title } {
     window.hidemargin $w.controls.edit
 
     $w.controls add cascade -label "View" -menu $w.controls.view \
-    -underline 0
+        -underline 0
 
     menu $w.controls.view -tearoff 0
     $w.controls.view add command \
@@ -407,13 +408,13 @@ proc edit.create { title icon_title } {
 proc edit.update_state w {
     edit.show_line_number $w
     edit.check_modified $w
-    $w.controls.edit entryconfigure Undo -state normal
 }
 
 proc edit.check_modified w {
     if { [$w.t edit modified] } {
-        # TODO change the status bar / titlebar to show 'modified'
+        edit.show_line_number $w "(modified)"
         $w.controls.file entryconfigure "Save" -state normal
+        $w.controls.edit entryconfigure Undo -state normal
     } {
         $w.controls.file entryconfigure "Save" -state disabled
     }
@@ -442,10 +443,10 @@ proc edit.repack editor {
     pack $editor.t -side left -expand 1 -fill both
 }
 
-proc edit.show_line_number w {
+proc edit.show_line_number { w {extra ""} } {
     if { [winfo exists $w] == 0 } { return }
     set line_number [$w.t index insert]
-    $w.position configure -text "position: $line_number"
+    $w.position configure -text "$extra position: $line_number"
 }
 
 proc edit.send w {
