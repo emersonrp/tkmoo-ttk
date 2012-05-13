@@ -1,5 +1,3 @@
-
-
 client.register edit start
 proc edit.start {} {
     global edit_functions
@@ -26,9 +24,6 @@ proc edit.dispatch { win event args } {
 proc edit.sort_registry { a b } {
     return [expr [lindex $a 0] - [lindex $b 0]]
 }
-
-#
-
 
 proc edit.add_file_match { title extensions {mactype {}} } {
     global edit_file_matches
@@ -59,11 +54,7 @@ proc edit.add_edit_function {title callback} {
 }
 
 proc edit.set_text { e lines } {
-    set CR ""
-    foreach line $lines {
-        $e.t insert end "$CR$line"
-        set CR "\n"
-    }
+    $e.t insert end [join $lines "\n"]
 }
 
 proc edit.get_text e {
@@ -88,7 +79,7 @@ proc edit.SCedit { pre lines post title icon_title {e ""}} {
         } {
             set data [concat $lines [list $post]]
         }
-        } {
+    } {
         if { $post == "" } {
             set data [concat [list $pre] $lines]
         } {
@@ -119,7 +110,6 @@ proc edit.destroy e {
     foreach record [array names edit_db "$e,*" ] {
         unset edit_db($record)
     }
-
     destroy $e
 }
 
@@ -136,7 +126,6 @@ proc edit.get_type e {
         return ""
     }
 }
-
 
 proc edit.fs_set_current_filename {e filename} {
     global edit_db
@@ -175,7 +164,6 @@ proc edit.fs_open e {
 
     edit.fs_set_current_filename $e $filename
 
-
     set tmp {}
     set fh ""
     catch { set fh [open $filename "r"] }
@@ -184,19 +172,11 @@ proc edit.fs_open e {
         return
     }
 
-    while { [gets $fh line] != -1 } {
-        lappend tmp $line
-    }
+    while { [gets $fh line] != -1 } { lappend tmp $line }
     close $fh
 
     $e.t delete 1.0 end
-
-    set CR ""
-    foreach line $tmp {
-        $e.t insert insert "$CR$line"
-        set CR "\n"
-    }
-
+    edit.set_text $e $tmp
     $e.t mark set insert 1.0
     edit.show_line_number $e
 }
@@ -208,27 +188,7 @@ proc edit.fs_save e {
         return
     }
 
-    set tmp {}
-    set len [lindex [split [$e.t index end] "." ] 0]
-    for {set i 1} {$i < $len} {incr i} {
-        set line [$e.t get "$i.0" "$i.0 lineend"]
-        lappend tmp $line
-    }
-
-    set fh ""
-    catch { set fh [open $filename "w"] }
-    if { $fh == "" } {
-        window.displayCR "Can't open $filename..." window_highlight
-        return
-    }
-
-    set CR ""
-    foreach line $tmp {
-        puts -nonewline $fh "$CR$line"
-        set CR "\n"
-    }
-    close $fh
-
+    edit.fs_write_file $e $filename
 }
 
 proc edit.fs_save_as e {
@@ -258,6 +218,11 @@ proc edit.fs_save_as e {
         return
     }
 
+    edit.fs_write_file $e $filename
+}
+
+proc edit.fs_write_file { e filename } {
+
     set tmp {}
     set len [lindex [split [$e.t index end] "." ] 0]
     for {set i 1} {$i < $len} {incr i} {
@@ -272,11 +237,7 @@ proc edit.fs_save_as e {
         return
     }
 
-    set CR ""
-    foreach line $tmp {
-        puts -nonewline $fh "$CR$line"
-        set CR "\n"
-    }
+    puts -nonewline $fh [join $tmp "\n"]
     close $fh
 
     edit.fs_set_current_filename $e $filename
