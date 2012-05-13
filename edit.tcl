@@ -245,10 +245,7 @@ proc edit.fs_write_file { e filename } {
 
 proc edit.create { title icon_title } {
 
-    global tkmooLibrary
-
-    global edit_toolbars
-
+    global tkmooLibrary edit_toolbars
 
     ### something like...
 
@@ -269,7 +266,7 @@ proc edit.create { title icon_title } {
     $w configure -menu $w.controls
 
     $w.controls add cascade -label "File" -menu $w.controls.file \
-    -underline 0
+        -underline 0
 
     menu $w.controls.file -tearoff 0
 
@@ -282,12 +279,14 @@ proc edit.create { title icon_title } {
     $w.controls.file add command \
         -label "Save" \
         -underline 0 \
+        -state disabled \
         -command "edit.fs_save $w"
     window.hidemargin $w.controls.file
 
     $w.controls.file add command \
         -label "Save As..." \
         -underline 5 \
+        -state disabled \
         -command "edit.fs_save_as $w"
     window.hidemargin $w.controls.file
 
@@ -297,12 +296,14 @@ proc edit.create { title icon_title } {
     $w.controls.file add command \
         -label "Send" \
         -underline 1 \
+        -state disabled \
         -command "edit.send $w"
     window.hidemargin $w.controls.file
 
     $w.controls.file add command \
         -label "Send and Close" \
         -underline 10 \
+        -state disabled \
         -command "edit.send_and_close $w"
     window.hidemargin $w.controls.file
 
@@ -321,12 +322,12 @@ proc edit.create { title icon_title } {
         -accelerator "[window.accel Ctrl]+X" \
         -command "edit.do_cut $w"
     window.hidemargin $w.controls.edit
-        $w.controls.edit add command \
+    $w.controls.edit add command \
         -label "Copy" \
         -accelerator "[window.accel Ctrl]+C" \
         -command "edit.do_copy $w"
     window.hidemargin $w.controls.edit
-        $w.controls.edit add command \
+    $w.controls.edit add command \
         -label "Paste" \
         -accelerator "[window.accel Ctrl]+V" \
         -command "edit.do_paste $w"
@@ -345,6 +346,22 @@ proc edit.create { title icon_title } {
             window.hidemargin $w.controls.edit
         }
     }
+
+    $w.controls.edit add separator
+    window.hidemargin $w.controls.file
+
+    $w.controls.edit add command \
+        -label "Undo" \
+        -accelerator "[window.accel Ctrl]+Z" \
+        -state disabled \
+        -command "edit.do_undo $w"
+    window.hidemargin $w.controls.edit
+    $w.controls.edit add command \
+        -label "Redo" \
+        -accelerator "[window.accel Ctrl]+Shift+X" \
+        -state disabled \
+        -command "edit.do_redo $w"
+    window.hidemargin $w.controls.edit
 
     $w.controls add cascade -label "View" -menu $w.controls.view \
     -underline 0
@@ -366,23 +383,47 @@ proc edit.create { title icon_title } {
         -height 24 \
         -width 80 \
         -yscrollcommand "$w.scrollbar set" \
-    -highlightthickness 0 \
+        -highlightthickness 0 \
+        -undo true \
+        -autoseparators true \
         -setgrid true
 
     ttk::scrollbar $w.scrollbar -command "$w.t yview"
 
     ttk::label $w.position -text "position: 1.0" -anchor e
 
-    bind $w.t <KeyPress>     "after idle edit.show_line_number $w"
-    bind $w.t <KeyRelease>     "after idle edit.show_line_number $w"
-    bind $w.t <ButtonPress>     "after idle edit.show_line_number $w"
-    bind $w.t <ButtonRelease>     "after idle edit.show_line_number $w"
+    bind $w.t <KeyPress>      "after idle edit.update_state $w"
+    bind $w.t <KeyRelease>    "after idle edit.update_state $w"
+    bind $w.t <ButtonPress>   "after idle edit.update_state $w"
+    bind $w.t <ButtonRelease> "after idle edit.update_state $w"
 
-    bind $w.t <Control-v>    "edit.do_paste $w; break"
+    bind $w.t <Control-v>     "edit.do_paste $w; break"
 
     edit.repack $w
 
     return $w
+}
+
+proc edit.update_state w {
+    edit.show_line_number $w
+    edit.check_modified $w
+    $w.controls.edit entryconfigure Undo -state normal
+}
+
+proc edit.check_modified w {
+    if { [$w.t edit modified] } {
+        # TODO change the status bar / titlebar to show 'modified'
+        $w.controls.file entryconfigure "Save" -state normal
+    } {
+        $w.controls.file entryconfigure "Save" -state disabled
+    }
+
+    if { [$w.t count -chars 1.0 end] } {
+        $w.controls.file entryconfigure "Save As..." -state normal
+    } {
+        $w.controls.file entryconfigure "Save As..." -state disabled
+        $w.controls.file entryconfigure "Save" -state disabled
+    }
 }
 
 proc edit.repack editor {
@@ -390,9 +431,7 @@ proc edit.repack editor {
 
     set slaves [pack slaves $editor]
 
-    if { $slaves != "" } {
-        eval pack forget $slaves
-    }
+    if { $slaves != "" } { eval pack forget $slaves }
 
     foreach toolbar $edit_toolbars($editor) {
         pack $editor.$toolbar -side top -fill x
@@ -409,20 +448,6 @@ proc edit.show_line_number w {
     $w.position configure -text "position: $line_number"
 }
 
-proc edit.dot_quote_line line {
-    if { $line == "." } { return ".." };
-    return $line
-}
-
-proc edit.dot_quote_lines lines {
-    set tmp {}
-    foreach line $lines {
-        lappend tmp [edit.dot_quote_line $line]
-    }
-    return $tmp
-}
-
-
 proc edit.send w {
     set last [$w.t index end]
     for {set n 1} {$n < $last} {incr n} {
@@ -432,14 +457,9 @@ proc edit.send w {
 }
 
 proc edit.send_and_close w {
-    set last [$w.t index end]
-    for {set n 1} {$n < $last} {incr n} {
-        set line [$w.t get "$n.0" "$n.0 lineend"]
-        io.outgoing $line
-    }
+    edit.send $w
     edit.destroy $w
 }
-
 
 proc edit.configure_send { e label command {underline 0} } {
     $e.controls.file entryconfigure 4 \
@@ -455,8 +475,6 @@ proc edit.configure_close { e label command {underline 0} } {
     $e.controls.file entryconfigure 6 \
         -label $label -command $command -underline $underline
 }
-
-###
 
 proc edit.find w {
     set f $w.find
@@ -507,18 +525,11 @@ proc edit.find w {
 
 proc edit.do_find { w direction } {
     set string [$w.find.t.e get]
-    if { $string == "" } {
-        return 0
-    }
-
+    if { $string == "" } { return 0 }
 
     switch $direction {
-        forwards {
-            set from [$w.t index "insert + 1 char"]
-        }
-        backwards {
-            set from [$w.t index "insert - 1 char"]
-        }
+        forwards  { set from [$w.t index "insert + 1 char"] }
+        backwards { set from [$w.t index "insert - 1 char"] }
     }
 
     set psn [$w.t search -$direction -count length -- $string $from]
@@ -573,7 +584,6 @@ proc edit.do_replace_all w {
 proc edit.goto w {
     set f $w.goto
 
-
     if { [winfo exists $f] == 0 } {
         toplevel $f
 
@@ -595,8 +605,7 @@ proc edit.goto w {
         ttk::button $f.b.goto -text "Goto" -command "edit.do_goto $w"
         ttk::button $f.b.close -text "Close" -command "destroy $f"
 
-        pack $f.b.goto $f.b.close -side left \
-            -padx 5 -pady 5
+        pack $f.b.goto $f.b.close -side left -padx 5 -pady 5
 
         pack $f.t -side top -fill x
         pack $f.b -side bottom
@@ -612,21 +621,18 @@ proc edit.goto w {
 
 proc edit.do_goto w {
     set string [$w.goto.t.e get]
-    if { $string == "" } {
-        return
-    }
+    if { $string == "" } { return }
     catch { ::tk::TextScrollPages $w.t $string.0 }
     destroy $w.goto
     edit.show_line_number $w
 }
-
-###
 
 proc edit.do_cut w {
     if { [lsearch -exact [$w.t tag names] sel] != -1 } {
         set from [$w.t index sel.first]
     }
     ui.delete_selection $w.t
+    edit.update_state $w
 }
 proc edit.do_copy w {
     ui.copy_selection $w.t
@@ -635,7 +641,23 @@ proc edit.do_paste w {
     set from [$w.t index insert]
     ui.paste_selection $w.t
     set to [$w.t index insert]
+    edit.update_state $w
     edit.dispatch $w load [list [list range [list $from $to]]]
 }
-#
-#
+
+proc edit.do_undo w { edit.do_undo_redo $w "undo" "redo" }
+proc edit.do_redo w { edit.do_undo_redo $w "redo" "undo" }
+
+proc edit.do_undo_redo {w yin yang} {
+    if { [catch {$w.t edit $yin}] } {
+        $w.controls.edit entryconfigure [string toupper $yin 0 0] -state disabled
+    } {
+        if { [catch {$w.t edit $yin}] } {
+            $w.controls.edit entryconfigure [string toupper $yin 0 0] -state disabled
+        } {
+            $w.t edit $yang
+        }
+        $w.controls.edit entryconfigure [string toupper $yang 0 0] -state normal
+    }
+    edit.update_state $w
+}
