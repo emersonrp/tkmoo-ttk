@@ -63,7 +63,7 @@ proc plugin.source {} {
         set files [glob -nocomplain -- [file join $subdir *.tcl]]
         foreach file $files {
             plugin.set_plugin_location $file
-        source $file
+            source $file
         }
     }
     plugin.clear_plugin_location
@@ -74,9 +74,7 @@ proc registry.start {} {
 
     if { ! [ platform.is_windows ]} { return; }
 
-    if { [catch { package require registry 1.0 }] } {
-        return;
-    }
+    if { [catch { package require registry 1.0 }] } { return; }
 
     registry set {HKEY_CLASSES_ROOT\.tkm} {} TkmWorld sz
     registry set {HKEY_CLASSES_ROOT\.tkm} {Content Type} "application/x-tkm" sz
@@ -99,8 +97,8 @@ proc registry.start {} {
     set directory [file dirname $executable]
 
     registry set {HKEY_CLASSES_ROOT\TkmWorld\shell\open\command} {} \
-    "\"$executable\" -dir \"$directory\" -f \"%1\"" sz
+        "\"$executable\" -dir \"$directory\" -f \"%1\"" sz
     registry set {HKEY_CLASSES_ROOT\TkmWorld\shell\edit\command} {} \
-    {notepad.exe "%1"} sz
+        {notepad.exe "%1"} sz
 
 }

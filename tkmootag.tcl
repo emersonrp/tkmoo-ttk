@@ -1,12 +1,7 @@
-
-#
-#
-#
 client.register tkmootag start 60
 client.register tkmootag client_connected
 client.register tkmootag incoming
 client.register tkmootag reconfigure_fonts
-
 
 proc tkmootag.client_connected {} {
     global tkmootag_use tkmootag_lineTagList tkmootag_fixed
@@ -45,16 +40,13 @@ proc tkmootag.start {} {
     global tkmootag_use
     set tkmootag_use 1
 
-
     tkmootag.initialise_text_widget .output
-
 
     mcp21.register dns-com-awns-jtext 1.0 \
         dns-com-awns-jtext tkmootag.do_dns_com_awns_jtext
 }
 
-proc tkmootag.do_dns_com_awns_jtext {} {
-}
+proc tkmootag.do_dns_com_awns_jtext {} { }
 
 proc tkmootag.incoming event {
     global tkmootag_use
@@ -77,25 +69,19 @@ proc tkmootag.incoming event {
     return [modules.module_deferred]
 }
 
-#
-
-
-
-
-
 proc tkmootag.car list { lindex $list 0 }
 proc tkmootag.cdr list { concat [lrange $list 1 end] }
 
 proc tkmootag.writeText {section t mark} {
-  set tagName [tkmootag.car $section]
-  if {[string index $tagName 0] == "~"} then {
-    window.display "" {} $t
-    set start [$t index $mark]
-    window.display [string range $section 3 [expr [string length $section] - 2]] tkmootag_jtext_default $t
-    return $start
-  }
-  set tagName [tkmootag.car [tkmootag.car $section]]
-  return [tkmootag.writeText_$tagName [tkmootag.car $section] $t $mark]
+    set tagName [tkmootag.car $section]
+    if {[string index $tagName 0] == "~"} then {
+        window.display "" {} $t
+        set start [$t index $mark]
+        window.display [string range $section 3 [expr [string length $section] - 2]] tkmootag_jtext_default $t
+        return $start
+    }
+    set tagName [tkmootag.car [tkmootag.car $section]]
+    return [tkmootag.writeText_$tagName [tkmootag.car $section] $t $mark]
 }
 
 proc tkmootag.writeText_bold {section t mark} {
@@ -134,8 +120,6 @@ proc tkmootag.writeText_link {section t mark} {
     set newTag [util.unique_id tkmootag]
     set callback [tkmootag.car [tkmootag.cdr $section]]
 
-
-
     regsub -all {\\} $callback "" callback
 
     window.hyperlink.link $t $newTag tkmootag.do_hyperlink
@@ -143,7 +127,6 @@ proc tkmootag.writeText_link {section t mark} {
     regsub -all { } $callback {\ } callback
     set callback [tkmootag.escape_tcl_meta $callback]
     $t tag bind $newTag <Enter> "+tkmootag.set_hyperlink_callback $callback"
-
 
     lappend tkmootag_lineTagList [list $newTag $start [$t index $mark]]
 
@@ -175,7 +158,7 @@ proc tkmootag.do_callback str {
         set type [lindex [util.assoc $alist address-type] 1]
         set args [lindex [util.assoc $alist args] 1]
         mcp21.server_notify dns-com-awns-jtext-pick [list [list type $type] [list args $args]]
-    return
+        return
     }
 
     if { [info exists mcp_authentication_key] &&
@@ -187,8 +170,8 @@ proc tkmootag.do_callback str {
 proc tkmootag.to_alist str {
     set alist {}
     foreach {keyword value} $str {
-    regsub {:$} $keyword "" keyword
-    lappend alist [list $keyword $value]
+        regsub {:$} $keyword "" keyword
+        lappend alist [list $keyword $value]
     }
     return $alist
 }
@@ -226,5 +209,3 @@ proc tkmootag.writeTextLine {section t mark} {
       catch { tkmootag.post_$tag $section $t $mark }
   }
 }
-#
-#

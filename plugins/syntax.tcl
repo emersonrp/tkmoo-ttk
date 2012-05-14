@@ -140,14 +140,13 @@ proc syntax.activate {w from_to} {
 
     set type $syntax_db($w)
 
-
     syntax_${type}.initialize $w
     if { $from_to == "" } {
-      set n 1
-      set last [$w.t index end]
+        set n 1
+        set last [$w.t index end]
     } else {
-      regsub {\..*$} [lindex $from_to 0] "" n
-      regsub {\..*$} [lindex $from_to 1] "" last
+        regsub {\..*$} [lindex $from_to 0] "" n
+        regsub {\..*$} [lindex $from_to 1] "" last
     }
     for {set n} {$n < $last} {incr n} {
         syntax.check_tags $w.t $n.0
@@ -156,8 +155,8 @@ proc syntax.activate {w from_to} {
     bind $w.t <KeyRelease> {+
         regsub {\.t$} %W "" win
         if { [info exists syntax_db($win)] } {
-          catch { after cancel $syntax_task }
-          set syntax_task [ after 250 syntax.check_tags %W [%W index insert] ]
+            catch { after cancel $syntax_task }
+            set syntax_task [ after 250 syntax.check_tags %W [%W index insert] ]
         }
     }
     # catch people who hit some return or arrow or the like to leave the line
@@ -180,7 +179,7 @@ proc syntax.check_tags { w line_number } {
     set type $syntax_db($win)
     # Line-based stuff.
     set linestart [ $w index "$line_number linestart" ]
-    set lineend [ $w index "$line_number lineend" ]
+    set lineend   [ $w index "$line_number lineend" ]
 
     # Clear tags on our current line; reparse every time.
     # This is a little kludgy, since there's no easy way to get the tags
@@ -188,9 +187,9 @@ proc syntax.check_tags { w line_number } {
     # and remove the syntax_ ones from the current line.
     set tags [ $w tag names ]
     foreach tag $tags {
-    if { [string match syntax_* $tag] } {
+        if { [string match syntax_* $tag] } {
             $w tag remove $tag $linestart $lineend
-    }
+        }
     }
     # Do all of the matching stuff exported in syntax_${type}_typelist
     set typelist syntax_${type}_typelist
@@ -297,8 +296,8 @@ proc syntax_moo_code.initialize w {
     set syntax_moo_code_core {(\$[a-zA-Z0-9_]+)}
 
     if {[info tclversion] > 8.0} {
-      set syntax_moo_code_primitives "(?:\[^\\w:@\]|^)($syntax_moo_code_primitiveslist)\ *\[(\]"
-      set syntax_moo_code_language "(?:\\W|^)($syntax_moo_code_languagelist)(?:\\W|$)"
+        set syntax_moo_code_primitives "(?:\[^\\w:@\]|^)($syntax_moo_code_primitiveslist)\ *\[(\]"
+        set syntax_moo_code_language "(?:\\W|^)($syntax_moo_code_languagelist)(?:\\W|$)"
     }
 
     #Need to work on nice visible tags.
@@ -318,7 +317,7 @@ proc syntax_moo_code.check {w args} {
     global syntax_db
 
     if { ([ edit.get_type $w ] == "moo-code" ) || ([ $w.t search "@program" 1.0 ] != "") } {
-      set syntax_db($w) moo_code
+        set syntax_db($w) moo_code
     }
 }
 
@@ -360,6 +359,6 @@ proc syntax_sendmail.check {w args} {
     global syntax_db
 
     if { [ $w.t search "@@sendmail" 1.0 ] != "" } {
-      set syntax_db($w) sendmail
+        set syntax_db($w) sendmail
     }
 }

@@ -56,7 +56,6 @@ proc client.plugins {} {
     return [lsort [array names uniq]]
 }
 
-
 proc client.sort_registry {} {
     global client_event_callbacks client_event_callbacks_x
 
@@ -166,9 +165,7 @@ proc client.get_incoming_line {} {
     return $client_incoming_line
 }
 
-proc client.default_mode {} {
-    return line
-}
+proc client.default_mode {} { return line }
 
 proc client.mode {} {
     global client_mode
@@ -200,9 +197,7 @@ proc client.start {} {
 proc client.stop {} {
     modules.stop
     set session ""
-    catch {
-        set session [db.get current session]
-    }
+    catch { set session [db.get current session] }
     io.stop_session $session
 }
 
@@ -310,7 +305,6 @@ proc client.set_bindings {} {
 proc client.connect_world world {
     global window_binding window_fonts client_echo
 
-
     set session [client.new_session]
     db.set $session world $world
     db.set .output session $session
@@ -337,10 +331,9 @@ proc client.connect_world world {
     db.set $session port $port
 
     if { [io.connect_session $session] == 1 } {
-    worlds.set_current $kludge_world
-    return
+        worlds.set_current $kludge_world
+        return
     }
-
 
     worlds.set_current $world
 
@@ -353,7 +346,7 @@ proc client.connect_world world {
 
     if { ($uid == "") && ($pwd == "") && ([string tolower $use] == "on") } {
         client.login_dialog $uid $pwd
-    return
+        return
     }
 
     client.complete_connection $world $uid $pwd
@@ -368,13 +361,8 @@ proc client.complete_connection { world uid pwd } {
     regsub -all {\%p} $cscript [client.protect_regsub $pwd] cscript
 
 
-    if { $cscript == "" } {
-    } {
-
-
-    regsub "\n\$" $cscript {} cscript
-
-
+    if { $cscript != "" } {
+        regsub "\n\$" $cscript {} cscript
         io.outgoing $cscript
     }
 }

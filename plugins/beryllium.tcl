@@ -20,7 +20,6 @@ set page_frame [window.create_statusbar_item]
     pack $page_frame -side right
 }
 
-
 proc beryllium.do_dns_net_beryllium_status_msg_force {} {
     set which current
     catch { set which [request.get current _data-tag] }

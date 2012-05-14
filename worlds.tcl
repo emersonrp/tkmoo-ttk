@@ -1,4 +1,3 @@
-
 client.register worlds start
 client.register worlds stop
 
@@ -20,9 +19,7 @@ proc worlds.start {} {
 }
 
 proc worlds.stop {} {
-    if { [worlds.save_needed] == 1 } {
-        worlds.save
-    }
+    if { [worlds.save_needed] == 1 } { worlds.save }
 }
 
 proc worlds.get_generic { hardcoded option optionClass directive {which ""}} {
@@ -288,6 +285,7 @@ proc worlds.default_tkm {} {
     return [split $worlds_default_tkm "\n"]
 }
 
+# TODO - de-platform-ify this
 proc worlds.preferred_file {} {
     global tcl_platform env tkmooLibrary
     set dirs {}
@@ -322,7 +320,6 @@ proc worlds.preferred_file {} {
             return [file join $dir $file]
         }
     }
-
     return [file join [pwd] $file]
 }
 
@@ -336,9 +333,7 @@ proc worlds.file {} {
     lappend files [worlds.preferred_file]
 
     foreach file $files {
-        if { [file exists $file] } {
-        return $file
-        }
+        if { [file exists $file] } { return $file }
     }
 
     return ""
@@ -357,8 +352,8 @@ proc worlds.update_mtime file {
 proc worlds.file_changed file {
     global worlds_last_read
     if { [catch { set mtime [file mtime $file] }] != 0 } {
-    window.displayCR "Can't stat file (.file_changed) $file" window_highlight
-    return
+        window.displayCR "Can't stat file (.file_changed) $file" window_highlight
+        return
     }
     if { $mtime != $worlds_last_read } {
         return 1
@@ -372,19 +367,17 @@ proc worlds.read_worlds file {
     set worlds_file ""
     catch { set worlds_file [open $file "r"] }
     if { $worlds_file == "" } {
-    window.displayCR "Can't read file $file" window_highlight
-    return $tmp
+        window.displayCR "Can't read file $file" window_highlight
+        return $tmp
     }
     while { [gets $worlds_file line] != -1 } {
-    lappend tmp $line
+        lappend tmp $line
     }
     close $worlds_file
     return $tmp
 }
 
-proc worlds.new_world {} {
-    return [util.unique_id world]
-}
+proc worlds.new_world {} { return [util.unique_id world] }
 
 proc worlds.load {} {
     global worlds_worlds worlds_worlds_db tkmooLibrary
@@ -393,12 +386,12 @@ proc worlds.load {} {
 
     if { $file != "" } {
         if { [worlds.file_changed $file] == 0 } {
-        return 0
-    }
-    set worlds_lines [worlds.read_worlds $file]
-    worlds.update_mtime $file
+            return 0
+        }
+        set worlds_lines [worlds.read_worlds $file]
+        worlds.update_mtime $file
     } {
-    set worlds_lines [worlds.default_tkm]
+        set worlds_lines [worlds.default_tkm]
     }
 
     catch { unset worlds_worlds_db }
@@ -407,15 +400,12 @@ proc worlds.load {} {
 
     set new_worlds [worlds.apply_lines $worlds_lines]
     if { $new_worlds != {} } {
-    set worlds_worlds [concat $worlds_worlds $new_worlds]
+        set worlds_worlds [concat $worlds_worlds $new_worlds]
     }
 
     worlds.make_default_world
-
     window.post_connect
-
     worlds.untouch
-
     return 1
 }
 
@@ -423,10 +413,8 @@ proc worlds.apply_lines lines {
     global worlds_worlds_db
     set new_worlds {}
     foreach line $lines {
-        if { [regexp {^ *#} $line] == 1 } {
-        continue
-        }
-    if { [regexp {^([^:]+): (.*)} $line _ key value] == 1 } {
+        if { [regexp {^ *#} $line] == 1 } { continue }
+        if { [regexp {^([^:]+): (.*)} $line _ key value] == 1 } {
             set lkey [string tolower $key]
         if { $lkey == "world" } {
             set world $value
@@ -488,8 +476,6 @@ proc worlds.save {} {
     }
     catch { set directives [array names all_used_directives] }
 
-
-
     foreach d $directives {
         set get_directive [preferences.get_directive $d]
         set default_if_empty($d)      [util.assoc $get_directive default_if_empty]
@@ -506,11 +492,9 @@ proc worlds.save {} {
         return
     }
 
-
     puts $fd "# $file"
     puts $fd "# This file is created automatically by the preferences editor"
     puts $fd "# any changes you make by hand to this file will be lost."
-
 
     foreach world $worlds {
 
@@ -634,9 +618,7 @@ proc worlds.copy {world copy} {
 
     foreach key [array names worlds_worlds_db "$world:*"] {
         regsub "^$world:" $key {} param
-        if { $param == "mustnotsave" } {
-            continue
-        }
+        if { $param == "mustnotsave" } { continue }
         set worlds_worlds_db($copy:$param) $worlds_worlds_db($key)
     }
 
@@ -684,8 +666,6 @@ proc worlds.set_current world {
         worlds.set $world IsCurrentWorld 1
     }
 }
-
-#
 
 proc worlds.set_special {world directive {value 1}} {
     while { [set special [worlds.get_special $directive $value]] != "" } {

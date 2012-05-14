@@ -48,12 +48,9 @@ proc shell.start {} {
     window.menu_tools_add "Shell selection" shell.do_selection
 }
 
-
 proc shell.do_selection {} {
     set selection [selection get]
-    if { $selection != "" } {
-        shell.shell $selection
-    }
+    if { $selection != "" } { shell.shell $selection }
 }
 
 proc shell.protect_tcl_meta str {

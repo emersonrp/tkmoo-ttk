@@ -1,5 +1,3 @@
-
-
 client.register local_edit start 40
 client.register local_edit client_connected 40
 client.register local_edit incoming 40
@@ -35,16 +33,13 @@ proc local_edit.client_connected {} {
         set local_edit_use 0
     }
 
-    ###
     return [modules.module_deferred]
 }
 
 proc local_edit.incoming event {
     global local_edit_use local_edit_receiving
 
-    if { $local_edit_use == 0 } {
-        return [modules.module_deferred]
-    }
+    if { $local_edit_use == 0 } { return [modules.module_deferred] }
 
     set line [db.get $event line]
 
@@ -106,8 +101,6 @@ proc local_edit.unset_header {} {
     request.set current local_edit_lines ""
 }
 
-###
-
 proc local_edit.controls {} {
     return {"LocalEdit" "local_edit.callback"}
 }
@@ -140,11 +133,8 @@ proc local_edit.callback {} {
         $c.buttons.usele    {left padx 4} \
         $c.buttons.close    {left padx 4}
 
-    pack append $c \
-        $c.buttons {fillx pady 4}
+    pack append $c $c.buttons {fillx pady 4}
 }
-#
-#
 
 proc local_edit.do_edit {} {
     if { [local_edit.authenticated] == 1 } {
@@ -165,6 +155,3 @@ proc local_edit.do_callback_edit {} {
 
         edit.SCedit "$pre" $lines "$post" $title $icon_title
 }
-#
-#
-

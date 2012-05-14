@@ -1,4 +1,3 @@
-
 client.register macmoose start
 client.register macmoose client_connected
 client.register macmoose incoming
@@ -30,14 +29,13 @@ proc macmoose.client_connected {} {
     set macmoose_use $default_usage
     set use ""
     catch {
-      set use [string tolower [worlds.get [worlds.get_current] UseModuleMacMOOSE]]
+        set use [string tolower [worlds.get [worlds.get_current] UseModuleMacMOOSE]]
     }
     if { $use == "on" } {
         set macmoose_use 1
     } elseif { $use == "off" } {
         set macmoose_use 0
     }
-    ###
 
     set macmoose_log 0
     set log [string tolower [worlds.get_generic On {} {} MacMOOSELogging]]
@@ -51,28 +49,16 @@ proc macmoose.client_connected {} {
 
 proc macmoose.stop {} {}
 
-#
-
 proc macmoose.incoming event {
     global macmoose_fake_args macmoose_use macmoose_log
 
-    if { $macmoose_use == 0 } {
-        return [modules.module_deferred]
-    }
+    if { $macmoose_use == 0 } { return [modules.module_deferred] }
 
     set line [db.get $event line]
 
+    if { [regexp {^_&_MacMOOSE_(.*)} $line] == 0 } { return [modules.module_deferred] }
 
-    if { [regexp {^_&_MacMOOSE_(.*)} $line] == 0 } {
-        return [modules.module_deferred]
-    }
-
-
-    if { $macmoose_log == 0 } {
-        db.set $event logging_ignore_incoming 1
-    }
-
-
+    if { $macmoose_log == 0 } { db.set $event logging_ignore_incoming 1 }
 
     set space [string first " " $line]
     if { $space == -1 } {
@@ -95,7 +81,6 @@ proc macmoose.incoming event {
     return [modules.module_ok]
 }
 
-
 proc macmoose.cgi_populate_array { array text } {
     upvar $array a
     foreach element [split $text "&"] {
@@ -104,13 +89,12 @@ proc macmoose.cgi_populate_array { array text } {
     }
 }
 
-
 proc macmoose.do_set_code data {
     macmoose.populate_array keyvals $data
     set feedback_tag "macmoose_feedback"
     catch {
         if { $keyvals(TEXT_COLOR_) == "RED" } {
-                set feedback_tag "macmoose_error"
+            set feedback_tag "macmoose_error"
         }
     }
     catch {
@@ -121,8 +105,6 @@ proc macmoose.do_set_code data {
 proc macmoose.do_list_code data {
     global macmoose_keyvals macmoose_lines
     if { $data == "CODE_END" } {
-
-
         macmoose.invoke_verb_editor
         catch { unset macmoose_keyvals }
         catch { unset macmoose_lines }
@@ -205,9 +187,7 @@ proc macmoose.do_prop_info data {
     edit.configure_send  $e Send  "macmoose.editor_property_send $e" 1
     edit.configure_send_and_close  $e "Send and Close"  "macmoose.editor_property_send_and_close $e" 10
     edit.configure_close $e Close "macmoose.editor_close $e" 0
-    foreach key [array names info] {
-        set macmoose_editordb($e:$key) $info($key)
-    }
+    foreach key [array names info] { set macmoose_editordb($e:$key) $info($key) }
 
     edit.add_toolbar $e info
 
@@ -261,18 +241,14 @@ proc macmoose.editor_property_send editor {
 
 proc macmoose.do_set_prop data {
     macmoose.populate_array keyvals $data
-    catch {
-        window.displayCR $keyvals(ERROR_) macmoose_error
-    }
+    catch { window.displayCR $keyvals(ERROR_) macmoose_error }
     set feedback_tag macmoose_feedback
     catch {
         if { $keyvals(TEXT_COLOR_) == "RED" } {
-                set feedback_tag macmoose_error
+            set feedback_tag macmoose_error
         }
     }
-    catch {
-        window.displayCR $keyvals(FEEDBACK_) $feedback_tag
-    }
+    catch { window.displayCR $keyvals(FEEDBACK_) $feedback_tag }
 }
 
 proc macmoose.editor_verb_send_and_close editor {
@@ -292,17 +268,14 @@ proc macmoose.editor_verb_send editor {
     set args [$editor.info.args get]
     set old_args "$macmoose_editordb($editor:VERB_DOBJ_) $macmoose_editordb($editor:VERB_PREP_) $macmoose_editordb($editor:VERB_IOBJ_)"
 
-    if { ($args != "") &&
-     ($args != $old_args) &&
-     ([llength $args] == 3)} {
+    if { ($args != "") && ($args != $old_args) && ([llength $args] == 3)} {
         set line "$line VERB_DOBJ_: [lindex $args 0]"
         set line "$line VERB_PREP_: [lindex $args 1]"
         set line "$line VERB_IOBJ_: [lindex $args 2]"
     }
 
     set perms [$editor.info.perms get]
-    if { ($perms != "") &&
-     ($perms != $macmoose_editordb($editor:VERB_PERMS_)) } {
+    if { ($perms != "") && ($perms != $macmoose_editordb($editor:VERB_PERMS_)) } {
         set line "$line PERMS_: $perms"
     }
 
@@ -330,20 +303,15 @@ proc macmoose.editor_close editor {
     edit.destroy $editor
 }
 
-
-###
-
 proc macmoose.do_object_parents data {
     global macmoose_keyvals macmoose_current_object \
-    macmoose_fake_args
+        macmoose_fake_args
     catch { unset macmoose_keyvals }
     macmoose.populate_array macmoose_keyvals $data
 
     set browser ""
     catch { set browser $macmoose_fake_args(_BROWSER_) }
-    if { $browser == "" } {
-        set browser [macmoose.create_browser]
-    }
+    if { $browser == "" } { set browser [macmoose.create_browser] }
 
     set error ""
     catch { set error $macmoose_keyvals(ERROR_) }
@@ -383,9 +351,7 @@ proc macmoose.invoke_browser {} {
     set browser ""
     catch { set browser $macmoose_fake_args(_BROWSER_) }
 
-    if { $browser == "" } {
-        set browser [macmoose.create_browser]
-    }
+    if { $browser == "" } { set browser [macmoose.create_browser] }
 
     $browser.lists.v.verbs.l delete 0 end
     foreach verb [lsort [split $macmoose_keyvals(VERBS_) "/"]] {
@@ -460,8 +426,6 @@ proc macmoose.prop_info { browser prop_name } {
     io.outgoing $line
 }
 
-
-
 proc macmoose.do_declare_code data {
     macmoose.populate_array info $data
 
@@ -474,10 +438,7 @@ proc macmoose.do_declare_code data {
 
     set ok 0
     catch { set ok $info(DECLARE_CODE_) }
-    if { $ok == 1 } {
-        window.displayCR "Code Added." macmoose_feedback
-    } {
-    }
+    if { $ok == 1 } { window.displayCR "Code Added." macmoose_feedback } { }
     return [modules.module_ok]
 }
 
@@ -493,10 +454,7 @@ proc macmoose.do_declare_prop data {
 
     set ok 0
     catch { set ok $info(DECLARE_PROP_) }
-    if { $ok == 1 } {
-        window.displayCR "Property Added." macmoose_feedback
-    } {
-    }
+    if { $ok == 1 } { window.displayCR "Property Added." macmoose_feedback } { }
     return [modules.module_ok]
 }
 
@@ -505,7 +463,6 @@ proc macmoose.add_dialog w {
     global macmoose_add macmoose_current_object
     switch $macmoose_add {
         script {
-
             set name [$w.s.name get]
             set perms [$w.s.perms get]
             set args [$w.s.args get]
@@ -526,7 +483,6 @@ proc macmoose.add_dialog w {
             set line "$line VERB_IOBJ_: $iobj"
             set line "$line PERMS_: $perms"
             set line "$line PREFIX_: _&_MacMOOSE_declare_code()"
-
         }
         property {
             set name [$w.p.name get]
@@ -542,15 +498,11 @@ proc macmoose.add_dialog w {
             set line "$line OBJ_: $obj"
             set line "$line PERMS_: $perms"
             set line "$line PREFIX_: _&_MacMOOSE_declare_prop()"
-
         }
     }
     io.outgoing $line
     macmoose.object_info [db.get $w browser] $obj
 }
-
-
-
 
 proc macmoose.add_script_or_property browser {
     global macmoose_add
@@ -643,9 +595,7 @@ proc macmoose.add_script_or_property browser {
     window.focus $w
 }
 
-proc macmoose.toplevel w {
-    return [winfo toplevel $w]
-}
+proc macmoose.toplevel w { return [winfo toplevel $w] }
 
 proc macmoose.post_object_menu browser {
     $browser.cmenu.object delete 0 end
@@ -662,12 +612,12 @@ proc macmoose.post_object_menu browser {
     } {
         $browser.cmenu.object add command \
             -label "No object selected" \
-        -state disabled
+            -state disabled
         window.hidemargin $browser.cmenu.object
     }
     $browser.cmenu.object add separator
     $browser.cmenu.object add command -label "Close" \
-    -underline 0 \
+        -underline 0 \
         -command "macmoose.destroy_browser $browser"
     window.hidemargin $browser.cmenu.object
 }
@@ -760,7 +710,6 @@ proc macmoose.create_browser {} {
     pack $browser.lists.v.l -side top
     pack $browser.lists.v.verbs -side bottom -fill both -expand 1
 
-
     ttk::frame $browser.lists.p
     ttk::label $browser.lists.p.l -text "Properties"
 
@@ -795,7 +744,6 @@ proc macmoose.create_browser {} {
     return $browser
 }
 
-
 proc macmoose.populate_array {array string} {
     upvar $array a
 
@@ -810,7 +758,6 @@ proc macmoose.populate_array {array string} {
             set left [string range $string 0 [expr $space - 1]]
             set string [string range $string [expr $space + 1] end]
             if { [regexp {^[A-Z_]+_:$} $left] } {
-
                 if { $key != "" } {
                     if { ($value == "") || ([string first " " $value] != -1) } {
                         append correct " $key \"$value\""
@@ -818,7 +765,6 @@ proc macmoose.populate_array {array string} {
                         append correct " $key $value"
                     }
                 }
-
                 set key $left
                 set value ""
             } else {
@@ -839,7 +785,6 @@ proc macmoose.populate_array {array string} {
             break
         }
     }
-
 
     if { $key != "" } {
         if { ($value == "") || ([string first " " $value] != -1) } {
@@ -879,7 +824,6 @@ proc macmoose.help {} {
     pack $win.msg.text -side left
     pack $win.msg.sby -expand yes -fill both -side right
     pack $win.close
-
 }
 
 proc macmoose.search win {
@@ -964,7 +908,6 @@ proc macmoose.mail {} {
     $win.msg.sby conf -command {$win.msg.msg yview}
 }
 
-
 proc macmoose.verify_mail_recipients {win to} {
     set to [string map {" " /} $to]
     set line "#$#MacMOOSE"
@@ -1001,6 +944,3 @@ proc macmoose.do_recieved data {
         tk_dialog .[util.unique_id popup] "Mail failed" "Sending Failed" "" 0 OK
     }
 }
-
-#
-#

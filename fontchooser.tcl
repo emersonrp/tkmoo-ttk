@@ -1,4 +1,3 @@
-
 proc fontchooser.do_select {} {
     set fc .fontchooser
     set family [$fc.f.l get [$fc.f.l curselection]]
@@ -184,9 +183,7 @@ proc fontchooser.db_to_font {} {
 
 proc fontchooser.change_font_db args {
     global fontchooser_db
-    foreach {k v} $args {
-        set fontchooser_db($k) $v
-    }
+    foreach {k v} $args { set fontchooser_db($k) $v }
     fontchooser.font_to_db [fontchooser.db_to_font]
 }
 
@@ -199,5 +196,3 @@ proc fontchooser.update_tag {} {
     set fc .fontchooser
     $fc.t tag configure font_style -font "[fontchooser.db_to_font]"
 }
-#
-#

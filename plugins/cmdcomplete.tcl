@@ -37,13 +37,8 @@ proc window.dabbrev_search {win partial} {
     set input [.input get 1.0 {end -1 char}]
     set partial_psn [string wordstart $input [string length $input]]
 
-    if { $partial == "" } {
-        return $completions
-    }
-
-    if { $partial_psn != 0 } {
-        return $completions
-    }
+    if { $partial == "" }    { return $completions }
+    if { $partial_psn != 0 } { return $completions }
 
     set commands [rehash.commands_unexpanded]
 
@@ -51,8 +46,8 @@ proc window.dabbrev_search {win partial} {
     # this may generate duplicates, but we dedupe later...
     set words {}
     foreach word $commands {
-     regsub -all {\*} $word {} word
-     lappend words $word
+        regsub -all {\*} $word {} word
+        lappend words $word
     }
     set commands $words
 
@@ -70,25 +65,21 @@ proc window.dabbrev_search {win partial} {
     # current partial.  so their length must be partial+1 chars long
     set length 999
     foreach word $words {
-    set len [string length $word]
-    if { ($len >= [expr [string length $partial] + 1]) &&
-         ($len < $length) } {
-        set length $len
-    }
+        set len [string length $word]
+        if { ($len >= [expr [string length $partial] + 1]) &&
+             ($len < $length) } {
+            set length $len
+        }
     }
 
     set blah $words
     set words {}
     foreach word $blah {
-    if { [string length $word] == $length } {
-        lappend words $word
-    }
+        if { [string length $word] == $length } { lappend words $word }
     }
 
     # merge the commands and completions, and return the uniq list
-    foreach word [concat $words $completions] {
-    set uniq($word) 1
-    }
+    foreach word [concat $words $completions] { set uniq($word) 1 }
 
     # caller may choose to sort the list
     return [array names uniq]

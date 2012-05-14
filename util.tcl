@@ -1,5 +1,3 @@
-
-
 set util_unique_id 0
 
 proc util.unique_id token {
@@ -61,19 +59,13 @@ proc util.buildtime {} {
 
 proc util.slice { list { n 0 } } {
     set tmp {}
-    foreach item $list {
-        lappend tmp [lindex $item $n]
-    }
+    foreach item $list { lappend tmp [lindex $item $n] }
     return $tmp
 }
 
 proc util.assoc { list key { n 0 } } {
     foreach item $list {
-        if { [lindex $item $n] == $key } {
-            return $item
-        }
+        if { [lindex $item $n] == $key } { return $item }
     }
     return {}
 }
-#
-#

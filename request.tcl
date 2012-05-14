@@ -1,5 +1,3 @@
-
-
 proc request.get { tag key } {
     global request_data
     return $request_data($tag.$key)

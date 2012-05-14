@@ -176,8 +176,8 @@ proc rehash.do_marks {} {
     # only whitespace (space, tab) terminates words.
 
     if { ! [regexp {^([     ]*)([^     ]*)} $text _ whitespace first] } {
-    set first $text
-    set whitespace {}
+        set first $text
+        set whitespace {}
     }
 
     set original "$whitespace$first"
@@ -189,18 +189,18 @@ proc rehash.do_marks {} {
 
     if { $first != {} && $original == $word } {
         .input tag add rehash_COMMAND $from $to
-    return
+        return
     }
 
     set commands [rehash.commands]
     if { ($first != {}) &&
-     ([lsearch -exact $commands $first] != -1) } {
-     set beginning [.input search -forwards $first 1.0 end]
-     if { $beginning != "" } {
-         set ending [.input index "$beginning + [expr [string length $first]] chars"]
-         .input tag add rehash_COMMAND $beginning $ending
-         rehash.set_cache_marks $original $beginning $ending
-     }
+         ([lsearch -exact $commands $first] != -1) } {
+        set beginning [.input search -forwards $first 1.0 end]
+        if { $beginning != "" } {
+            set ending [.input index "$beginning + [expr [string length $first]] chars"]
+            .input tag add rehash_COMMAND $beginning $ending
+            rehash.set_cache_marks $original $beginning $ending
+        }
     }
 }
 

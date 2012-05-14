@@ -87,19 +87,19 @@ proc search_macro.do_search str {
 }
 
 proc search_macro.de_chaff str {
-  set chaff {
-      tell me what in who where when how is about was the of to in
-      for is on that by with this be it www are as at i from a com
-      an de was will s 0 1 2 3 4 5 6 7 8 9 edu htm why
-  }
-  set str  " $str "
-  foreach word $chaff {
-    regsub -all " $word " $str " " str
-  }
-  regsub -all "\\?|\&|\!" $str "" str
-  set str [string trim $str]
-  regsub -all " " $str "+" str
-  return $str;
+    set chaff {
+        tell me what in who where when how is about was the of to in
+        for is on that by with this be it www are as at i from a com
+        an de was will s 0 1 2 3 4 5 6 7 8 9 edu htm why
+    }
+    set str  " $str "
+    foreach word $chaff {
+        regsub -all " $word " $str " " str
+    }
+    regsub -all "\\?|\&|\!" $str "" str
+    set str [string trim $str]
+    regsub -all " " $str "+" str
+    return $str;
 }
 
 proc search_macro.register { engine callback } {

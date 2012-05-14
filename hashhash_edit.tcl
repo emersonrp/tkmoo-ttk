@@ -1,4 +1,3 @@
-
 client.register hashhash_edit start
 client.register hashhash_edit client_connected
 client.register hashhash_edit incoming
@@ -19,8 +18,6 @@ proc hashhash_edit.start {} {
 proc hashhash_edit.client_connected {} {
     global hashhash_edit_use
 
-
-
     set default_usage 0
     set hashhash_edit_use $default_usage
     set use1 ""
@@ -34,7 +31,6 @@ proc hashhash_edit.client_connected {} {
     } elseif { $use1 == "off" } {
         set hashhash_edit_use 0
     }
-    ###
     return [modules.module_deferred]
 }
 
@@ -54,19 +50,16 @@ proc hashhash_edit.incoming event {
     }
 
     if { $hashhash_edit_receiving == 1 } {
-
-    if { [string match "## endrecord" $line] == 1 } {
-        set hashhash_edit_receiving 0
-            hashhash_edit.editor
-            hashhash_edit.unset_header
-            return [modules.module_ok]
-    }
-
+        if { [string match "## endrecord" $line] == 1 } {
+            set hashhash_edit_receiving 0
+                hashhash_edit.editor
+                hashhash_edit.unset_header
+                return [modules.module_ok]
+        }
         request.set current hashhash_edit_lines [concat [request.get current hashhash_edit_lines] [list $line]]
 
         return [modules.module_ok]
     }
-
     return [modules.module_deferred]
 }
 
@@ -80,8 +73,4 @@ proc hashhash_edit.editor {} {
     edit.SCedit "" $lines "" $title $icon_title
 }
 
-proc hashhash_edit.unset_header {} {
-    request.destroy current
-}
-#
-#
+proc hashhash_edit.unset_header {} { request.destroy current }

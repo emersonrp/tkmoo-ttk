@@ -95,8 +95,8 @@ proc spell.client_connected {} {
 
     spell.set_available 0
     if { $tcl_platform(platform) != "unix" } {
-    if { [file exists $dictionary] ||
-         [file exists $personal_dictionary] } {
+        if { [file exists $dictionary] ||
+             [file exists $personal_dictionary] } {
             spell.set_available 1
         }
     } {
@@ -157,11 +157,9 @@ proc spell.read_dictionary {db fh} {
     while { $count < $MAX_LINES &&
        [gets $fh line] != -1 } {
         set data [list]
-        foreach word $line {
-            lappend data $word 1
-        }
+        foreach word $line { lappend data $word 1 }
         array set $db $data
-    incr count
+        incr count
     }
     # update for any text in the .input widget
     spell.do_marks
@@ -174,9 +172,7 @@ proc spell.read_dictionary {db fh} {
 }
 
 proc spell.open_dictionary file {
-    if { $file == "" } {
-    return 0
-    }
+    if { $file == "" } { return 0 }
     set fh ""
     catch { set fh [open $file "r"] }
     if { $fh == "" } {
@@ -188,9 +184,7 @@ proc spell.open_dictionary file {
 
 proc spell.save_dictionary { db file } {
     global $db
-    if { $file == "" } {
-    return
-    }
+    if { $file == "" } { return }
     set fh ""
     catch { set fh [open $file "w"] }
     if { $fh == "" } {
@@ -204,26 +198,24 @@ proc spell.save_dictionary { db file } {
     set SPACE ""
     set count 0
     foreach word [lsort [array names $db]] {
-    if { $count == 0 } {
-        puts -nonewline $fh $CR
-        set CR "\n"
-    }
-    puts -nonewline $fh "$SPACE$word"
-    set SPACE " "
-    incr count
-    if { $count > $WORDS_PER_LINE } {
-        set count 0
-        set SPACE ""
-    }
+        if { $count == 0 } {
+            puts -nonewline $fh $CR
+            set CR "\n"
+        }
+        puts -nonewline $fh "$SPACE$word"
+        set SPACE " "
+        incr count
+        if { $count > $WORDS_PER_LINE } {
+            set count 0
+            set SPACE ""
+        }
     }
     close $fh
 }
 
 proc spell.handle_keyrelease {} {
     global spell_task
-    if { $spell_task != 0 } {
-        after cancel $spell_task
-    }
+    if { $spell_task != 0 } { after cancel $spell_task }
     # 1/4 second after the last keypress, run the spell-checker
     set spell_task [after 250 {spell.do_marks;spell.zero_task}]
 }
@@ -263,18 +255,18 @@ proc spell.can.look {} {
 proc spell.can.ispell {} {
     global spell_can
     if { [info exists spell_can(ispell)] } {
-    return $spell_can(ispell)
+        return $spell_can(ispell)
     }
     set ISPELL "ispell -a"
     set ispell ""
     catch {
-    set ispell [open "| $ISPELL"]
-    close $ispell
+        set ispell [open "| $ISPELL"]
+        close $ispell
     }
     if { $ispell == "" } {
-    set spell_can(ispell) 0
+        set spell_can(ispell) 0
     } {
-    set spell_can(ispell) 1
+        set spell_can(ispell) 1
     }
     return $spell_can(ispell)
 }
@@ -307,9 +299,9 @@ proc spell.ispell word {
 
     while { [gets $ispell line] > 0 } {
         if { [regexp {^[\*\+]} $line] } {
-        set first [lindex $word 0]
+            set first [lindex $word 0]
             lappend words [string tolower $first]
-        set word [lrange $word 1 end]
+            set word [lrange $word 1 end]
         }
     }
     catch {close $ispell}
@@ -353,12 +345,12 @@ proc spell.check.windows text {
     global spell_db spell_db_personal
     set wrong [list]
     foreach word $text {
-    if { [info exists spell_db([string tolower $word])] } {
-        continue
-    }
-    if { [info exists spell_db_personal([string tolower $word])] } {
-        continue
-    }
+        if { [info exists spell_db([string tolower $word])] } {
+            continue
+        }
+        if { [info exists spell_db_personal([string tolower $word])] } {
+            continue
+        }
         lappend wrong $word
     }
     return $wrong
@@ -392,16 +384,16 @@ proc spell.mark_words {w words} {
         set ending [$w index "$psn wordend"]
         # only tag if we're tagging a whole word
         if { ($beginning == $psn) && ($ending == $from) } {
-        set new_tag [util.unique_id spell_add]
-        $w tag configure $new_tag
-        $w tag bind $new_tag <Button3-ButtonRelease> "
-            spell.add_personal $word
-            spell.do_marks
-        "
-            $w tag add spell_TYPO $psn $from
-            $w tag add $new_tag $psn $from
+            set new_tag [util.unique_id spell_add]
+            $w tag configure $new_tag
+            $w tag bind $new_tag <Button3-ButtonRelease> "
+                spell.add_personal $word
+                spell.do_marks
+            "
+                $w tag add spell_TYPO $psn $from
+                $w tag add $new_tag $psn $from
+            }
         }
-    }
     }
 }
 
@@ -409,8 +401,8 @@ proc spell.unmark_words w {
     set tags [$w tag names]
     $w tag remove spell_TYPO 1.0 end
     foreach tag $tags {
-    if { [string match spell_add* $tag] } {
-            $w tag delete $tag 1.0 end
-    }
+        if { [string match spell_add* $tag] } {
+                $w tag delete $tag 1.0 end
+        }
     }
 }

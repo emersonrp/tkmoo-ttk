@@ -1,4 +1,3 @@
-
 proc window.clear_tagging_info {} {
     global window_tagging_info
     set window_tagging_info {}
@@ -27,6 +26,7 @@ proc window.assert_tagging_info line {
 proc window.place_absolute {win x y} {
     wm geometry $win "+$x+$y"
 }
+
 proc window.place_nice {this {that ""}} {
     if { $that != "" } {
         set x [winfo rootx $that]
@@ -51,15 +51,11 @@ proc window.bind_escape_to_destroy win {
 }
 
 proc window.iconify {} {
-    if { [winfo viewable .] } {
-        wm iconify .
-    }
+    if { [winfo viewable .] } { wm iconify .  }
 }
 
 proc window.deiconify {} {
-    if { ! [winfo viewable .] } {
-        wm deiconify .
-    }
+    if { ! [winfo viewable .] } { wm deiconify .  }
 }
 
 proc window.initialise_text_widget w {
@@ -68,10 +64,8 @@ proc window.initialise_text_widget w {
 }
 
 set window_CR 0
-
 set window_input_size 1
 set window_input_size_display 1
-
 set window_close_state disabled
 
 proc window.hidemargin menu {
@@ -258,11 +252,11 @@ set window_statusbars {}
 proc window.add_statusbar statusbar {
     global window_statusbars
     if { [lsearch -exact $window_statusbars $statusbar] == -1 } {
-    if { $statusbar == ".statusbar" } {
-        set window_statusbars [linsert $window_statusbars 0 $statusbar]
-    } {
+        if { $statusbar == ".statusbar" } {
+            set window_statusbars [linsert $window_statusbars 0 $statusbar]
+        } {
             lappend window_statusbars $statusbar
-    }
+        }
     }
 }
 proc window.remove_statusbar statusbar {
@@ -272,9 +266,6 @@ proc window.remove_statusbar statusbar {
         set window_statusbars [lreplace $window_statusbars $index $index]
     }
 }
-
-
-
 
 proc window.statusbar_create {} {
     if { [winfo exists .statusbar] == 1 } { return }
@@ -300,7 +291,6 @@ proc window.statusbar_destroy {} {
     window.remove_statusbar .statusbar
 }
 
-
 proc window.truncate_for_label {label text} {
     set width [winfo width $label]
     set padx [$label cget -padx]
@@ -317,9 +307,7 @@ proc window.truncate_for_label {label text} {
             break
         }
     }
-    if { $i == 0 } {
-        return ""
-    }
+    if { $i == 0 } { return "" }
     return $text
 }
 
@@ -334,26 +322,20 @@ proc window.set_status {text {type decay}} {
     window.statusbar_create
     set window_statusbar_message $text
     window.statusbar_messages_repaint
-    catch {
-        after cancel $window_statusbar_current_task_id
-    }
+    catch { after cancel $window_statusbar_current_task_id }
     if { $type == "decay" } {
         set window_statusbar_current_task_id [after 20000 window.statusbar_decay]
     }
 }
 
-proc window.statusbar_decay {} {
-    window.set_status "" stick
-}
+proc window.statusbar_decay {} { window.set_status "" stick }
 
 proc window.create_statusbar_item {} {
     window.statusbar_create
     set item .statusbar.[util.unique_id "item"]
     return $item
 }
-proc window.delete_statusbar_item item {
-    destroy $item
-}
+proc window.delete_statusbar_item item { destroy $item }
 proc window.clear_status_if_present {} {
     if { [winfo exists .statusbar] == 1 } {
         .statusbar.messages configure -text ""
@@ -373,34 +355,19 @@ proc window.client_connected {} {
     after idle window.input_resize $size
 
     set fg [worlds.get_generic "#000000" foreground Foreground ColourForeground]
-
-    if { $fg != "" } {
-        .output configure -foreground $fg
-    }
+    if { $fg != "" } { .output configure -foreground $fg }
 
     set bg [worlds.get_generic "#f0f0f0" background Background ColourBackground]
-
-    if { $bg != "" } {
-        .output configure -background $bg
-    }
+    if { $bg != "" } { .output configure -background $bg }
 
     set fg [worlds.get_generic "#000000" foregroundinput ForegroundInput ColourForegroundInput]
-
-    if { $fg != "" } {
-        .input configure -foreground $fg
-    }
+    if { $fg != "" } { .input configure -foreground $fg }
 
     set bg [worlds.get_generic [colourdb.get pink] backgroundinput BackgroundInput ColourBackgroundInput]
-
-    if { $bg != "" } {
-        .input configure -background $bg
-    }
+    if { $bg != "" } { .input configure -background $bg }
 
     set font [worlds.get_generic fixedwidth background DefaultFont DefaultFont]
-
-    if { $font != "" } {
-        set window_fonts $font
-    }
+    if { $font != "" } { set window_fonts $font }
     window.reconfigure_fonts
 
     catch { wm title . "[worlds.get [worlds.get_current] Name] - tkMOO-ttk v$tkmooVersion" }
@@ -464,8 +431,8 @@ proc window.client_connected {} {
                     after idle window.set_geometry . $geometry
             }
         } {
-        window.place_nice .
-    }
+            window.place_nice .
+        }
     }
     window.menu_preferences_state "Edit Preferences..." normal
     window.repack
@@ -534,14 +501,12 @@ proc window.open {} {
         -side left \
         -padx 5 -pady 5
 
-    ttk::frame .open.buttons
-
+    ttk::frame  .open.buttons
     ttk::button .open.buttons.connect -text "Connect" -command { window.do_open }
+    ttk::button .open.buttons.cancel  -text "Cancel"  -command "destroy .open"
 
     bind .open <Return> { window.do_open };
     window.bind_escape_to_destroy .open
-
-    ttk::button .open.buttons.cancel -text "Cancel" -command "destroy .open"
 
     pack .open.entries
     pack .open.buttons
@@ -552,12 +517,8 @@ proc window.open {} {
 
 proc window.do_disconnect {} {
     set session ""
-    catch {
-        set session [db.get .output session]
-    }
-    if { $session != "" } {
-        client.disconnect_session $session
-    }
+    catch { set session [db.get .output session] }
+    if { $session != "" } { client.disconnect_session $session }
 }
 
 proc window.post_connect {} {
@@ -604,7 +565,7 @@ proc window.post_connect {} {
                     -label $label \
                     -underline 0 \
                     -command "client.connect_world $world"
-                window.hidemargin $menu
+            window.hidemargin $menu
         }
     }
     }
@@ -623,7 +584,7 @@ proc window.configure_help_menu {} {
     $menu delete 0 end
     foreach subject [help.subjects] {
         if { $subject == "SEPARATOR" } {
-        $menu add separator
+            $menu add separator
         } {
             $menu add command \
                 -label   "[help.get_title $subject]" \
@@ -693,14 +654,14 @@ proc window.menu_preferences_add { text {command ""} } {
 proc window.reconfigure_fonts {} {
     global window_fonts
     switch $window_fonts {
-    fixedwidth {
-        .output configure -font [fonts.fixedwidth]
-        .input configure -font [fonts.fixedwidth]
-    }
-    proportional {
-        .output configure -font [fonts.plain]
-        .input configure -font [fonts.plain]
-    }
+        fixedwidth {
+            .output configure -font [fonts.fixedwidth]
+            .input configure -font [fonts.fixedwidth]
+        }
+        proportional {
+            .output configure -font [fonts.plain]
+            .input configure -font [fonts.plain]
+        }
     }
 }
 
@@ -767,8 +728,6 @@ proc window.toggle_statusbar_from_menu {} {
         worlds.set_if_different $world ShowStatusbars $flag
     }
 }
-#
-###
 
 proc window.buildWindow {} {
     window.set_statusbar_flag 1
@@ -923,7 +882,6 @@ proc window.buildWindow {} {
 
     window.repack
 
-
     update
     pack propagate . 0
 
@@ -952,14 +910,8 @@ proc window.buildWindow {} {
     window.initialise_text_widget .output
 }
 
-proc window.accel str {
-    return $str
-}
-
-proc window.focus win {
-    focus $win
-}
-
+proc window.accel str { return $str }
+proc window.focus win { focus $win }
 
 proc window.cancel_lite {} {
     global window_timeout_lite window_timeout_lite_task
@@ -996,17 +948,13 @@ proc window.repack_lite {} {
     set slaves [pack slaves .]
     set tmp [list]
     foreach s $slaves {
-        if { $s != ".output" } {
-            lappend tmp $s
-        }
+        if { $s != ".output" } { lappend tmp $s }
     }
     set slaves $tmp
 
     . configure -menu {}
 
-    foreach slave $slaves {
-        pack forget $slave
-    }
+    foreach slave $slaves { pack forget $slave }
     pack configure .output -side bottom -fill both -expand on
 }
 
@@ -1125,9 +1073,7 @@ proc window.input_resize size {
     global window_input_size window_input_size_display
 
 
-    if { $size == $window_input_size } {
-        return 0
-    }
+    if { $size == $window_input_size } { return 0 }
     .input configure -height $size
     set window_input_size $size
     set window_input_size_display $size
@@ -1185,13 +1131,10 @@ proc window.dabbrev args {
     regsub -all {\.} $new_partial {\\.} new_partial
     regsub -all {\[} $new_partial {\\[} new_partial
 
-
     set ttl 10
     set ttl 20
 
     regsub -all { } $new_partial {} new_partial
-
-
 
     if { $new_partial == "" } {
         window.set_dabbrev_target ""
@@ -1221,9 +1164,7 @@ proc window.dabbrev args {
 
         set words [window.dabbrev_search .output $new_partial]
 
-        if { [llength $words] == 0 } {
-            return
-        }
+        if { [llength $words] == 0 } { return }
         set words [lsort $words]
         if { [lindex $words 0] == [string tolower $new_partial] } {
             set foo [lindex $words 0]
@@ -1307,9 +1248,7 @@ proc window.clear_screen win {
 
 proc window._last_char_is_visible {} {
     set last_char [.output index {end - 1 char}]
-    if { [.output bbox $last_char] != {} } {
-        return 1
-    }
+    if { [.output bbox $last_char] != {} } { return 1 }
     return 0
 }
 
@@ -1330,18 +1269,14 @@ proc window.remove_matching_tags match {
     set tmp ""
     set wct_list $window_contributed_tags
     foreach tag $wct_list {
-        if { [string match $match $tag] == 0 } {
-            append tmp " $tag"
-        }
+        if { [string match $match $tag] == 0 } { append tmp " $tag" }
     }
     set window_contributed_tags [string trimleft $tmp]
 }
 
 proc window.display_tagged { line {tags {}} } {
     global window_db
-    if { $window_db(".output,window_CR") } {
-        window._display "\n"
-    }
+    if { $window_db(".output,window_CR") } { window._display "\n" }
     set window_db(".output,window_CR") 1
     window._display $line
 
@@ -1350,9 +1285,7 @@ proc window.display_tagged { line {tags {}} } {
         set range [lindex $tag 1]
         set from "end - 1 lines linestart + [lindex $range 0] chars"
         set to   "end - 1 lines linestart + [lindex $range 1] chars + 1 chars"
-        foreach t $names {
-                .output tag add $t $from $to
-        }
+        foreach t $names { .output tag add $t $from $to }
     }
 }
 
@@ -1362,9 +1295,7 @@ proc window._clip {} {
         set int_last_line [lindex [split [.output index end] "."] 0]
         set diff $int_last_line
         incr diff -$window_clip_output_buffer_size
-        if { $diff > 0 } {
-            .output delete 1.0 $diff.0
-        }
+        if { $diff > 0 } { .output delete 1.0 $diff.0 }
     }
 }
 
@@ -1393,18 +1324,14 @@ proc window._display { line { tag ""} {win .output} } {
 
 proc window.display {{ line "" } { tag "" } {win .output}} {
     global window_db
-    if { $window_db("$win,window_CR") } {
-        window._display "\n" $win
-    }
+    if { $window_db("$win,window_CR") } { window._display "\n" $win }
     set window_db("$win,window_CR") 0
     window._display $line $tag $win
 }
 
 proc window.displayCR {{ line "" } { tag "" } {win .output}} {
     global window_db
-    if { $window_db("$win,window_CR") } {
-        window._display "\n" $win
-    }
+    if { $window_db("$win,window_CR") } { window._display "\n" $win }
     set window_db("$win,window_CR") 1
     window._display $line $tag $win
 }
@@ -1504,7 +1431,3 @@ proc window.hyperlink.link {win tag cmd} {
 
     return $tag
 }
-#
-#
-
-

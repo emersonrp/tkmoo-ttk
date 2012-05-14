@@ -1,5 +1,3 @@
-
-
 client.register logging start 20
 client.register logging stop 20
 client.register logging client_connected 20
@@ -7,8 +5,6 @@ client.register logging client_disconnected 20
 client.register logging incoming 20
 client.register logging incoming_2
 client.register logging outgoing 20
-
-
 
 proc logging.client_connected {} {
     global logging_enabled logging_logfilename logging_logfilename_default
@@ -189,5 +185,3 @@ proc logging.set_logging_info_from_dialog {} {
         worlds.set_if_different $world LogFile $logging_logfilename
     }
 }
-#
-#

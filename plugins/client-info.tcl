@@ -74,8 +74,8 @@ proc clientinfo.mcp_negotiate_end {} {
 }
 
 proc plusminus {x y} {
-set z [expr {$x == $y-1 || $x == $y+1}]
-expr {$z || $x == $y}
+    set z [expr {$x == $y-1 || $x == $y+1}]
+    expr {$z || $x == $y}
 }
 
 proc clientinfo.disconnect {} {

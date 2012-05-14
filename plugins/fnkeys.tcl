@@ -76,13 +76,10 @@ proc fnkeys.start {} {
     foreach key {F1 F2 F3 F4 F5 F6 F7 F8} {
         bind . <$key> "+fnkeys.invoke $key"
     }
-
 }
 
 proc fnkeys.invoke key {
     set action [worlds.get_generic {} {} {} FNKey${key}Macro]
     regsub "\n\$" $action {} action
-    if { $action != {} } {
-    client.outgoing "$action"
-    }
+    if { $action != {} } { client.outgoing "$action" }
 }
