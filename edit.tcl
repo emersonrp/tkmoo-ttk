@@ -1,3 +1,6 @@
+package require ctext
+package require ntext
+
 client.register edit start
 proc edit.start {} {
     global edit_functions
@@ -144,6 +147,7 @@ proc edit.fs_open e {
     global edit_file_matches
     set filetypes {
         {{Text Files} {.txt} TEXT}
+        {{MOO Files} {.moo} TEXT}
         {{All Files} {*} TEXT}
     }
     if { $edit_file_matches != {} } {
@@ -151,7 +155,7 @@ proc edit.fs_open e {
     }
     set initialdir [pwd]
     set initialfile ""
-    set display "Select text file to open"
+    set display "Select file to open"
     set filename [tk_getOpenFile -filetypes $filetypes \
             -initialdir $initialdir \
             -initialfile $initialfile \
@@ -195,7 +199,8 @@ proc edit.fs_save_as e {
     global edit_file_matches
     set filetypes {
     {{Text Files} {.txt} TEXT}
-        {{All Files} {*} TEXT}
+    {{MOO Files} {.moo} TEXT}
+    {{All Files} {*} TEXT}
     }
     if { $edit_file_matches != {} } {
         set filetypes [concat $filetypes $edit_file_matches]
@@ -208,7 +213,7 @@ proc edit.fs_save_as e {
         set initialdir [file dirname $file]
         set initialfile [file tail $file]
     }
-    set display "Select text file to save"
+    set display "Select file to save"
     set filename [tk_getSaveFile -filetypes $filetypes \
             -initialdir $initialdir \
             -initialfile $initialfile \
@@ -379,7 +384,7 @@ proc edit.create { title icon_title } {
         -command "edit.goto $w"
     window.hidemargin $w.controls.view
 
-    text $w.t \
+    ctext $w.t \
         -font [fonts.fixedwidth] \
         -height 24 \
         -width 80 \
@@ -392,6 +397,8 @@ proc edit.create { title icon_title } {
     ttk::scrollbar $w.scrollbar -command "$w.t yview"
 
     ttk::label $w.position -text "position: 1.0" -anchor e
+
+    bindtags $w.t {$w.t Ntext . all}
 
     bind $w.t <KeyPress>      "after idle edit.update_state $w"
     bind $w.t <KeyRelease>    "after idle edit.update_state $w"
