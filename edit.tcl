@@ -536,7 +536,7 @@ proc edit.do_find { w direction } {
     set psn [$w.t search -$direction -count length -- $string $from]
     if {$psn != ""} {
         $w.t tag remove sel 0.0 end
-        ::tk::TextScrollPages $w.t $psn
+        ::tk::TextSetCursor $w.t $psn
         $w.t tag add sel $psn "$psn + $length char"
         edit.show_line_number $w
         return 1
@@ -566,7 +566,7 @@ proc edit.do_replace_all w {
     set psn "0.0"
     while { [set psn [$w.t search -forwards -count length -- $find $psn end]] != "" } {
         $w.t tag remove sel 0.0 end
-        ::tk::TextScrollPages $w.t $psn
+        ::tk::TextSetCursor $w.t $psn
         $w.t tag add sel $psn "$psn + $length char"
         edit.do_replace $w
         set psn [$w.t index "$psn + $lreplace char"]
@@ -623,7 +623,7 @@ proc edit.goto w {
 proc edit.do_goto w {
     set string [$w.goto.t.e get]
     if { $string == "" } { return }
-    catch { ::tk::TextScrollPages $w.t $string.0 }
+    catch { ::tk::TextSetCursor $w.t $string.0 }
     destroy $w.goto
     edit.show_line_number $w
 }
