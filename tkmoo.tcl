@@ -35,6 +35,7 @@ source [ file join $home "io.tcl" ]
 source [ file join $home "util.tcl" ]
 source [ file join $home "worlds.tcl" ]
 source [ file join $home "edit.tcl" ]
+source [ file join $home "ctext.tcl" ]
 
 
 proc initapi.rcfile {} {

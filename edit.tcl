@@ -302,14 +302,12 @@ proc edit.create { title icon_title } {
     $w.controls.file add command \
         -label "Send" \
         -underline 1 \
-        -state disabled \
         -command "edit.send $w"
     window.hidemargin $w.controls.file
 
     $w.controls.file add command \
         -label "Send and Close" \
         -underline 10 \
-        -state disabled \
         -command "edit.send_and_close $w"
     window.hidemargin $w.controls.file
 
