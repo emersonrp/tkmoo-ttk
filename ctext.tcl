@@ -901,14 +901,14 @@ proc ctext::highlight {win start end {afterTriggered 0}} {
 			foreach {tagClass color} $wordAttributes break
 
 			$twin tag add $tagClass $res $wordEnd
-			$twin tag configure $tagClass -foreground $color
+			$twin tag configure $tagClass -foreground $color -font [concat [font actual [$twin cget -font]] -weight bold]
 
 		} elseif {[info exists highlightCharStartAr($firstOfWord)] == 1} {
 			set wordAttributes [set highlightCharStartAr($firstOfWord)]
 			foreach {tagClass color} $wordAttributes break
 
 			$twin tag add $tagClass $res $wordEnd
-			$twin tag configure $tagClass -foreground $color
+			$twin tag configure $tagClass -foreground $color -font [concat [font actual [$twin cget -font]] -weight bold]
 		}
 		set si $wordEnd
 
@@ -931,7 +931,7 @@ proc ctext::highlight {win start end {afterTriggered 0}} {
 			set wordEnd [$twin index "$res + 1 chars"]
 
 			$twin tag add $tagClass $res $wordEnd
-			$twin tag configure $tagClass -foreground $color
+			$twin tag configure $tagClass -foreground $color -font [concat [font actual [$twin cget -font]] -weight bold]
 			set si $wordEnd
 
 			incr numTimesLooped
@@ -953,7 +953,7 @@ proc ctext::highlight {win start end {afterTriggered 0}} {
 
 			set wordEnd [$twin index "$res + $length chars"]
 			$twin tag add $tagClass $res $wordEnd
-			$twin tag configure $tagClass -foreground $color
+			$twin tag configure $tagClass -foreground $color -font [concat [font actual [$twin cget -font]] -weight bold]
 			set si $wordEnd
 
 			incr numTimesLooped
