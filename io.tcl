@@ -265,6 +265,7 @@ proc io.has_closed {} {
 proc io.connect_session session {
     set host [db.get $session host]
     set port [db.get $session port]
+
     set conn ""
     catch { set conn [socket $host $port] }
     db.set $session connection $conn
@@ -285,8 +286,8 @@ proc io.connect_session session {
 
         }
         io.set_connection $conn
-            fconfigure $conn -blocking 0
-            fileevent $conn readable "io.receive_session $session"
+        fconfigure $conn -blocking 0 -encoding utf-8
+        fileevent $conn readable "io.receive_session $session"
 
         client.client_connected_session $session
         return 0
@@ -306,7 +307,7 @@ proc io.connect { host port } {
         worlds.set_current $current_world
 
         io.set_connection $conn
-        fconfigure $conn -blocking 0
+        fconfigure $conn -blocking 0 -encoding utf-8
         fileevent $conn readable {io.receive}
         client.client_connected
         return 0
