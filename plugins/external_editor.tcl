@@ -72,18 +72,6 @@ window.displayCR "just before"
     }
 }
 
-proc external_editor.configure_send { editor command callback num } {
-    window.displayCR "configure_Send"
-}
-
-proc external_editor.configure_close { editor command callback num } {
-    window.displayCR "configure_close"
-}
-
-proc external_editor.configure_send_and_close { editor command callback num } {
-    window.displayCR "configure_send_and_close"
-}
-
 if $replace {
     # replace the existing edit subs.
     rename edit.SCedit edit.SCedit.old
@@ -98,12 +86,4 @@ if $replace {
     rename edit.set_type edit.set_type.old
     rename external_editor.set_type edit.set_type
 
-    rename edit.configure_send edit.configure_send.old
-    rename external_editor.configure_send edit.configure_send
-
-    rename edit.configure_send_and_close edit.configure_send_and_close.old
-    rename external_editor.configure_send_and_close edit.configure_send_and_close
-
-    rename edit.configure_close edit.configure_close.old
-    rename external_editor.configure_close edit.configure_close
 }
