@@ -308,7 +308,6 @@ proc preferences.populate_frame {world category page} {
                     foreach choice $choices {
                         $f.mb.m add command -label $choice \
                                 -command "set preferences_v($world,$directive) $choice; $f.mb configure -text $choice"
-                        window.hidemargin $f.mb.m
                     }
                     set v $default
                     catch { set v [worlds.get $world $directive] }

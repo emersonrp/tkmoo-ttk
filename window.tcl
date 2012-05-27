@@ -68,12 +68,6 @@ set window_input_size 1
 set window_input_size_display 1
 set window_close_state disabled
 
-proc window.hidemargin menu {
-    if { [$menu type end] != "separator" } {
-        $menu entryconfigure end -hidemargin 1
-    }
-}
-
 proc window.save_layout {} {
     set world [worlds.get_current]
     if { $world == "" } { return }
@@ -532,19 +526,16 @@ proc window.post_connect {} {
         -label "Worlds..." \
         -underline 0 \
         -command "window.open_list"
-        window.hidemargin $menu
 
     $menu add command \
         -label "Open..." \
         -underline 0 \
         -command "window.open"
-        window.hidemargin $menu
 
     $menu add command \
         -label "Close" \
         -underline 0 \
         -command "window.do_disconnect"
-        window.hidemargin $menu
 
     $menu entryconfigure "Close" -state $window_close_state
 
@@ -565,7 +556,6 @@ proc window.post_connect {} {
                     -label $label \
                     -underline 0 \
                     -command "client.connect_world $world"
-            window.hidemargin $menu
         }
     }
     }
@@ -576,7 +566,6 @@ proc window.post_connect {} {
         -underline 0 \
         -command "client.exit"
 
-    window.hidemargin $menu
 }
 
 proc window.configure_help_menu {} {
@@ -589,7 +578,6 @@ proc window.configure_help_menu {} {
             $menu add command \
                 -label   "[help.get_title $subject]" \
                 -command "help.show $subject"
-            window.hidemargin $menu
         }
     }
 }
@@ -603,7 +591,6 @@ proc window.menu_help_add { text {command ""} } {
         $menu add command \
             -label   "$text" \
             -command $command
-        window.hidemargin $menu
     }
 }
 
@@ -619,7 +606,6 @@ proc window.menu_tools_add { text {command ""} } {
         $menu add command \
             -label   "$text" \
             -command $command
-        window.hidemargin $menu
     }
 }
 
@@ -628,7 +614,6 @@ proc window.menu_tools_add_cascade { text cascade } {
     $menu add cascade \
         -label   "$text" \
         -menu $cascade
-    window.hidemargin $menu
 }
 
 proc window.menu_tools_state { text state } {
@@ -647,7 +632,6 @@ proc window.menu_preferences_add { text {command ""} } {
         $menu add command \
             -label   "$text" \
             -command $command
-        window.hidemargin $menu
     }
 }
 
@@ -751,20 +735,16 @@ proc window.buildWindow {} {
     .menu.edit add command -label "Cut" \
         -command "ui.delete_selection .input" \
         -accelerator "[window.accel Ctrl]+X"
-    window.hidemargin .menu.edit
     .menu.edit add command -label "Copy" \
         -command "ui.copy_selection .input" \
         -accelerator "[window.accel Ctrl]+C"
-    window.hidemargin .menu.edit
     .menu.edit add command -label "Paste" \
         -command "ui.paste_selection .input" \
         -accelerator "[window.accel Ctrl]+V"
-    window.hidemargin .menu.edit
     .menu.edit add separator
     .menu.edit add command -label "Clear" \
         -underline 1 \
         -command "ui.clear_screen .output"
-    window.hidemargin .menu.edit
 
     .menu add cascade -label "Tools" -underline 0 -menu .menu.tools
     menu .menu.tools -tearoff 0 -bd 1
@@ -777,7 +757,6 @@ proc window.buildWindow {} {
 
     .menu.prefs add cascade -label "Key Bindings" \
          -menu .menu.prefs.bindings
-    window.hidemargin .menu.prefs
     menu .menu.prefs.bindings -tearoff 0
 
     foreach binding [bindings.bindings] {
@@ -791,7 +770,6 @@ proc window.buildWindow {} {
 
     .menu.prefs add cascade \
         -label "Default Font" -menu .menu.prefs.fonts
-    window.hidemargin .menu.prefs
 
     menu .menu.prefs.fonts -tearoff 0
 
@@ -805,7 +783,6 @@ proc window.buildWindow {} {
 
     .menu.prefs add cascade -label "Mode" \
         -menu .menu.prefs.mode
-    window.hidemargin .menu.prefs
     menu .menu.prefs.mode -tearoff 0
 
     foreach mode {line character} {
@@ -819,7 +796,6 @@ proc window.buildWindow {} {
 
     .menu.prefs add cascade -label "Local Echo" \
         -menu .menu.prefs.local
-    window.hidemargin .menu.prefs
     menu .menu.prefs.local -tearoff 0
 
     .menu.prefs.local add radio \
@@ -835,7 +811,6 @@ proc window.buildWindow {} {
 
     .menu.prefs add cascade \
         -label "Input Size" -menu .menu.prefs.size
-    window.hidemargin .menu.prefs
 
     menu .menu.prefs.size -tearoff 0
     for {set i 1} {$i < 6} {incr i} {

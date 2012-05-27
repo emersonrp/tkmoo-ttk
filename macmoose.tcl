@@ -607,19 +607,16 @@ proc macmoose.post_object_menu browser {
             $browser.cmenu.object add command \
                 -label "$name ($object)" \
                 -command "macmoose.object_info $browser $object"
-            window.hidemargin $browser.cmenu.object
         }
     } {
         $browser.cmenu.object add command \
             -label "No object selected" \
             -state disabled
-        window.hidemargin $browser.cmenu.object
     }
     $browser.cmenu.object add separator
     $browser.cmenu.object add command -label "Close" \
         -underline 0 \
         -command "macmoose.destroy_browser $browser"
-    window.hidemargin $browser.cmenu.object
 }
 
 proc macmoose.destroy_browser browser {
@@ -657,11 +654,9 @@ proc macmoose.create_browser {} {
     $browser.cmenu.tools add command -label "Add Script/Property" \
         -underline 0 \
         -command "macmoose.add_script_or_property $browser"
-    window.hidemargin $browser.cmenu.tools
     $browser.cmenu.tools add command -label "New Browser" \
         -underline 0 \
         -command macmoose.create_browser
-    window.hidemargin $browser.cmenu.tools
 
     ttk::frame $browser.toolbar
     ttk::label $browser.toolbar.l -text "Browse:" -width 7 -anchor e

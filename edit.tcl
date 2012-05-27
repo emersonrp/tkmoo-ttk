@@ -75,7 +75,6 @@ proc edit.SCedit { pre lines post title icon_title {e ""}} {
         set e [edit.create $title $icon_title]
     }
 
-
     if { $pre == "" } {
         if { $post == "" } {
             set data $lines
@@ -94,6 +93,7 @@ proc edit.SCedit { pre lines post title icon_title {e ""}} {
     wm iconname $e $icon_title
 
     edit.set_text $e $data
+    $e.t edit reset
 
     $e.t mark set insert 1.0
     edit.show_line_number $e
@@ -280,107 +280,103 @@ proc edit.create { title icon_title } {
         -label "Open..." \
         -underline 0 \
         -command "edit.fs_open $w"
-    window.hidemargin $w.controls.file
 
     $w.controls.file add command \
         -label "Save" \
         -underline 0 \
         -state disabled \
         -command "edit.fs_save $w"
-    window.hidemargin $w.controls.file
 
     $w.controls.file add command \
         -label "Save As..." \
         -underline 5 \
         -state disabled \
         -command "edit.fs_save_as $w"
-    window.hidemargin $w.controls.file
 
     $w.controls.file add separator
-    window.hidemargin $w.controls.file
 
     $w.controls.file add command \
         -label "Send" \
         -underline 1 \
         -command "edit.send $w"
-    window.hidemargin $w.controls.file
 
     $w.controls.file add command \
         -label "Send and Close" \
         -underline 10 \
         -command "edit.send_and_close $w"
-    window.hidemargin $w.controls.file
 
     $w.controls.file add command \
         -label "Close" \
         -underline 0 \
         -command "edit.destroy $w"
-    window.hidemargin $w.controls.file
 
     $w.controls add cascade -label "Edit" -menu $w.controls.edit \
     -underline 0
 
     menu $w.controls.edit -tearoff 0
-    $w.controls.edit add command \
-        -label "Cut" \
-        -accelerator "[window.accel Ctrl]+X" \
-        -command "edit.do_cut $w"
-    window.hidemargin $w.controls.edit
-    $w.controls.edit add command \
-        -label "Copy" \
-        -accelerator "[window.accel Ctrl]+C" \
-        -command "edit.do_copy $w"
-    window.hidemargin $w.controls.edit
-    $w.controls.edit add command \
-        -label "Paste" \
-        -accelerator "[window.accel Ctrl]+V" \
-        -command "edit.do_paste $w"
-    window.hidemargin $w.controls.edit
+    menu $w.popup -tearoff 0
+
+    foreach m [list $w.controls.edit $w.popup] {
+        $m add command \
+            -label "Cut" \
+            -state disabled\
+            -accelerator "[window.accel Ctrl]+X" \
+            -command "edit.do_cut $w"
+        $m add command \
+            -label "Copy" \
+            -state disabled\
+            -accelerator "[window.accel Ctrl]+C" \
+            -command "edit.do_copy $w"
+        $m add command \
+            -label "Paste" \
+            -accelerator "[window.accel Ctrl]+V" \
+            -command "edit.do_paste $w"
+    }
 
     global edit_functions
     if { $edit_functions != {} } {
         $w.controls.edit add separator
-        window.hidemargin $w.controls.edit
         foreach function $edit_functions {
             set title [lindex $function 0]
             set callback [lindex $function 1]
             $w.controls.edit add command \
                 -label "$title" \
                 -command "$callback $w"
-            window.hidemargin $w.controls.edit
         }
     }
 
-    $w.controls.edit add separator
-    window.hidemargin $w.controls.file
+    foreach m [list $w.controls.edit $w.popup] {
+        $m add separator
 
-    $w.controls.edit add command \
-        -label "Undo" \
-        -accelerator "[window.accel Ctrl]+Z" \
-        -state disabled \
-        -command "edit.do_undo $w"
-    window.hidemargin $w.controls.edit
-    $w.controls.edit add command \
-        -label "Redo" \
-        -accelerator "[window.accel Ctrl]+Shift+X" \
-        -state disabled \
-        -command "edit.do_redo $w"
-    window.hidemargin $w.controls.edit
+        $m add command \
+            -label "Select All" \
+            -accelerator "[window.accel Ctrl]+A" \
+            -command "edit.do_select_all $w"
+        $m add command \
+            -label "Undo" \
+            -accelerator "[window.accel Ctrl]+Z" \
+            -state disabled \
+            -command "edit.do_undo $w"
+        $m add command \
+            -label "Redo" \
+            -accelerator "[window.accel Ctrl]+Shift+X" \
+            -state disabled \
+            -command "edit.do_redo $w"
+    }
 
     $w.controls add cascade -label "View" -menu $w.controls.view \
         -underline 0
 
     menu $w.controls.view -tearoff 0
     $w.controls.view add command \
-        -label "Find" \
+        -label "Find..." \
+        -accelerator "[window.accel Ctrl]+F" \
         -underline 0 \
         -command "edit.find $w"
-    window.hidemargin $w.controls.view
         $w.controls.view add command \
-        -label "Goto" \
+        -label "Goto..." \
         -underline 0 \
         -command "edit.goto $w"
-    window.hidemargin $w.controls.view
 
     ctext $w.t \
         -font [fonts.fixedwidth] \
@@ -402,6 +398,8 @@ proc edit.create { title icon_title } {
     bind $w.t <KeyRelease>    "after idle edit.update_state $w"
     bind $w.t <ButtonPress>   "after idle edit.update_state $w"
     bind $w.t <ButtonRelease> "after idle edit.update_state $w"
+    bind $w.t <<Selection>>   "after idle edit.check_selection $w"
+    bind $w.t <3>             "edit.do_popup $w %x %y"
 
     bind $w.t <Control-v>     "edit.do_paste $w; break"
 
@@ -452,6 +450,24 @@ proc edit.show_line_number { w {extra ""} } {
     if { [winfo exists $w] == 0 } { return }
     set line_number [$w.t index insert]
     $w.position configure -text "$extra position: $line_number"
+}
+
+proc edit.do_popup { w x y } {
+    incr x [winfo rootx $w.t]
+    incr y [winfo rooty $w.t]
+    tk_popup $w.popup $x $y
+}
+
+proc edit.check_selection w {
+    if { [catch {selection get}] == 1 } {
+        set state disabled
+    } else {
+        set state normal
+    }
+    foreach m [list $w.controls.edit $w.popup] {
+        $m entryconfigure "Cut"  -state $state
+        $m entryconfigure "Copy" -state $state
+    }
 }
 
 proc edit.send w {
@@ -640,15 +656,22 @@ proc edit.do_cut w {
     ui.delete_selection $w.t
     edit.update_state $w
 }
+
 proc edit.do_copy w {
     ui.copy_selection $w.t
 }
+
 proc edit.do_paste w {
     set from [$w.t index insert]
     ui.paste_selection $w.t
     set to [$w.t index insert]
     edit.update_state $w
     edit.dispatch $w load [list [list range [list $from $to]]]
+}
+
+proc edit.do_select_all w {
+    $w.t tag remove sel 1.0 end
+    $w.t tag add    sel 1.0 end
 }
 
 proc edit.do_undo w { edit.do_undo_redo $w "undo" "redo" }
