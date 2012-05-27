@@ -320,16 +320,16 @@ proc edit.create { title icon_title } {
         $m add command \
             -label "Cut" \
             -state disabled\
-            -accelerator "[window.accel Ctrl]+X" \
+            -accelerator "[bindings.ctrl]+X" \
             -command "edit.do_cut $w"
         $m add command \
             -label "Copy" \
             -state disabled\
-            -accelerator "[window.accel Ctrl]+C" \
+            -accelerator "[bindings.ctrl]+C" \
             -command "edit.do_copy $w"
         $m add command \
             -label "Paste" \
-            -accelerator "[window.accel Ctrl]+V" \
+            -accelerator "[bindings.ctrl]+V" \
             -command "edit.do_paste $w"
     }
 
@@ -350,16 +350,16 @@ proc edit.create { title icon_title } {
 
         $m add command \
             -label "Select All" \
-            -accelerator "[window.accel Ctrl]+A" \
+            -accelerator "[bindings.ctrl]+A" \
             -command "edit.do_select_all $w"
         $m add command \
             -label "Undo" \
-            -accelerator "[window.accel Ctrl]+Z" \
+            -accelerator "[bindings.ctrl]+Z" \
             -state disabled \
             -command "edit.do_undo $w"
         $m add command \
             -label "Redo" \
-            -accelerator "[window.accel Ctrl]+Shift+X" \
+            -accelerator "[bindings.ctrl]+Shift+X" \
             -state disabled \
             -command "edit.do_redo $w"
     }
@@ -370,7 +370,7 @@ proc edit.create { title icon_title } {
     menu $w.controls.view -tearoff 0
     $w.controls.view add command \
         -label "Find..." \
-        -accelerator "[window.accel Ctrl]+F" \
+        -accelerator "[bindings.ctrl]+F" \
         -underline 0 \
         -command "edit.find $w"
         $w.controls.view add command \
@@ -461,7 +461,7 @@ proc edit.do_popup { w x y } {
 proc edit.check_selection w {
     if { [catch {selection get}] == 1 } {
         set state disabled
-    } else {
+    } {
         set state normal
     }
     foreach m [list $w.controls.edit $w.popup] {

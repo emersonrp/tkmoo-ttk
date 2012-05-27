@@ -263,7 +263,7 @@ proc client.login_dialog { uid pwd } {
 }
 
 proc client.default_settings {} {
-    global window_binding window_fonts client_echo
+    global window_fonts client_echo
 
     set font(proportional) plain
     set font(fixedwidth)   fixedwidth
@@ -295,15 +295,10 @@ proc client.set_echo echo {
 
 proc client.set_bindings {} {
     bindings.default
-
-    set which [worlds.get_generic default {} {} KeyBindings]
-
-    bindings.set $which
-    set window_binding $which
 }
 
 proc client.connect_world world {
-    global window_binding window_fonts client_echo
+    global window_fonts client_echo
 
     set session [client.new_session]
     db.set $session world $world
@@ -324,7 +319,7 @@ proc client.connect_world world {
 
     if { ($host == "") || ($port == "") } {
         window.displayCR "Host or Port not defined for this World" window_highlight
-    return
+        return
     }
 
     db.set $session host $host

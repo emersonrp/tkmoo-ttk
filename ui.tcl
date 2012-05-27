@@ -1,5 +1,5 @@
-proc ui.page_top         win { ::tk::TextScrollPages $win 1.0 }
-proc ui.page_end         win { ::tk::TextScrollPages $win {end - 1 char} }
+proc ui.page_top         win { ::tk::TextSetCursor $win 1.0 }
+proc ui.page_end         win { ::tk::TextSetCursor $win {end - 1 char} }
 proc ui.paste_selection  win { tk_textPaste $win }
 proc ui.delete_selection win { tk_textCut $win }
 
@@ -20,12 +20,12 @@ proc ui.page_up           win { ::tk::TextScrollPages $win -1 }
 proc ui.clear_screen      win { window.clear_screen $win }
 proc ui.delete_line       win { $win delete {insert linestart} {insert lineend} }
 proc ui.delete_line_entry win { $win delete 0 end }
-proc ui.left_char         win { ::tk::TextScrollPages $win insert-1c }
-proc ui.right_char        win { ::tk::TextScrollPages $win insert+1c }
-proc ui.up_line           win { ::tk::TextScrollPages $win [tkTextUpDownLine $win -1] }
-proc ui.down_line         win { ::tk::TextScrollPages $win [tkTextUpDownLine $win 1] }
-proc ui.start_line        win { ::tk::TextScrollPages $win {insert linestart} }
-proc ui.end_line          win { ::tk::TextScrollPages $win {insert lineend} }
+proc ui.left_char         win { ::tk::TextSetCursor $win insert-1c }
+proc ui.right_char        win { ::tk::TextSetCursor $win insert+1c }
+proc ui.up_line           win { ::tk::TextSetCursor $win [tkTextUpDownLine $win -1] }
+proc ui.down_line         win { ::tk::TextSetCursor $win [tkTextUpDownLine $win 1] }
+proc ui.start_line        win { ::tk::TextSetCursor $win {insert linestart} }
+proc ui.end_line          win { ::tk::TextSetCursor $win {insert lineend} }
 
 proc ui.left_word_start win {
     $win mark set insert {insert-1c wordstart}

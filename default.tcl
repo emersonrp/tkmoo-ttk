@@ -1,7 +1,6 @@
 proc default.default {} {
     set menu .menu.prefs
     $menu.fonts invoke "fixedwidth"
-    $menu.bindings invoke "windows"
 }
 
 proc default.options {} {

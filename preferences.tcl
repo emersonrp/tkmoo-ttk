@@ -587,17 +587,6 @@ preferences.register window {General Settings} {
         {display "Disconnection script"} }
 }
 
-set default_binding "windows"
-
-preferences.register window {General Settings} [list    \
-    [list {directive KeyBindings}    \
-        {type choice-menu}        \
-        "default $default_binding"    \
-        {display "Key bindings"}    \
-        {change_action bindings.set}    \
-        {choices {emacs tf windows macintosh default}} ] \
-]
-
 preferences.register window {Colours and Fonts} [list \
     { {directive ColourForeground} \
         {type colour} \

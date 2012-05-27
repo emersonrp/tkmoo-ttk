@@ -637,21 +637,6 @@ set help_subject(Preferences) {
     send to the server immediately before connecting from the
     server.
 
-    {paragraph foo}
-        {bold Key bindings}
-        {paragraph foo}
-
-    The client understands several key-bindings that are common
-    to other clients or operating-systems.
-
-    {preformatted
-    emacs    standard emacs editor bindings
-    tf        standard Tiny Fugue client bindings
-    windows    standard Windows 95 bindings
-    macintosh    standard Macintosh bindings
-    default    standard Tk bindings
-    }
-
     {header Out of Band}
 
     The client supports several forms of {bold Out of Band} protocol.

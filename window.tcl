@@ -677,14 +677,6 @@ proc window.set_client_mode_from_menu {} {
     }
 }
 
-proc window.set_key_bindings_from_menu {} {
-    global window_binding
-    if { [set world [worlds.get_current]] != "" } {
-        worlds.set_if_different $world KeyBindings $window_binding
-    }
-    bindings.set $window_binding
-}
-
 proc window.set_default_font_from_menu {} {
     global window_fonts
     if { [set world [worlds.get_current]] != "" } {
@@ -731,16 +723,23 @@ proc window.buildWindow {} {
      menu .menu.connections -tearoff 0 -bd 1
 
     .menu add cascade -label "Edit" -underline 0 -menu .menu.edit
+
     menu .menu.edit -tearoff 0 -bd 1
-    .menu.edit add command -label "Cut" \
-        -command "ui.delete_selection .input" \
-        -accelerator "[window.accel Ctrl]+X"
-    .menu.edit add command -label "Copy" \
-        -command "ui.copy_selection .input" \
-        -accelerator "[window.accel Ctrl]+C"
-    .menu.edit add command -label "Paste" \
-        -command "ui.paste_selection .input" \
-        -accelerator "[window.accel Ctrl]+V"
+    menu .popup -tearoff 0
+
+    foreach m [list .popup .menu.edit] {
+        $m add command -label "Cut" \
+            -command "ui.delete_selection .input" \
+            -state disabled \
+            -accelerator "[bindings.ctrl]+X"
+        $m add command -label "Copy" \
+            -command "ui.copy_selection .input" \
+            -state disabled \
+            -accelerator "[bindings.ctrl]+C"
+        $m add command -label "Paste" \
+            -command "ui.paste_selection .input" \
+            -accelerator "[bindings.ctrl]+V"
+    }
     .menu.edit add separator
     .menu.edit add command -label "Clear" \
         -underline 1 \
@@ -754,19 +753,6 @@ proc window.buildWindow {} {
 
     window.menu_preferences_add "Toggle Statusbars" \
     window.toggle_statusbar_from_menu
-
-    .menu.prefs add cascade -label "Key Bindings" \
-         -menu .menu.prefs.bindings
-    menu .menu.prefs.bindings -tearoff 0
-
-    foreach binding [bindings.bindings] {
-        .menu.prefs.bindings add radio \
-            -variable window_binding \
-            -value $binding \
-            -label "$binding" \
-            -command "window.set_key_bindings_from_menu"
-    }
-
 
     .menu.prefs add cascade \
         -label "Default Font" -menu .menu.prefs.fonts
@@ -865,6 +851,9 @@ proc window.buildWindow {} {
     }
     bindtags .output {Text .output . all}
 
+    bind .output <<Selection>> { window.check_selection }
+    bind .output <3>           "window.do_popup %x %y"
+
     .output configure -state disabled
 
     window.focus .input
@@ -885,8 +874,25 @@ proc window.buildWindow {} {
     window.initialise_text_widget .output
 }
 
-proc window.accel str { return $str }
 proc window.focus win { focus $win }
+
+proc window.check_selection {} {
+    if { [catch {selection get}] == 1 } {
+        set state disabled
+    } {
+        set state normal
+    }
+    foreach m [list .menu.edit .popup] {
+        $m entryconfigure "Cut"  -state $state
+        $m entryconfigure "Copy" -state $state
+    }
+}
+
+proc window.do_popup { x y } {
+    incr x [winfo rootx .output]
+    incr y [winfo rooty .output]
+    tk_popup .popup $x $y
+}
 
 proc window.cancel_lite {} {
     global window_timeout_lite window_timeout_lite_task
