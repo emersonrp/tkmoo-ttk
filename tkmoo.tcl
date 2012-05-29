@@ -90,6 +90,7 @@ window.menu_tools_add "@paste selection" {window.paste_selection}
 source [ file join $home "open.tcl" ]
 source [ file join $home "preferences.tcl" ]
 source [ file join $home "fontchooser.tcl" ]
+source [ file join $home "webbrowser.tcl" ]
 source [ file join $home "plugins.tcl" ]
 
 set main_host        ""
