@@ -48,21 +48,19 @@ proc pretty.prettyprint w {
     foreach line $lines {
         set l [string trimleft $line]
 
-    if { [regexp -nocase {^(endif|endwhile|endfor|elseif|else|endfork|endtry|finally)( |;|$)} $l] } {
-        incr indent -2
-    }
-
-        if { $indent < 0 } {
-            set indent 0
+        if { [regexp -nocase {^(endif|endwhile|endfor|elseif|else|endfork|endtry|finally)( |;|$)} $l] } {
+            incr indent -2
         }
+
+        if { $indent < 0 } { set indent 0 }
 
         # redraw the line
         set o "[string range $blank 0 [expr $indent - 1]]$l"
         lappend out $o
 
-    if { [regexp -nocase {^(if|while|for|elseif|else|fork|try|finally)( |;|$)} $l] } {
-        incr indent 2
-    }
+        if { [regexp -nocase {^(if|while|for|elseif|else|fork|try|finally)( |;|$)} $l] } {
+            incr indent 2
+        }
     }
 
     # update the widget, display the same part of the file
