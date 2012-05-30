@@ -846,9 +846,6 @@ proc window.buildWindow {} {
     update
     pack propagate . 0
 
-    bind .output <ButtonRelease-2> {
-        if {!$tkPriv(mouseMoved)} { window.selection_to_input }
-    }
     bindtags .output {Text .output . all}
 
     bind .output <<Selection>> { window.check_selection }
