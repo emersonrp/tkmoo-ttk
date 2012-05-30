@@ -55,7 +55,6 @@ proc webbrowser.client_connected {} {
 }
 
 proc webbrowser.open url {
-
     set custom [webbrowser.custom]
     if { $custom != "" } {
         set browser_command $custom
@@ -73,7 +72,10 @@ proc webbrowser.open url {
         set browser_command [list [webbrowser.for_linux]]
     }
 
-    if { [catch {exec $browser_command [list $url]} error] } {
+    # change & to ; -- I believe this works in approximately all cases
+    set url [string map {& ;} $url]
+
+    if { [catch {exec $browser_command "$url"} error] } {
         window.displayCR "Error opening URL $url" window_highlight
         window.displayCR "$error" window_highlight
     }
