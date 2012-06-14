@@ -27,36 +27,12 @@
 # a small 'volume indicator' which lights up LEDs according to just how
 # slow the network connection is.  'slowness' is percieved as the time
 # taken for the server to reply to a timestamped message.  Each LED
-# represents a second's delay.  If no LEDs are lit then this means the
-# delay is less than a second.
+# represents 100ms delay -- if one LED is lit, the delay is <= 100ms, 
+# two LEDs is <= 200ms, etc
 # 
 #    slowness = transfer time from server to client +
 #               time taken by MOO to process request (this may be dependant
 #               on how heavily your task queue is loaded).
-#
-# A good way to test this is to type a command like '@dump $player', the
-# MOO will then take a wile to process the client's 'ping' messages and
-# the lights will come on accordingly.
-#
-# The plugin is supported by client-side code like this verb on me:
-#
-#    @program me:ping any any any
-#    if (argstr == "off")
-#      this.driver:client_notify(player, "xmcp-ping", {{"time", "-1"}});
-#    else
-#      time = tonum(dobjstr);
-#      this.driver:client_notify(player, "xmcp-ping", {{"time", tostr(time)}});
-#    endif
-#    .
-#
-# You then need to enable XMCP on your client (naturally) and add the
-# following to the XMCP/1.1 Connection Script section:
-#
-#     ping
-#
-# The client will wait for the first S->C XMCP message to be sent
-# before drawing the LEDs.  When the client disconnects from the site the
-# LEDs will disappear.
 #
 # Comments:
 # This is a pretty braindead way of indicating the network latency.  It
@@ -143,7 +119,7 @@ proc ping.ping_on {} {
 proc ping.do {} {
     global ping_db
     set id [util.unique_id p]
-    set ping_db($id:time) [clock seconds]
+    set ping_db($id:time) [clock milliseconds]
     set ping_db(current) $id
 
     set overlap [mcp21.report_overlap]
@@ -186,7 +162,7 @@ proc ping.do_dns_com_awns_ping_reply {} {
         return
     }
 
-    set latency [expr [clock seconds] - $ping_db($id:time)]
+    set latency [expr [clock milliseconds] - $ping_db($id:time)]
     unset ping_db($id:time)
     set ping_db(current) 0
 
@@ -202,23 +178,6 @@ proc ping.client_disconnected {} {
     return [modules.module_deferred]
 }
 
-proc xmcp11.do_xmcp-ping {} { 
-    if { [xmcp11.authenticated] == 1 } {
-    ping.create
-        ping.update [request.get current time]
-    }
-}
-
-proc ping.update time {
-    # detect old 'ping off' behaviour
-    if { $time < 0 } {
-        ping.destroy
-        return
-    }
-    set latency [expr [clock seconds] - $time]
-    ping.display $latency
-}
-
 proc ping.display latency {
     global ping_unlit ping_frame
     ping.create
@@ -226,15 +185,21 @@ proc ping.display latency {
         1 green
         2 green
         3 green
-        4 orange
-        5 red
+        4 green
+        5 green
+        6 green
+        7 orange
+        8 orange
+        9 orange
+        10 red
     }
-    for {set i 1} {($i < 6) && ($i <= $latency)} {incr i} {
+    for {set i 1} {($i < 11) && ($i <= ($latency/100)+1)} {incr i} {
         $ping_frame.r.$i configure -bg $colour($i)
     }
-    for {} {$i < 6} {incr i} {
+    for {} {$i < 11} {incr i} {
         $ping_frame.r.$i configure -bg $ping_unlit
     }
+    set_balloon $ping_frame.r "$latency ms"
 }
 
 proc ping.create {} {
@@ -247,7 +212,7 @@ proc ping.create {} {
     frame $f.r -bd 0 -highlightthickness 0 -bg pink
     pack $f.r -fill y -expand 1 -padx 2
 
-    for {set i 1} {$i < 6} {incr i} {
+    for {set i 1} {$i < 11} {incr i} {
         frame $f.r.$i \
             -bd 1 -highlightthickness 0 \
             -width 6 -height 10 -relief sunken \
@@ -266,7 +231,7 @@ proc ping.no_data {} {
     global ping_frame
     set f $ping_frame
     set grey [. cget -bg]
-    for {set i 1} {$i < 6} {incr i} {
+    for {set i 1} {$i < 11} {incr i} {
         $f.r.$i configure -bg $grey
     }
 }
@@ -281,7 +246,7 @@ proc ping.destroy {} {
 proc ping.ping {} {
     global ping_frame
     if { [winfo exists $ping_frame] == 0 } { return }
-    io.outgoing "ping [clock seconds]"
+    io.outgoing "ping [clock milliseconds]"
     after 5000 ping.ping
 }
 
