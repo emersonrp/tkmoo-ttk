@@ -14,9 +14,13 @@ proc history.init { id {fixed 1} } {
 
 proc history.add { id line } {
     global history_db
+
+    # TODO - how big makes sense for this?  Make it a pref, too.
+    set command_history_size 50
+
     if { $line != "" } { lappend history_db($id:history) $line }
 
-    if { [llength $history_db($id:history)] > 20 } {
+    if { [llength $history_db($id:history)] > $command_history_size } {
         set history_db($id:history) [lrange $history_db($id:history) 1 end]
     }
     set history_db($id:index) [llength $history_db($id:history)]
