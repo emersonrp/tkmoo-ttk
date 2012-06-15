@@ -849,7 +849,8 @@ proc window.buildWindow {} {
     bindtags .output {Text .output . all}
 
     bind .output <<Selection>> { window.check_selection }
-    bind .output <3>           "window.do_popup %x %y"
+    bind .output <3>           "window.do_popup .output %x %y"
+    bind .input  <3>           "window.do_popup .input  %x %y"
 
     .output configure -state disabled
 
@@ -885,9 +886,9 @@ proc window.check_selection {} {
     }
 }
 
-proc window.do_popup { x y } {
-    incr x [winfo rootx .output]
-    incr y [winfo rooty .output]
+proc window.do_popup { w x y } {
+    incr x [winfo rootx $w]
+    incr y [winfo rooty $w]
     tk_popup .popup $x $y
 }
 
